@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy to Azure
 
 on:
   push:
@@ -6,27 +6,40 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup SSH Agent
+      - name: Save SSH Key to File
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # Start the SSH agent
-          eval "$(ssh-agent -s)"
-          
-          # Add the private key directly from the secret
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-          
-          # Disable strict host key checking for simplicity (optional)
+          # Create the .ssh directory if it doesn't exist
           mkdir -p ~/.ssh
-          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          
+          # Save the private key to a file
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          
+          # Set proper permissions for the key file
+          chmod 600 ~/.ssh/id_rsa
 
-      - name: Run SSH Command
+      - name: Configure SSH Settings
         run: |
-          ssh ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "echo 'Connected successfully!'"
+          # Disable strict host key checking (optional)
+          echo "StrictHostKeyChecking no" > ~/.ssh/config
+
+      - name: Execute Remote Commands
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+          cd /var/www/thegoodplan
+          git pull origin main
+          EOF
+
+      - name: Clean Up SSH Key File
+        run: |
+          # Remove the private key file after use for security
+          rm -f ~/.ssh/id_rsa

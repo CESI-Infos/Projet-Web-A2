@@ -9,18 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Pull changes on VM
-        env:
-          HOST: ${{ secrets.VM_HOST }}
-          USER: ${{ secrets.VM_USERNAME }}
-          REPO_PATH: /var/www/thegoodplan
+      - name: Deploy to VM
         run: |
-          ssh -o StrictHostKeyChecking=no $USER@$HOST "cd $REPO_PATH && git pull origin main"
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+          cd /var/www/thegoodplan
+          git pull origin main
+          EOF

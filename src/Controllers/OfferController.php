@@ -68,12 +68,12 @@ class OfferController extends Controller {
         exit();
     }
 
-    public function printOffers($num) {
+    public function printOffers($page, $num) {
         $allnum = count($this->model->getAllOffers());
         $offers = [];
         for ($i=0; $i<$num; $i++){
             $offers[] = $this->model->getOffer(rand(1, $allnum));
         }
-        echo $this->templateEngine->render('acceuil.html', ['offers' => $offers]);
+        echo $this->templateEngine->render($page, ['offers' => $offers]);
     }
 }

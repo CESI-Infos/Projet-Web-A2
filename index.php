@@ -26,7 +26,7 @@ $OfferController = new OfferController($twig);
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers(3);
+        $OfferController->printOffers('acceuil.html', 3);
         break;
     default:
         echo 'Page not found';

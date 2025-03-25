@@ -3,7 +3,10 @@ namespace App\Models;
 
 require_once 'FileDatabase.php';
 require_once 'Database.php';
+require_once 'Model.php';
+
 use App\Models\FileDatabase;
+use App\Models\Model;
 
 class CompanyModel extends Model{
 

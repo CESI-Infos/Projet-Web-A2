@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-<?php include "header.html" ?>
-
+    {% include 'header.html.twig' %}
     <main class="cadre">
         <h1>Création de l’offre</h1>
         <form>
@@ -27,7 +26,6 @@
             <button type="submit">Enregistrer l’offre</button>
         </form>
     </main>
-
-    <?php include "footer.html" ?>
+    {% include 'footer.html.twig' %}
 </body>
 </html>

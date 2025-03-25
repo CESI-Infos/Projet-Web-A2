@@ -2,7 +2,7 @@
 
 <head>
     <title>Parcourir</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="../static/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<?php include "header.html" ?>
+    {% include 'header.html.twig' %}
     <main class="explore">
         <aside id="panneau">
             <h3 class="inter-bold">Trier par</h3>
@@ -86,5 +86,5 @@
 </a>
         </section>
     </main>
-    <?php include "footer.html" ?>
+    {% include 'footer.html.twig' %}
 </body>

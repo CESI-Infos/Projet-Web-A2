@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-<?php include "header.html" ?>
-
+    {% include 'header.html.twig' %}
     <main class="cadre">
         <h1>Se Connecter</h1>
         <p>Nouveau sur le site ? <a href="inscription.php" class="blue-link">S’inscrire</a></p>
@@ -24,7 +23,6 @@
             <button type="submit">Se connecter</button>
         </form>
     </main>
-
-    <?php include "footer.html" ?>
+    {% include 'footer.html.twig' %}
 </body>
 </html>

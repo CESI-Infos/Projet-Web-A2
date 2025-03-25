@@ -1,18 +1,38 @@
 name: Deploy to Azure
-on: push
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-              ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
-              cd /var/www/thegoodplan
-              git pull origin main
-              EOF 
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Save SSH Key to File
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Configure SSH Settings
+        run: |
+          echo "StrictHostKeyChecking no" > ~/.ssh/config
+
+      - name: Execute Remote Commands
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+          cd /var/www/thegoodplan
+          git pull origin main
+          EOF
+
+      - name: Clean Up SSH Key File
+        run: |
+          rm -f ~/.ssh/id_rsa

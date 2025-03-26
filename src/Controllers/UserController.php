@@ -1,7 +1,11 @@
 <?php
 namespace App\Controllers;
 
+require_once "src/Models/UserModel.php";
+require_once "src/Controllers/Controller.php";
+
 use App\Models\UserModel;
+use App\Controllers\Controller;
 
 class UserController extends Controller{
 

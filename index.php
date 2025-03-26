@@ -19,13 +19,11 @@ if (isset($_GET['uri'])) {
     $uri = '/';
 }
 
-$uriPath = strtok($uri, '?');
-
 $CompanyController = new CompanyController($twig);
 $OfferController = new OfferController($twig);
 $UserController = new UserController($twig);
 
-switch ($uriPath) {
+switch ($uri) {
     case '/':
         $OfferController->printOffers('acceuil.html', 3);
         break;

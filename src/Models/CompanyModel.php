@@ -1,66 +1,51 @@
 <?php
 namespace App\Models;
 
-require_once 'FileDatabase.php';
-require_once 'Database.php';
-require_once 'Model.php';
+require_once 'src/Models/Model.php';
 
-use App\Models\FileDatabase;
-use App\Models\Model;
 
-class CompanyModel extends Model{
-
-    public function __construct($db=NULL){
-        if (is_null($db)){
-            $this->connection = new FileDatabase('../../.csv/TestCOMPANIES', ['Name', 'Description', 'Mail', 'Phone']);
-        }else{
-            $this->connection = new FileDatabase($db, ['Name', 'Description', 'Mail', 'Phone']);
+class CompanyModel extends Model {
+    public function __construct($connection = null) {
+        if (is_null($connection)) {
+            $this->connection = new Database();
+        } else {
+            $this->connection = $connection;
         }
     }
 
     public function getAllCompanies() {
-        return $this->connection->getAllRecords();
+        return $this->connection->getAllRecords("Companies");
     }
 
     public function getCompany($id) {
-        return $this->connection->getRecord($id);
+        return $this->connection->getRecord("Companies", $id);
     }
 
-    public function changeCompanyName($id, $name){
-        $comp = $this->getCompany($id);
-        $comp['NAME'] = $name;
-        $this->connection->updateRecord($id, $comp);
-    }
-
-    public function changeCompanyDescription($id, $descript){
-        $comp = $this->getCompany($id);
-        $comp['DESCRIPTION'] = $descript;
-        $this->connection->updateRecord($id, $comp);
-    }
-
-    public function changeCompanyMail($id, $mail){
-        $comp = $this->getCompany($id);
-        $comp['MAIL'] = $mail;
-        $this->connection->updateRecord($id, $comp);
-    }
-
-    public function changeCompanyPhone($id, $phone){
-        $comp = $this->getCompany($id);
-        $comp['PHONE'] = $phone;
-        $this->connection->updateRecord($id, $comp);
-    }
-
-    public function createCompany($name){
-        $comp = [
+    public function createCompany($name, $description, $mail, $phone) {
+        $record = [
             'NAME' => $name,
-            'DESCRIPTION' => '',
-            'MAIL' => '',
-            'PHONE' => '',
+            'DESCRIPTION' => $description,
+            'MAIL' => $mail,
+            'PHONE' => $phone,
         ];
-        return $this->connection->insertRecord($comp);
+
+        return $this->connection->insertRecord("Companies", $record);
     }
 
-    public function deleteCompany($id){
-        return $this->connection->deleteRecord($id);
+    public function updateCompany($id, $name, $description, $mail, $phone) {
+        $record = [
+            'NAME' => $name,
+            'DESCRIPTION' => $description,
+            'MAIL' => $mail,
+            'PHONE' => $phone,
+        ];
+
+        $condition = "id = :id";
+        $paramsCondition = [':id' => $id];
+        return $this->connection->updateRecord("Companies", $record, $condition, $paramsCondition);
+    }
+
+    public function deleteCompany($id) {
+        return $this->connection->deleteRecord("Companies", $id);
     }
 }

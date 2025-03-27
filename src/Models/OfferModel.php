@@ -2,26 +2,26 @@
 namespace App\Models;
 
 require_once 'src/Models/Model.php';
-require_once 'src/Models/FileDatabase.php';
+require_once 'src/Models/Database.php';
 
 use App\Models\Model;
-use App\Models\FileDatabase;
+use App\Models\Database;
 
 class OfferModel extends Model {
     public function __construct($connection = null) {
         if (is_null($connection)) {
-            $this->connection = new FileDatabase('OFFERS', ['ID', 'TITLE', 'RELEASE_DATE', 'CITY', 'GRADE', 'BEGIN_DATE', 'DURATION', 'RENUMBER', 'DESCRIPTION', 'ID_COMPANY']);
+            $this->connection = new Database();
         } else {
             $this->connection = $connection;
         }
     }
 
     public function getAllOffers() {
-        return $this->connection->getAllRecords();
+        return $this->connection->getAllRecords("Offers");
     }
 
     public function getOffer($id) {
-        return $this->connection->getRecord($id);
+        return $this->connection->getRecord("Offers",$id);
     }
 
     public function createOffer($title, $release_date, $city, $grade, $begin_date, $duration, $renumber, $description, $id_company) {
@@ -37,7 +37,7 @@ class OfferModel extends Model {
             'ID_COMPANY' => $id_company
         ];
 
-        return $this->connection->insertRecord($record);
+        return $this->connection->insertRecord("Offers",$record);
     }
 
     public function updateOffer($id, $title, $release_date, $city, $grade, $begin_date, $duration, $renumber, $description, $id_company) {
@@ -53,10 +53,12 @@ class OfferModel extends Model {
             'ID_COMPANY' => $id_company
         ];
 
-        return $this->connection->updateRecord($id, $record);
+        $condition = "id = :id";
+        $paramsCondition = [':id' => $id];
+        return $this->connection->updateRecord("Offers", $record, $condition, $paramsCondition);
     }
 
     public function deleteOffer($id) {
-        return $this->connection->deleteRecord($id);
+        return $this->connection->deleteRecord("Offers",$id);
     }
 }

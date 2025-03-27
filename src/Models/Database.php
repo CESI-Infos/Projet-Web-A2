@@ -1,38 +1,100 @@
 <?php
 namespace App\Models;
-/**
- * This interface represents a database.
- */
-interface Database {
-    /**
-     * Retrieves all records from the database.
-     *
-     * @return array An array of records.
-     */
-    public function getAllRecords();
 
-    /**
-     * Retrieves a specific record from the database.
-     *
-     * @param int $id The ID of the record to retrieve.
-     * @return mixed The retrieved record, null otherwise.
-     */
-    public function getRecord($id);
+use PDO; // Import the global PDO class
+use PDOException; // Import the global PDOException class
 
-    /**
-     * Inserts a new record into the database.
-     *
-     * @param mixed $record The record to insert.
-     * @return int The last inserted index if the record was inserted successfully, -1 otherwise.
-     */
-    public function insertRecord($record);
+class Database
+{
+    private PDO $pdo;
+    
+    public function __construct()
+    {
+        $host = 'localhost';
+        $dbname = 'thegoodplan';
+        $user = 'root';
+        $password = '';
 
-    /**
-     * Updates a specific record in the database.
-     *
-     * @param int $id The ID of the record to update.
-     * @param mixed $record The updated record.
-     * @return bool True if the record was updated successfully, false otherwise.
-     */
-    public function updateRecord($id, $record);
+        try {
+            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+            
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo "Erreur de connexion : " . $e->getMessage();
+        }
+    }
+
+    public function getAllRecords(string $table, string $champs = "*"): array
+    {
+        $sql = "SELECT $champs FROM `$table`";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRecordsWhen(string $table, string $condition, array $params = [], string $champs = "*"): array
+    {
+        $sql = "SELECT $champs FROM `$table` WHERE $condition";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRecord(string $table, $id, string $champs = "*", string $colonneId = "id"): ?array
+    {
+        $sql = "SELECT $champs FROM `$table` WHERE $colonneId = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
+    }
+
+    public function insertRecord(string $table, array $data): int
+    {
+        $champs = implode(', ', array_keys($data));
+        $parametres = ':' . implode(', :', array_keys($data));
+
+        $sql = "INSERT INTO `$table` ($champs) VALUES ($parametres)";
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($data as $colonne => $valeur) {
+            $stmt->bindValue(':' . $colonne, $valeur);
+        }
+
+        $stmt->execute();
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    public function updateRecord(string $table, array $data, string $condition, array $paramsCondition = []): int
+    {
+        $champs = [];
+        foreach ($data as $colonne => $valeur) {
+            $champs[] = "$colonne = :update_$colonne";
+        }
+        $champsSQL = implode(', ', $champs);
+
+        $sql = "UPDATE `$table` SET $champsSQL WHERE $condition";
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($data as $colonne => $valeur) {
+            $stmt->bindValue(":update_$colonne", $valeur);
+        }
+
+        foreach ($paramsCondition as $placeholder => $valeur) {
+            $stmt->bindValue($placeholder, $valeur);
+        }
+
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+    public function deleteRecord(string $table, $id, string $colonneId = "id"): int
+    {
+        $sql = "DELETE FROM `$table` WHERE $colonneId = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
 }

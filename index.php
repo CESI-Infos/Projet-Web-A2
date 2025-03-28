@@ -25,10 +25,10 @@ $UserController = new UserController($twig);
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('acceuil.html.twig', 3);
+        $OfferController->printOffers('acceuil.twig', 3);
         break;
     case '/parcourir':
-        $OfferController->printOffers('parcourir.html.twig', 5);
+        $OfferController->printOffers('parcourir.twig', 5);
         break;
     case '/details-offre':
         $offerId = $_GET['id'];

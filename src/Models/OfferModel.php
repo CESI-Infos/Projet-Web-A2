@@ -17,11 +17,11 @@ class OfferModel extends Model {
     }
 
     public function getAllOffers() {
-    return $this->connection->getAllRecords("Offers", "CROSS JOIN Companies ON Offers.id_company = Companies.id");
+    return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.id_company = Companies.id");
     }
 
-    public function getOffer($id) {
-        return $this->connection->getRecord("Offers", $id, "CROSS JOIN Companies ON Offers.id_company = Companies.id");
+    public function getOffer($id, $champs='*') {
+        return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.id_company = Companies.id", $champs);
     }
 
     public function createOffer($title, $release_date, $city, $grade, $begin_date, $duration, $renumber, $description, $id_company) {

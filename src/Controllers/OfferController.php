@@ -83,6 +83,6 @@ class OfferController extends Controller {
     public function printSpecificOffer($id) {
         $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
         $offer = $this->model->getOffer($id, $champs);
-        echo $this->templateEngine->render('details-offre.html.twig', ['offer' => $offer]);
+        echo $this->templateEngine->render('details-offre.twig', ['offer' => $offer]);
     }
 }

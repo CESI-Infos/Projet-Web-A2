@@ -35,19 +35,19 @@ switch ($uri) {
         $OfferController->printSpecificOffer($offerId);
         break;
     case '/creation-offre':
-        echo $twig->render('creation-offre.html.twig');
+        echo $twig->render('creation-offre.twig');
         break;
     case '/support':
-        echo $twig->render('support.html.twig');
+        echo $twig->render('support.twig');
         break;
     case '/connexion':
-        echo $twig->render('connexion.html.twig');
+        echo $twig->render('connexion.twig');
         break;
     case '/inscription':
-        echo $twig->render('inscription.html.twig');
+        echo $twig->render('inscription.twig');
         break;
     case '/mdp-oublie':
-        echo $twig->render('mot-de-passe-oublie.html.twig');
+        echo $twig->render('mot-de-passe-oublie.twig');
         break;
     default:
         echo 'Page not found';

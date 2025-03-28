@@ -12,8 +12,8 @@ class Database
     {
         $host = 'localhost';
         $dbname = 'thegoodplan';
-        $user = 'root';
-        $password = '';
+        $user = 'thegoodplan';
+        $password = 'z*hOCxRvGR@CU2MA';
 
         try {
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);

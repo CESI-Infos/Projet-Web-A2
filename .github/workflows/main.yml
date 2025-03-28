@@ -30,6 +30,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
           cd /var/www/thegoodplan
+          git reset --hard
           git pull origin main
           EOF
 

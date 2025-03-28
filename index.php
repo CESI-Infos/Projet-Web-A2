@@ -25,7 +25,7 @@ $UserController = new UserController($twig);
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('acceuil.twig', 3);
+        $OfferController->printOffers('accueil.twig', 3);
         break;
     case '/parcourir':
         $OfferController->printOffers('parcourir.twig', 5);

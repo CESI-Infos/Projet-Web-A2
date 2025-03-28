@@ -30,6 +30,10 @@ switch ($uri) {
     case '/parcourir':
         $OfferController->printOffers('parcourir.html', 5);
         break;
+    case '/details-offre':
+        $offerId = $_GET['id'];
+        $OfferController->printSpecificOffer($offerId);
+        break;
     case '/creation-offre':
         echo $twig->render('creation-offre.html');
         break;

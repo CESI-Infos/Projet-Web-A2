@@ -79,4 +79,9 @@ class OfferController extends Controller {
         
         echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages]);
     }
+
+    public function printSpecificOffer($id) {
+        $offer = $this->model->getOffer($id);
+        echo $this->templateEngine->render('details-offre.html', ['offer' => $offer]);
+    }
 }

@@ -24,7 +24,7 @@ class Database
         }
     }
 
-    public function getAllRecords(string $table, string $champs = "*"): array
+    public function getAllRecords(string $table, $jointure='', string $champs = "*"): array
     {
         $sql = "SELECT $champs FROM $table";
         $stmt = $this->pdo->prepare($sql);
@@ -32,17 +32,17 @@ class Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRecordsWhen(string $table, string $condition, array $params = [], string $champs = "*"): array
+    public function getRecordsWhen(string $table, $jointure = '', string $condition, array $params = [], string $champs = "*"): array
     {
-        $sql = "SELECT $champs FROM $table WHERE $condition";
+        $sql = "SELECT $champs FROM $table WHERE $table.$condition";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRecord(string $table, $id, string $champs = "*", string $colonneId = "id"): ?array
+    public function getRecord(string $table, $jointure = '', $id, string $champs = "*", string $colonneId = "id"): ?array
     {
-        $sql = "SELECT $champs FROM $table WHERE $colonneId = :id";
+        $sql = "SELECT $champs FROM $table $jointure WHERE $table.$colonneId = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();

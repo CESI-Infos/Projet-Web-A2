@@ -25,29 +25,29 @@ $UserController = new UserController($twig);
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('acceuil.html', 3);
+        $OfferController->printOffers('acceuil.html.twig', 3);
         break;
     case '/parcourir':
-        $OfferController->printOffers('parcourir.html', 5);
+        $OfferController->printOffers('parcourir.html.twig', 5);
         break;
     case '/details-offre':
         $offerId = $_GET['id'];
         $OfferController->printSpecificOffer($offerId);
         break;
     case '/creation-offre':
-        echo $twig->render('creation-offre.html');
+        echo $twig->render('creation-offre.html.twig');
         break;
     case '/support':
-        echo $twig->render('support.html');
+        echo $twig->render('support.html.twig');
         break;
     case '/connexion':
-        echo $twig->render('connexion.html');
+        echo $twig->render('connexion.html.twig');
         break;
     case '/inscription':
-        echo $twig->render('inscription.html');
+        echo $twig->render('inscription.html.twig');
         break;
     case '/mdp-oublie':
-        echo $twig->render('mot-de-passe-oublie.html');
+        echo $twig->render('mot-de-passe-oublie.html.twig');
         break;
     default:
         echo 'Page not found';

@@ -12,7 +12,7 @@
             <img src="/static/airbusIcon.png" alt="Logo Airbus">
             <div>
                 <h3><b>{{ offer.NAME }}</b></h3>
-                <p>{{ offer.DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
+                <p>{{ offer.COMPANY_DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
             </div>
         </div>
         <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h5>
@@ -24,7 +24,7 @@
                 </div>
         </section>
         <article class="details">
-        <p>{{ offer.Offers_DESCRIPTION }}</p>
+        <p>{{ offer.OFFER_DESCRIPTION }}</p>
         <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
         </article>
     </main>

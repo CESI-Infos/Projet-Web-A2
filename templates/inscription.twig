@@ -1,0 +1,24 @@
+{% extends "base.twig" %}
+{% block title %}S'inscrire - TheGoodPlan{% endblock %}
+
+{% block content %}
+    <main class="cadre">
+        <h1>S'inscrire</h1>
+        <p>Déjà un compte ? <a href="?uri=/connexion" class="blue-link">Se connecter</a></p>
+        <form>
+            <label for="name">Nom et Prénom *</label>
+            <input type="text" id="name" placeholder="Nom et prénom" required>
+
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" placeholder="E-mail" required>
+
+            <label for="password">Mot de passe *</label>
+            <input type="password" id="password" required>
+
+            <label for="confirm-password">Confirmer le mot de passe *</label>
+            <input type="password" id="confirm-password" required>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </main>
+{% endblock %}

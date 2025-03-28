@@ -1,0 +1,24 @@
+
+{% extends 'base.twig' %}
+
+{% block title %}Se Connecter - TheGoodPlan{% endblock %}
+
+
+{% block content %}
+    <main class="cadre">
+        <h1>Se Connecter</h1>
+        <p>Nouveau sur le site ? <a href="?uri=/inscription" class="blue-link">S’inscrire</a></p>
+        <form>
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" placeholder="E-mail" required>
+
+            <label for="password">Mot de passe *</label>
+            <input type="password" id="password" required>
+
+            <a href="?uri=/mdp-oublie" class="blue-link">Mot de passe oublié ?</a>
+
+            <button type="submit">Se connecter</button>
+        </form>
+    </main>
+{% endblock %}
+

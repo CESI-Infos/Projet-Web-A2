@@ -1,0 +1,33 @@
+{% extends "base.twig" %}
+
+{% block title %}TheGoodPlan - Détails de l'offre{% endblock %}
+
+{% block content %}
+    <main class="details-offre">
+        <section class="contenu">
+        <div>
+        <h2>Détails de l’offre</h2>
+        <h1>{{ offer.TITLE }}</h1>
+        <div class="infos-offre">
+            <img src="/static/airbusIcon.png" alt="Logo Airbus">
+            <div>
+                <h3><b>{{ offer.NAME }}</b></h3>
+                <p>{{ offer.DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
+            </div>
+        </div>
+        <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h5>
+        </div>
+        <div class="tags horizontal">
+                    <span class="localisation fond-bleu"><img src="/static/locIcon.png" width="24px">{{ offer.CITY }}</span>
+                    <span class="duree fond-bleu"><img src="/static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
+                    <span class="exp fond-bleu"><img src="/static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+                </div>
+        </section>
+        <article class="details">
+        <p>{{ offer.Offers_DESCRIPTION }}</p>
+        <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
+        </article>
+    </main>
+{% endblock %}
+
+

@@ -82,6 +82,7 @@ class OfferController extends Controller {
 
     public function printSpecificOffer($id) {
         $offer = $this->model->getOffer($id);
+        print_r($offer);
         echo $this->templateEngine->render('details-offre.html', ['offer' => $offer]);
     }
 }

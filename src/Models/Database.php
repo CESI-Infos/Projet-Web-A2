@@ -11,9 +11,9 @@ class Database
     public function __construct()
     {
         $host = 'localhost';
-        $dbname = 'thegoodplan';
-        $user = 'root';
-        $password = '';
+        $dbname = 'TheGoodPlan';
+        $user = 'thegoodplan';
+        $password = 'z*hOCxRvGR@CU2MA';
 
         try {
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);

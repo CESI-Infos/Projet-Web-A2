@@ -1,92 +1,104 @@
 <?php
-use PHPUnit\Framework\TestCase;
+namespace App\Tests;
 
-require_once __DIR__.'/../src/Models/Model.php';
-require_once __DIR__.'/../src/Models/CompanyModel.php';
+use PHPUnit\Framework\TestCase;
 use App\Models\CompanyModel;
-use App\Models\Model;
+require_once 'src/Models/CompanyModel.php';
+use App\Models\Database;
+require_once 'src/Models/Database.php';
 
 class CompanyModelTest extends TestCase {
-    private $CompModel;
-    private $csvFile = __DIR__.'/../.csv/TestCOMPANIES.csv';
-    private $backup;
+    private $mockDatabase;
+    private $companyModel;
 
     protected function setUp(): void {
-        $this->CompModel = new CompanyModel('../../.csv/TestCOMPANIES');
-        
-        $this->backup = $this->csvFile.'.bak';
-        if (!copy($this->csvFile, $this->backup)) {
-            throw new Exception("Erreur lors de la sauvegarde du fichier.");
-        }
-    }
-
-    protected function tearDown(): void {
-        if (!copy($this->backup, $this->csvFile)) {
-            throw new Exception("Erreur lors de la restauration du fichier.");
-        }
+        $this->mockDatabase = $this->createMock(Database::class);
+        $this->companyModel = new CompanyModel($this->mockDatabase);
     }
 
     public function testGetAllCompanies() {
-        $this->assertEquals(5, count($this->CompModel->getAllCompanies()), 'Number of Companies not the expected one.');
+        $expectedCompanies = [
+            ['ID' => 1, 'NAME' => 'Company 1'],
+            ['ID' => 2, 'NAME' => 'Company 2']
+        ];
+
+        $this->mockDatabase->method('getAllRecords')
+            ->with('Companies')
+            ->willReturn($expectedCompanies);
+
+        $result = $this->companyModel->getAllCompanies();
+        $this->assertEquals($expectedCompanies, $result);
     }
 
     public function testGetCompany() {
-        $Comp = [
-            'ID' => 5, 
-            'NAME' => 'Marks, Malone and Schroeder',
-            'DESCRIPTION' => 'Or that outside this act man moment.',
-            'MAIL' => 'crawfordlisa@ramirez-wilson.com',
-            'PHONE' => '0654531981'
+        $companyId = 1;
+        $expectedCompany = ['ID' => 1, 'NAME' => 'Company 1'];
+
+        $this->mockDatabase->method('getRecord')
+            ->with('Companies', $companyId)
+            ->willReturn($expectedCompany);
+
+        $result = $this->companyModel->getCompany($companyId);
+        $this->assertEquals($expectedCompany, $result);
+    }
+
+    public function testCreateCompany() {
+        $companyData = [
+            'NAME' => 'New Company',
+            'DESCRIPTION' => 'Description',
+            'MAIL' => 'company@example.com',
+            'PHONE' => '123456789'
         ];
-        $this->assertEquals($Comp, $this->CompModel->getCompany(5), 'Doesn\'t return the right company.');
+
+        $this->mockDatabase->expects($this->once())
+            ->method('insertRecord')
+            ->with('Companies', $companyData)
+            ->willReturn(1);
+
+        $result = $this->companyModel->createCompany(
+            $companyData['NAME'],
+            $companyData['DESCRIPTION'],
+            $companyData['MAIL'],
+            $companyData['PHONE']
+        );
+
+        $this->assertEquals(1, $result);
     }
 
-    public function testChangeCompanyName(){
-        $oldName = $this->CompModel->getCompany(2)['NAME'];
-        $this->CompModel->changeCompanyName(2, 'CapGemini');
-        $this->assertEquals('CapGemini', $this->CompModel->getCompany(2)['NAME'], 'Doesn\'t return the right name.');
-        $this->assertNotEquals($oldName, $this->CompModel->getCompany(2)['NAME'], 'Company name should have changed.');
-    }
-
-    public function testChangeCompanyDescription(){
-        $oldDescript = $this->CompModel->getCompany(2)['DESCRIPTION'];
-        $this->CompModel->changeCompanyDescription(2, 'New Description');
-        $this->assertEquals('New Description', $this->CompModel->getCompany(2)['DESCRIPTION'], 'Doesn\'t return the right description.');
-        $this->assertNotEquals($oldDescript, $this->CompModel->getCompany(2)['DESCRIPTION'], 'Company description should have changed.');
-    }
-
-    public function testChangeCompanyMail(){
-        $oldMail = $this->CompModel->getCompany(2)['MAIL'];
-        $this->CompModel->changeCompanyMail(2, 'NewMail@test.com');
-        $this->assertEquals('NewMail@test.com', $this->CompModel->getCompany(2)['MAIL'], 'Doesn\'t return the right mail.');
-        $this->assertNotEquals($oldMail, $this->CompModel->getCompany(2)['MAIL'], 'Company mail should have changed.');
-    }
-
-    public function testChangeCompanyPhone(){
-        $oldPhone = $this->CompModel->getCompany(2)['PHONE'];
-        $this->CompModel->changeCompanyPhone(2, '0123456789');
-        $this->assertEquals('0123456789', $this->CompModel->getCompany(2)['PHONE'], 'Doesn\'t return the right Phone.');
-        $this->assertNotEquals($oldPhone, $this->CompModel->getCompany(2)['PHONE'], 'Company phone should have changed.');
-    }
-
-    public function testCreateCompany(){
-        $this->CompModel->createCompany('Name');
-        $this->assertEquals(6, count($this->CompModel->getAllCompanies()), 'Number of Companies not the expected one.');
-        
-        $Comp = [
-            'ID' => 6,
-            'NAME' => 'Name',
-            'DESCRIPTION' => '',
-            'MAIL' => '',
-            'PHONE' => ''
+    public function testUpdateCompany() {
+        $companyId = 1;
+        $companyData = [
+            'NAME' => 'Updated Company',
+            'DESCRIPTION' => 'Updated Description',
+            'MAIL' => 'updated@example.com',
+            'PHONE' => '987654321'
         ];
-        $this->assertEquals($Comp, $this->CompModel->getCompany(6), 'Doesn\'t return the right company.');
+
+        $this->mockDatabase->expects($this->once())
+            ->method('updateRecord')
+            ->with('Companies', $companyData, 'id = :id', [':id' => $companyId])
+            ->willReturn(1);
+
+        $result = $this->companyModel->updateCompany(
+            $companyId,
+            $companyData['NAME'],
+            $companyData['DESCRIPTION'],
+            $companyData['MAIL'],
+            $companyData['PHONE']
+        );
+
+        $this->assertEquals(1, $result);
     }
 
-    public function testDeleteCompany(){
-        $this->CompModel->deleteCompany(5);
-        $this->assertEquals(4, count($this->CompModel->getAllCompanies()), 'Number of Companies not the expected one.');
-        
-        $this->assertNull($this->CompModel->getCompany(5), 'The company hasn\'t been deleted.');
+    public function testDeleteCompany() {
+        $companyId = 1;
+
+        $this->mockDatabase->expects($this->once())
+            ->method('deleteRecord')
+            ->with('Companies', $companyId)
+            ->willReturn(1);
+
+        $result = $this->companyModel->deleteCompany($companyId);
+        $this->assertEquals(1, $result);
     }
 }

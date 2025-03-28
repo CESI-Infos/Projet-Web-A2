@@ -4,8 +4,8 @@ namespace App\Controllers;
 require_once "src/Models/CompanyModel.php";
 require_once "src/Controllers/Controller.php";
 
-use App\Controllers\Controller;
 use App\Models\CompanyModel;
+use App\Controllers\Controller;
 
 class CompanyController extends Controller{
 

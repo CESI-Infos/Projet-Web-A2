@@ -36,54 +36,43 @@
         </aside>
         </div>
         <section class="offres">
-        <a href="details-offre.php">
-            <div class="offre rouge">
-                <div class="offre-head">
-                    <h2>Développeur FullStack H/F</h2>
-                    <span class="expand"></span>
-                    <h3 class="inter-bold italic">Netflix</h3>
-                    <img class="logo-rouge" src="/static/netflixIcon.png" width="48">
-                </div>
-                <h5 class="inter-light sub">17 candidats ont postulé à cette offre • Publiée il y a 13 jours</h5>
-                <div class="tags">
-                    <span class="localisation fond-rouge"><img src="/static/locIcon.png" width="24px">Paris</span>
-                    <span class="duree fond-rouge"><img src="/static/timeIcon.png" width="24px">6 mois</span>
-                    <span class="exp fond-rouge"><img src="/static/educationIcon.png" width="24px">Bac +2</span>
-                </div>
+            {% for offer in offers %}
+                <a href="details-offre.php?id={{ offer.ID }}">
+                    <div class="offre {% if loop.index % 3 == 1 %}
+                                rouge
+                            {% elseif loop.index % 3 == 2 %}
+                                jaune
+                            {% else %}
+                                vert
+                            {% endif %}">
+                        <div class="offre-head-apercu">
+                            <h4>{{ offer.TITLE }}</h4>
+                            <div class="tags">
+                                <span class="localisation fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/locIcon.png" width="24px">{{ offer.CITY }}</span>
+                                <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
+                                <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+                            </div>
+                            <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
+                            <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
+                            {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
+                            {% else %}../static/spotifyIcon.webp
+                            {% endif %}" width="48" alt="Logo" width="48">
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="?uri=/parcourir&page={{ page - 1 }}">Précédent</a>
+                {% endif %}
+            
+                <span> | </span>
+            
+                {% if page < totalPages %}
+                    <a href="?uri=/parcourir&page={{ page + 1 }}">Suivant</a>
+                {% endif %}
+                <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
             </div>
-</a>
-<a href="details-offre.php">
-            <div class="offre jaune">
-                <div class="offre-head">
-                    <h2>Développeur FullStack H/F</h2>
-                    <span class="expand"></span>
-                    <h3 class="inter-bold italic">McDonalds</h3>
-                    <img class="logo-jaune" src="/static/mcdonaldsIcon.png" width="48">
-                </div>
-                <h5 class="inter-light sub">17 candidats ont postulé à cette offre • Publiée il y a 13 jours</h5>
-                <div class="tags">
-                    <span class="localisation fond-jaune"><img src="/static/locIcon.png" width="24px">Paris</span>
-                    <span class="duree fond-jaune"><img src="/static/timeIcon.png" width="24px">6 mois</span>
-                    <span class="exp fond-jaune"><img src="/static/educationIcon.png" width="24px">Bac +2</span>
-                </div>
-            </div>
-</a>
-<a href="details-offre.php">
-            <div class="offre vert">
-                <div class="offre-head">
-                    <h2>Développeur FullStack H/F</h2>
-                    <span class="expand"></span>
-                    <h3 class="inter-bold italic">Spotify</h3>
-                    <img class="logo-vert" src="/static/spotifyIcon.webp" width="48">
-                </div>
-                <h5 class="inter-light sub">17 candidats ont postulé à cette offre • Publiée il y a 13 jours</h5>
-                <div class="tags">
-                    <span class="localisation fond-vert"><img src="/static/locIcon.png" width="24px">Paris</span>
-                    <span class="duree fond-vert"><img src="/static/timeIcon.png" width="24px">6 mois</span>
-                    <span class="exp fond-vert"><img src="/static/educationIcon.png" width="24px">Bac +2</span>
-                </div>
-            </div>
-</a>
         </section>
     </main>
     {% include 'footer.html.twig' %}

@@ -17,7 +17,7 @@ class OfferModel extends Model {
     }
 
     public function getAllOffers() {
-        return $this->connection->getAllRecords("Offers");
+        return $this->connection->getAllRecords("Offers JOIN Companies ON Offers.id_company = Companies.id");
     }
 
     public function getOffer($id) {

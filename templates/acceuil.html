@@ -34,7 +34,7 @@
                                 <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
                                 <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
                             </div>
-                            <h5 class="inter-bold italic">{{ offer.ID_COMPANY }}</h5>
+                            <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
                             <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
                             {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
                             {% else %}../static/spotifyIcon.webp

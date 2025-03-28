@@ -26,7 +26,7 @@ class Database
 
     public function getAllRecords(string $table, string $champs = "*"): array
     {
-        $sql = "SELECT $champs FROM `$table`";
+        $sql = "SELECT $champs FROM $table";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ class Database
 
     public function getRecordsWhen(string $table, string $condition, array $params = [], string $champs = "*"): array
     {
-        $sql = "SELECT $champs FROM `$table` WHERE $condition";
+        $sql = "SELECT $champs FROM $table WHERE $condition";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -42,7 +42,7 @@ class Database
 
     public function getRecord(string $table, $id, string $champs = "*", string $colonneId = "id"): ?array
     {
-        $sql = "SELECT $champs FROM `$table` WHERE $colonneId = :id";
+        $sql = "SELECT $champs FROM $table WHERE $colonneId = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -55,7 +55,7 @@ class Database
         $champs = implode(', ', array_keys($data));
         $parametres = ':' . implode(', :', array_keys($data));
 
-        $sql = "INSERT INTO `$table` ($champs) VALUES ($parametres)";
+        $sql = "INSERT INTO $table ($champs) VALUES ($parametres)";
         $stmt = $this->pdo->prepare($sql);
 
         foreach ($data as $colonne => $valeur) {
@@ -75,7 +75,7 @@ class Database
         }
         $champsSQL = implode(', ', $champs);
 
-        $sql = "UPDATE `$table` SET $champsSQL WHERE $condition";
+        $sql = "UPDATE $table SET $champsSQL WHERE $condition";
         $stmt = $this->pdo->prepare($sql);
 
         foreach ($data as $colonne => $valeur) {
@@ -91,7 +91,7 @@ class Database
     }
     public function deleteRecord(string $table, $id, string $colonneId = "id"): int
     {
-        $sql = "DELETE FROM `$table` WHERE $colonneId = :id";
+        $sql = "DELETE FROM $table WHERE $colonneId = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();

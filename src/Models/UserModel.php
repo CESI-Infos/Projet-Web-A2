@@ -12,42 +12,11 @@ class UserModel extends Model{
         }
     }
 
-    public function getAllUsers() {
-        return $this->connection->getAllRecords("Users");
-    }
-
-    public function getUser($id) {
-        return $this->connection->getRecord("Users",$id);
-    }
-
-    public function addUser($mail,$password) {
-        $record = [
-            'lastname' => '',
-            'firstname' => '',
-            'mail' => $mail,
-            'password' => $password,
-            'phone' => '',
-            'cv' => '',
-            'letter' => '',
-            'status' => ''
+    public function authenticate($mail,$password){
+        $params = [
+            ':mail' => $mail,
+            ':password' => $password
         ];
-
-        return $this->connection->insertRecord("Users",$record);
-    }
-
-    public function updateUser($id, $lastname, $firstname, $password, $mail, $status) {
-        $data = [
-            'lastname' => $lastname,
-            'firstname' => $firstname,
-            'password' => $password,
-            'mail' => $mail,
-            'status' => $status
-        ];
-        $condition = 'id = :id';
-        return $this->connection->updateRecord('Users', $data, $condition, [':id' => $id]);
-    }
-
-    public function deleteOffer($id) {
-        return $this->connection->deleteRecord("Users",$id);
+        return $this->connection->getRecordsWhen('Users', 'mail = :mail AND password = :password', '', $params);
     }
 }

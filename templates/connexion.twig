@@ -8,17 +8,18 @@
     <main class="cadre">
         <h1>Se Connecter</h1>
         <p>Nouveau sur le site ? <a href="?uri=/inscription" class="blue-link">S’inscrire</a></p>
-        <form>
-            <label for="email">E-mail *</label>
-            <input type="email" id="email" placeholder="E-mail" required>
+        <form action="index.php?action=authenticate" method="post">
+            <label for="mail">E-mail *</label>
+            <input type="email" name="mail"required>
 
             <label for="password">Mot de passe *</label>
-            <input type="password" id="password" required>
-
-            <a href="?uri=/mdp-oublie" class="blue-link">Mot de passe oublié ?</a>
+            <input type="password" name="password" required>
 
             <button type="submit">Se connecter</button>
         </form>
+        {% if connected is defined and connected == "false" %}
+                    <p style="color: red;">Identifiants invalides. Veuillez réessayer.</p>
+        {% endif %}
     </main>
 {% endblock %}
 

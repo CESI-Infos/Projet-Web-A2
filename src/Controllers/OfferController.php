@@ -76,13 +76,22 @@ class OfferController extends Controller {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
         
         $offers = array_slice($allOffers, $num * ($page - 1), $num);
-        
-        echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages]);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages,'firstname' => $firstname,'id_role' =>$id_role]);
     }
 
     public function printSpecificOffer($id) {
         $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
         $offer = $this->model->getOffer($id, $champs);
-        echo $this->templateEngine->render('details-offre.twig', ['offer' => $offer]);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        echo $this->templateEngine->render('details-offre.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' =>$id_role]);
     }
 }

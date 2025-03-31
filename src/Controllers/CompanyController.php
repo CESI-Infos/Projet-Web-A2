@@ -55,8 +55,8 @@ class CompanyController extends Controller{
         exit;
     }
 
-    public function printCompany($id){
-        $company = $this->model->getCompany($id)[0];
+    public function printCompany($id, $firstname, $id_role){
+        $company = $this->model->getCompany($id);
         $OfferModel = new OfferModel();
         $AllOffers = $OfferModel->getAllOffers();
         $offers = [];
@@ -69,6 +69,6 @@ class CompanyController extends Controller{
         }
         $notes = new RatingController();
         $note = "Note de l'entreprise: ".$notes->NoteMoyenne($id);
-        echo $this->templateEngine->render('profile.twig', ['zz' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note]);
+        echo $this->templateEngine->render('profile.twig', ['zz' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note, 'isUser' => false, 'firstname' => $firstname,'id_role' =>$id_role]);
     }
 }

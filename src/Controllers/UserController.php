@@ -39,7 +39,7 @@ class UserController extends Controller{
             session_start();
         }
         session_unset();
-        header("Location: ?uri=/connexion");
+        header("Location: ?uri=/connection");
     }
 
 }

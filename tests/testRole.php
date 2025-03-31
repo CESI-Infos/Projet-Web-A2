@@ -1,34 +1,39 @@
 <?php
 
-require_once 'src/Models/RoleModel.php';
-require_once 'src/Controllers/RoleController.php';
+require_once __DIR__ . '/../src/Models/Database.php';
+require_once __DIR__ . '/../src/Models/RoleModel.php';
+require_once __DIR__ . '/../src/Controllers/RoleController.php';
 
-try {
-    $file = __DIR__ . '/storage/roles.json';
-    $roleModel = new RoleModel($file);
+use App\Controllers\RoleController;
 
-    $roleController = new RoleController($roleModel);
+$_POST = [];
 
-    echo "=== TEST CREATE ROLE ===\n";
-    $roleController->createRole("admin");
-    $roleController->createRole("manager");
-    $roleController->createRole("student");
+$controller = new RoleController(null);
 
-    echo "\n=== TEST LIST ROLES ===\n";
-    $roles = $roleController->listRoles();
-    print_r($roles);
+echo "=== AJOUT D'UN RÔLE ===\n";
+$_POST['NAME'] = 'Rôle test';
+$controller->addRole();
+echo "-> OK\n";
 
-    echo "\n=== TEST DELETE ROLE 'manager' ===\n";
-    $roleController->deleteRole("manager");
+echo "\n=== LISTE DES RÔLES ===\n";
+$all = $controller->getAllRoles();
+print_r($all);
 
-    echo "\n=== TEST LIST ROLES (after deletion) ===\n";
-    $roles = $roleController->listRoles();
-    print_r($roles);
+$lastId = end($all)['ID'];
 
-    echo "\n=== TEST roleExists('admin') ===\n";
-    $exists = $roleModel->roleExists("admin");
-    echo $exists ? "-> 'admin' existe\n" : "-> 'admin' n'existe pas\n";
+echo "\n=== MÀJ DU RÔLE ($lastId) ===\n";
+$_POST['ID'] = $lastId;
+$_POST['NAME'] = 'Rôle modifié';
+$controller->updateRole();
+echo "-> OK\n";
 
-} catch (Exception $ex) {
-    echo "Erreur générale : " . $ex->getMessage();
-}
+echo "\n=== LECTURE RÔLE ($lastId) ===\n";
+print_r($controller->getRole($lastId));
+
+echo "\n=== SUPPRESSION DU RÔLE ($lastId) ===\n";
+$_POST['ID'] = $lastId;
+$controller->deleteRole();
+echo "-> OK\n";
+
+echo "\n=== LISTE FINALE ===\n";
+print_r($controller->getAllRoles());

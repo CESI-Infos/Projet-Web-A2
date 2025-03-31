@@ -1,26 +1,57 @@
 <?php
+namespace App\Controllers;
 
-class RoleController
+require_once __DIR__ . '/Controller.php';
+require_once __DIR__ . '/../Models/RoleModel.php';
+
+use App\Controllers\Controller;
+use App\Models\RoleModel;
+
+class RoleController extends Controller
 {
-    private $roleModel;
-
-    public function __construct(RoleModel $roleModel)
+    public function __construct($templateEngine)
     {
-        $this->roleModel = $roleModel;
+        $this->model = new RoleModel();
+        $this->templateEngine = $templateEngine;
     }
 
-    public function createRole(string $roleName): void
+    public function getAllRoles()
     {
-        $this->roleModel->addRole($roleName);
+        return $this->model->getAllRoles();
     }
 
-    public function deleteRole(string $roleName): void
+    public function getRole($id)
     {
-        $this->roleModel->removeRole($roleName);
+        return $this->model->getRole($id);
     }
 
-    public function listRoles(): array
+    public function addRole()
     {
-        return $this->roleModel->getAllRoles();
+        $name = $_POST['NAME'];
+        $this->model->createRole($name);
+
+        header('Location: /');
+        exit;
+    }
+
+    public function updateRole()
+    {
+        $id = (int)$_POST['ID'];
+        $name = $_POST['NAME'];
+
+        $this->model->updateRole($id, $name);
+
+        header('Location: /');
+        exit;
+    }
+
+    public function deleteRole()
+    {
+        $id = (int)$_POST['ID'];
+
+        $this->model->deleteRole($id);
+
+        header('Location: /');
+        exit;
     }
 }

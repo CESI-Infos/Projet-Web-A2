@@ -1,39 +1,45 @@
 <?php
-require_once 'src/Models/PermissionModel.php';
-require_once 'src/Controllers/PermissionController.php';
+
+require_once '../src/Models/PermissionModel.php';
+require_once '../src/Controllers/PermissionController.php';
+
+use App\Controllers\PermissionController;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=thegoodplan", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $controller = new PermissionController(null);
 
-    $permissionController = new PermissionController($pdo);
+    echo "=== AJOUT D'UNE PERMISSION ===\n";
+    $_POST['DESCRIPTION'] = 'Analyser les rapports';
+    $controller->addPermission();
+    echo "-> Ajout OK\n";
 
-    echo "=== TEST CREATE PERMISSION ===\n";
-    $newId = $permissionController->storePermission("Permission de Test", "Une description de test");
-    if ($newId !== false) {
-        echo "-> Permission créée avec l'ID : $newId\n";
-    } else {
-        echo "-> Échec de la création\n";
-    }
+    echo "\n=== LISTE DES PERMISSIONS ===\n";
+    $all = $controller->getAllPermissions();
+    print_r($all);
 
-    echo "\n=== TEST LIST PERMISSIONS ===\n";
-    $allPermissions = $permissionController->listPermissions();
-    print_r($allPermissions);
+    $lastId = end($all)['ID'];
 
-    echo "\n=== TEST SHOW PERMISSION (ID = $newId) ===\n";
-    $permission = $permissionController->showPermission($newId);
-    print_r($permission);
+    echo "\n=== AFFICHAGE DE LA PERMISSION ($lastId) ===\n";
+    $one = $controller->getPermission($lastId);
+    print_r($one);
 
-    echo "\n=== TEST UPDATE PERMISSION (ID = $newId) ===\n";
-    $updateResult = $permissionController->updatePermission($newId, "Permission Modifiée", "Description modifiée");
-    echo $updateResult ? "-> Mise à jour OK\n" : "-> Échec de la mise à jour\n";
+    echo "\n=== MODIFICATION DE LA PERMISSION ($lastId) ===\n";
+    $_POST['ID'] = $lastId;
+    $_POST['DESCRIPTION'] = 'Analyser les performances système';
+    $controller->updatePermission();
+    echo "-> Modification OK\n";
 
-    echo "\n=== TEST DELETE PERMISSION (ID = $newId) ===\n";
-    $deleteResult = $permissionController->destroyPermission($newId);
-    echo $deleteResult ? "-> Suppression OK\n" : "-> Échec de la suppression\n";
+    echo "\n=== PERMISSION MISE À JOUR ===\n";
+    print_r($controller->getPermission($lastId));
 
-} catch (PDOException $e) {
-    echo "Erreur PDO : " . $e->getMessage() . "\n";
-} catch (Exception $ex) {
-    echo "Erreur générale : " . $ex->getMessage() . "\n";
+    echo "\n=== SUPPRESSION DE LA PERMISSION ($lastId) ===\n";
+    $_POST['ID'] = $lastId;
+    $controller->deletePermission();
+    echo "-> Suppression OK\n";
+
+    echo "\n=== LISTE FINALE ===\n";
+    print_r($controller->getAllPermissions());
+
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
 }

@@ -1,51 +1,45 @@
 <?php
-require_once 'src/Models/ApplicationModel.php';
-require_once 'src/Controllers/ApplicationController.php';
+
+require_once '../src/Models/Database.php';
+require_once '../src/Models/ApplicationModel.php';
+require_once '../src/Controllers/ApplicationController.php';
+
+use App\Models\Database;
+use App\Models\ApplicationModel;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=thegoodplan", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $database = new Database(); 
+    $model = new ApplicationModel($database);
 
-    $appController = new ApplicationController($pdo);
+    echo "=== TEST AJOUT DE CANDIDATURE ===\n";
+    $userId = 1;     
+    $offerId = 2;    
+    $cv = "cv_test.pdf";
+    $coverLetter = "Lettre de motivation test";
 
-    echo "=== TEST CREATE APPLICATION ===\n";
-    $newId = $appController->storeApplication(
-        1,             
-        5,               
-        "cv/testcv.pdf",  
-        "Voici ma lettre de motivation"
-    );
-    if ($newId !== false) {
-        echo "-> Candidature créée avec l'ID : $newId\n";
-    } else {
-        echo "-> Échec de la création\n";
-    }
+    $newId = $model->addApplication($cv, $coverLetter, $userId, $offerId);
+    echo "→ Nouvelle candidature ajoutée avec l'ID : $newId\n";
 
-    echo "\n=== TEST LIST APPLICATIONS ===\n";
-    $allApps = $appController->listApplications();
-    print_r($allApps);
+    echo "\n=== TEST AFFICHAGE DE TOUTES LES CANDIDATURES ===\n";
+    $apps = $model->getAllApplications();
+    print_r($apps);
 
-    echo "\n=== TEST SHOW APPLICATION (ID = $newId) ===\n";
-    $application = $appController->showApplication($newId);
-    print_r($application);
+    echo "\n=== TEST AFFICHAGE DE LA CANDIDATURE ID = $newId ===\n";
+    $app = $model->getApplication($newId);
+    print_r($app);
 
-    echo "\n=== TEST UPDATE APPLICATION (ID = $newId) ===\n";
-    $updateResult = $appController->updateApplication(
-        $newId,             
-        1,                  
-        5,                  
-        "cv/updatedcv.pdf",
-        "Lettre mise à jour"
-    );
-    echo $updateResult ? "-> Mise à jour OK\n" : "-> Échec de la mise à jour\n";
+    echo "\n=== TEST MISE À JOUR DE LA CANDIDATURE ===\n";
+    $cv = "cv_modifié.pdf";
+    $coverLetter = "Lettre modifiée";
+    $model->updateApplication($newId, $cv, $coverLetter);
+    echo "→ Candidature mise à jour.\n";
 
-    echo "\n=== TEST DELETE APPLICATION (ID = $newId) ===\n";
-    $deleteResult = $appController->destroyApplication($newId);
-    echo $deleteResult ? "-> Suppression OK\n" : "-> Échec de la suppression\n";
+    echo "\n=== TEST SUPPRESSION ===\n";
+    $model->deleteApplication($newId);
+    echo "→ Candidature supprimée.\n";
 
 } catch (PDOException $e) {
-    echo "Erreur PDO : " . $e->getMessage() . "\n";
-} catch (Exception $ex) {
-    echo "Erreur générale : " . $ex->getMessage() . "\n";
+    echo "Erreur PDO : " . $e->getMessage();
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
 }
-

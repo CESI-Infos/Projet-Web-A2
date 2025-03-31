@@ -1,76 +1,52 @@
 <?php
+namespace App\Models;
 
-class RoleModel
+require_once __DIR__ . '/Model.php';
+require_once __DIR__ . '/Database.php';
+
+use App\Models\Database;
+
+class RoleModel extends Model
 {
-
-    private $file;
-
-    public function __construct(string $file)
+    public function __construct($connection = null)
     {
-        $this->file = $file;
-    }
-
-    private function loadData(): array
-    {
-        if (!file_exists($this->file)) {
-            return [];
+        if (is_null($connection)) {
+            $this->connection = new Database();
+        } else {
+            $this->connection = $connection;
         }
-
-        $json = file_get_contents($this->file);
-        $data = json_decode($json, true);
-
-        if (!is_array($data)) {
-            return [];
-        }
-        return $data;
-    }
-
-    private function saveData(array $roles): bool
-    {
-        try {
-            $json = json_encode($roles, JSON_PRETTY_PRINT);
-            file_put_contents($this->file, $json);
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function addRole(string $roleName): bool
-    {
-        $roles = $this->loadData();
-
-        if (in_array($roleName, $roles)) {
-            return false; 
-        }
-
-        $roles[] = $roleName;
-        return $this->saveData($roles);
-    }
-
-    public function removeRole(string $roleName): bool
-    {
-        $roles = $this->loadData();
-
-        $newRoles = array_filter($roles, function($role) use ($roleName) {
-            return $role !== $roleName;
-        });
-
-        if (count($roles) === count($newRoles)) {
-            return false;
-        }
-
-        return $this->saveData(array_values($newRoles));
     }
 
     public function getAllRoles(): array
     {
-        return $this->loadData();
+        return $this->connection->getAllRecords("Roles");
     }
 
-    public function roleExists(string $roleName): bool
+    public function getRole(int $id): ?array
     {
-        $roles = $this->loadData();
-        return in_array($roleName, $roles);
+        return $this->connection->getRecord("Roles", $id);
+    }
+
+    public function createRole(string $name): int
+    {
+        $record = [
+            'NAME' => $name
+        ];
+        return $this->connection->insertRecord("Roles", $record);
+    }
+
+    public function updateRole(int $id, string $name): int
+    {
+        $record = [
+            'NAME' => $name
+        ];
+        $condition = "ID = :id";
+        $paramsCondition = [':id' => $id];
+        return $this->connection->updateRecord("Roles", $record, $condition, $paramsCondition);
+    }
+
+    public function deleteRole(int $id): int
+    {
+        return $this->connection->deleteRecord("Roles", $id, "ID");
     }
 }

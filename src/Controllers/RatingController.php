@@ -1,27 +1,40 @@
 <?php
+namespace App\Controllers;
 
-class RatingController
+require_once "src/Models/RatingModel.php";
+require_once "src/Controllers/Controller.php";
+
+use App\Models\RatingModel;
+use App\Controllers\Controller;
+
+class RatingController extends Controller
 {
-    
-    private $noteModel;
-
-    public function __construct(RatingModel $model)
+    public function __construct()
     {
-        $this->noteModel = $model;
+        $this->model = new RatingModel();
     }
 
     public function getNote(int $idCompany, int $idUser): int
     {
-        return $this->noteModel->getNote($idCompany, $idUser);
+        return $this->model->getNote($idCompany, $idUser);
+    }
+
+    public function NoteMoyenne($idCompany){
+        $notes = $this->model->getCompanyNotes($idCompany);
+        $sum = 0;
+        foreach($notes as $note){
+            $sum+=$note['GRADE'];
+        }
+        return $sum/count($notes);
     }
 
     public function addNote(int $idCompany, int $idUser, int $note): void
     {
-        $this->noteModel->addNote($idCompany, $idUser, $note);
+        $this->model->addNote($idCompany, $idUser, $note);
     }
 
     public function deleteNote(int $idCompany, int $idUser): void
     {
-        $this->noteModel->deleteNote($idCompany, $idUser);
+        $this->model->deleteNote($idCompany, $idUser);
     }
 }

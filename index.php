@@ -44,34 +44,34 @@ $firstname = $_SESSION['firstname'] ?? null;
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('accueil.twig', 3);
+        $OfferController->printOffers('home.twig', 3);
         break;
-    case '/parcourir':
-        $OfferController->printOffers('parcourir.twig', 5);
+    case '/browse':
+        $OfferController->printOffers('browse.twig', 5);
         break;
-    case '/details-offre':
+    case '/details-offer':
         $offerId = $_GET['id'];
         $OfferController->printSpecificOffer($offerId);
         break;
-    case '/creation-offre':
-        echo $twig->render('creation-offre.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+    case '/create-offer':
+        echo $twig->render('create-offer.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         break;
     case '/support':
         echo $twig->render('support.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         break;
-    case '/connexion':
+    case '/connection':
         if(isset($firstname)){
             echo $twig->render('profile.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         }
         else{
-            echo $twig->render('connexion.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         }
         break;
-    case '/connexionwrong':
-        echo $twig->render('connexion.twig',['firstname' => $firstname,'id_role' =>$id_role,'connected'=>"false"]);
+    case '/connectionwrong':
+        echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role,'connected'=>"false"]);
         break;
-    case '/inscription':
-        echo $twig->render('inscription.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+    case '/sign-up':
+        echo $twig->render('sign-up.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         break;
     case '/details-entreprise':
         $companyId = $_GET['id'];

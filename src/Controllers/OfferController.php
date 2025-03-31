@@ -92,6 +92,6 @@ class OfferController extends Controller {
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        echo $this->templateEngine->render('details-offre.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' =>$id_role]);
+        echo $this->templateEngine->render('details-offer.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' =>$id_role]);
     }
 }

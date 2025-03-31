@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Création de l'offre - TheGoodPlan</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
-    {% include 'header.twig' %}
+{% extends 'base.twig' %}
+
+    {% block title %}Création de l'offre - TheGoodPlan{% endblock %}
+
+{% block content %}
     <main class="cadre">
         <h1>Création de l’offre</h1>
         <form>
@@ -26,6 +21,4 @@
             <button type="submit">Enregistrer l’offre</button>
         </form>
     </main>
-    {% include 'footer.twig' %}
-</body>
-</html>
+{% endblock %}

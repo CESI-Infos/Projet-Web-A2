@@ -19,6 +19,10 @@ $UserController = new UserController($twig);
 
 $uri = '/';
 
+$keywords = null;
+$duration = null;
+$experience = null;
+
 if (isset($_GET['action']) && $_GET['action'] !== '') {
     if($_GET['action']==='authenticate'){
         $mail=$_POST["mail"];
@@ -28,6 +32,14 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
     }
     if($_GET['action']=='disconnect'){
         $UserController->disconnect();
+    }
+    if ($_GET['action']=='filteroffers'){
+        $keywords = $_POST['keywords'] ?? null;
+        $duration = $_POST['duration'] ?? null;
+        $experience = $_POST['experience'] ?? null;
+
+        $uri='/browse';
+    
     }
 }
 
@@ -44,10 +56,10 @@ $firstname = $_SESSION['firstname'] ?? null;
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('home.twig', 3);
+        $OfferController->printOffers('home.twig', 3,[]);
         break;
     case '/browse':
-        $OfferController->printOffers('browse.twig', 5);
+        $OfferController->printOffers('browse.twig', 5,[$keywords,$duration,$experience]);
         break;
     case '/details-offer':
         $offerId = $_GET['id'];

@@ -5,24 +5,24 @@
 {% block content %}
     <main class="explore">
         <aside id="panneau">
-            <h3 class="inter-bold">Trier par</h3>
-            <select>
-                <option value="popularite">Popularité</option>
-                <option value="date">Date</option>
-            </select>
-            <br>
-            <br>
+        <br>
+        <br>
             <div id="filtrage">
                 <h3 class="inter-bold">Filtrer</h3>
-                <form>
+                <form action="index.php?action=filteroffers" method="post">
                     <input type="text" placeholder="Rechercher des mots clés" name="keywords">
                     <label for="duree">Durée:</label>
-                    <input type="range" id="duree" name="duree" min="0" max="10">
+                    <input type="range" id="duration" name="duration" min="1" max="24" value="24" oninput="document.getElementById('durationValue').textContent = this.value">
+                    <span id="durationValue">24</span>
                     <label for="experience">Expérience:</label>
-                    <input type="range" id="experience" name="experience" min="0" max="20">
-                    <label><input type="checkbox" checked> Sur Place</label>
-                    <label><input type="checkbox"> A Distance</label>
-                    <label><input type="checkbox"> Hybride</label>
+                    <select id="experience" name="experience">
+                        <option value="" selected disabled>Choisir une option</option>
+                        <option value="licence">Licence</option>
+                        <option value="master">Master</option>
+                        <option value="doctorat">Doctorat</option>
+                    </select>
+                    <br>
+                    <button type="submit">Appliquer</button>
                 </form>
         </aside>
         </div>

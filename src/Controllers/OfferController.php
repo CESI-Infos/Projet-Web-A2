@@ -68,8 +68,8 @@ class OfferController extends Controller {
         exit();
     }
 
-    public function printOffers($pages, $num) {
-        $allOffers = $this->model->getAllOffers();
+    public function printOffers($pages, $num,$filter) {
+        $allOffers = $this->model->getOffersWhen($filter);
         $allnum = count($allOffers);
         $totalPages = ceil($allnum / $num);
         

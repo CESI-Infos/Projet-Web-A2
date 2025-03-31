@@ -20,6 +20,38 @@ class OfferModel extends Model {
     return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.id_company = Companies.id");
     }
 
+    public function getOffersWhen($filters) {
+        $conditions = [];
+        $params = [];
+
+        if (!empty($filters['0'])) {
+            $conditions[] = "TITLE LIKE :keywords OR Offers.DESCRIPTION LIKE :keywords";
+            $params[':keywords'] = '%' . $filters['0'] . '%';
+        }
+
+        if (!empty($filters['1'])) {
+            $conditions[] = "DURATION <= :duration";
+            $params[':duration'] = $filters['1'];
+        }
+
+        if (!empty($filters['2'])) {
+            $conditions[] = "GRADE = :experience";
+            $params[':experience'] = $filters['2'];
+        }
+
+        $conditionString = implode(' AND ', $conditions);
+
+        if (empty($conditionString)) {
+            return $this->getAllOffers();
+        }
+        return $this->connection->getRecordsWhen(
+            "Offers",
+            $conditionString,
+            "JOIN Companies ON Offers.id_company = Companies.id",
+            $params
+        );
+    }
+
     public function getOffer($id, $champs='*') {
         return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.id_company = Companies.id", $champs);
     }

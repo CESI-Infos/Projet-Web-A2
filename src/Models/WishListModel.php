@@ -25,13 +25,13 @@ class WishlistModel extends Model
             'ID_OFFER' => $offerId
         ];
 
-        return $this->connection->insertRecord("Wishlists", $record);
+        return $this->connection->insertRecord("love", $record);
     }
 
     public function removeOfferFromWishlist(int $userId, int $offerId): int
     {
         $pdo = $this->connection->getPdo();
-        $sql = "DELETE FROM Wishlists WHERE ID_USER = :u AND ID_OFFER = :o";
+        $sql = "DELETE FROM love WHERE ID_USER = :u AND ID_OFFER = :o";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':u' => $userId,
@@ -43,7 +43,7 @@ class WishlistModel extends Model
     public function getWishlist(int $userId): array
     {
         $pdo = $this->connection->getPdo();
-        $sql = "SELECT * FROM Wishlists WHERE ID_USER = :u";
+        $sql = "SELECT * FROM love WHERE ID_USER = :u";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':u' => $userId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

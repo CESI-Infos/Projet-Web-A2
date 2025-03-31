@@ -6,10 +6,8 @@ require_once __DIR__ . '/../src/Controllers/WishlistController.php';
 
 use App\Controllers\WishlistController;
 
-// On nettoie $_POST
 $_POST = [];
 
-// On simule ton templateEngine par null
 $controller = new WishlistController(null);
 
 echo "=== Ajout de 2 offres pour user #42 ===\n";

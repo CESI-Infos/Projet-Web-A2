@@ -1,0 +1,69 @@
+{% extends "base.twig" %}
+
+{% block title %}Parcourir{% endblock %}
+
+{% block content %}
+    <main class="explore">
+        <aside id="panneau">
+            <h3 class="inter-bold">Trier par</h3>
+            <select>
+                <option value="popularite">Popularité</option>
+                <option value="date">Date</option>
+            </select>
+            <br>
+            <br>
+            <div id="filtrage">
+                <h3 class="inter-bold">Filtrer</h3>
+                <form>
+                    <input type="text" placeholder="Rechercher des mots clés" name="keywords">
+                    <label for="duree">Durée:</label>
+                    <input type="range" id="duree" name="duree" min="0" max="10">
+                    <label for="experience">Expérience:</label>
+                    <input type="range" id="experience" name="experience" min="0" max="20">
+                    <label><input type="checkbox" checked> Sur Place</label>
+                    <label><input type="checkbox"> A Distance</label>
+                    <label><input type="checkbox"> Hybride</label>
+                </form>
+        </aside>
+        </div>
+        <section class="offres">
+            {% for offer in offers %}
+                <a href="?uri=/details-offre&id={{ offer.ID }}">
+                    <div class="offre {% if loop.index % 3 == 1 %}
+                                rouge
+                            {% elseif loop.index % 3 == 2 %}
+                                jaune
+                            {% else %}
+                                vert
+                            {% endif %}">
+                        <div class="offre-head-apercu">
+                            <h4>{{ offer.TITLE }}</h4>
+                            <div class="tags">
+                                <span class="localisation fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/locIcon.png" width="24px">{{ offer.CITY }}</span>
+                                <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
+                                <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+                            </div>
+                            <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
+                            <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
+                            {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
+                            {% else %}../static/spotifyIcon.webp
+                            {% endif %}" width="48" alt="Logo" width="48">
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="?uri=/parcourir&page={{ page - 1 }}">Précédent</a>
+                {% endif %}
+            
+                <span> | </span>
+            
+                {% if page < totalPages %}
+                    <a href="?uri=/parcourir&page={{ page + 1 }}">Suivant</a>
+                {% endif %}
+                <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
+            </div>
+        </section>
+    </main>
+{% endblock %}

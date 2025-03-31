@@ -3,31 +3,49 @@
 {% block title %}TheGoodPlan - Détails de l'offre{% endblock %}
 
 {% block content %}
-    <main class="details-offre">
-        <section class="contenu">
+<main class="details-offre">
+    <section class="contenu">
         <div>
-        <h2>Détails de l’offre</h2>
-        <h1>{{ offer.TITLE }}</h1>
-        <div class="infos-offre">
-            <img src="/static/airbusIcon.png" alt="Logo Airbus">
-            <div>
-                <a href="?uri=/details-entreprise&id={{offer.ID_COMPANY}}"><h3><b>{{ offer.NAME }}</b></h3></a>
-                <p>{{ offer.COMPANY_DESCRIPTION }}</p>
+            <h2>Détails de l’offre</h2>
+            <h1>{{ offer.TITLE }}</h1>
+            <div class="infos-offre">
+                <img src="/static/airbusIcon.png" alt="Logo Airbus">
+                <div>
+                    <a href="?uri=/details-entreprise&id={{ offer.ID_COMPANY }}">
+                        <h3><b>{{ offer.NAME }}</b></h3>
+                    </a>
+                    <p>{{ offer.COMPANY_DESCRIPTION }}</p>
+                </div>
             </div>
-        </div>
-        <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h5>
+            <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h4>
         </div>
         <div class="tags horizontal">
-                    <span class="localisation fond-bleu"><img src="/static/locIcon.png" width="24px">{{ offer.CITY }}</span>
-                    <span class="duree fond-bleu"><img src="/static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
-                    <span class="exp fond-bleu"><img src="/static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
-                </div>
-        </section>
-        <article class="details">
+            <span class="localisation fond-bleu"><img src="/static/locIcon.png" width="24px">{{ offer.CITY }}</span>
+            <span class="duree fond-bleu"><img src="/static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
+            <span class="exp fond-bleu"><img src="/static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+        </div>
+    </section>
+
+    <article class="details">
         <p>{{ offer.OFFER_DESCRIPTION }}</p>
         <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
-        </article>
-    </main>
+    </article>
+
+    {# Formulaire de postulation #}
+    <section class="postuler">
+        <h2>Postuler à cette offre</h2>
+        <form action="/postuler" method="POST">
+            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+            <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
+
+            <label for="CV">CV :</label>
+            <input type="text" name="CV" placeholder="cv_nom.pdf" required>
+
+            <label for="COVER_LETTER">Lettre de motivation :</label>
+            <textarea name="COVER_LETTER" rows="6" placeholder="Je suis très motivé à rejoindre..."></textarea>
+
+            <button type="submit" class="bouton">Envoyer la candidature</button>
+        </form>
+    </section>
+</main>
 {% endblock %}
-
-

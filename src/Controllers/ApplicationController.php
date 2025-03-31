@@ -59,4 +59,18 @@ class ApplicationController extends Controller
     }
 
     public function __destruct() {}
+
+    public function postuler()
+{
+    $userId = (int) $_POST['ID_USER'];
+    $offerId = (int) $_POST['ID_OFFER'];
+    $cv = $_POST['CV'];
+    $coverLetter = $_POST['LETTER'];
+
+    $this->model->addApplication($cv, $coverLetter, $userId, $offerId);
+
+    header('Location: /merci');
+    exit;
+}
+
 }

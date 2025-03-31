@@ -67,11 +67,11 @@ switch ($uri) {
             echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         }
         break;
-    case '/connexionwrong':
+    case '/connectionwrong':
         echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role,'connected'=>"false"]);
         break;
-    case '/inscription':
-        echo $twig->render('inscription.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+    case '/sign-up':
+        echo $twig->render('sign-up.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         break;
     default:
         echo 'Page not found';

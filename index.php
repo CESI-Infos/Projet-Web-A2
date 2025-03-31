@@ -73,6 +73,10 @@ switch ($uri) {
     case '/inscription':
         echo $twig->render('inscription.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         break;
+    case '/details-entreprise':
+        $companyId = $_GET['id'];
+        $CompanyController->printCompany($companyId, $OfferController);
+        break;
     default:
         echo 'Page not found';
         break;

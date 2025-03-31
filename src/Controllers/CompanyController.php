@@ -1,11 +1,15 @@
 <?php
 namespace App\Controllers;
 
+require_once "src/Models/OfferModel.php";
 require_once "src/Models/CompanyModel.php";
 require_once "src/Controllers/Controller.php";
+require_once "src/Controllers/RatingController.php";
 
+use App\Models\OfferModel;
 use App\Models\CompanyModel;
 use App\Controllers\Controller;
+use App\Controllers\RatingController;
 
 class CompanyController extends Controller{
 
@@ -49,5 +53,22 @@ class CompanyController extends Controller{
         $this->model->deleteCompany($id);
         header('Location: /');
         exit;
+    }
+
+    public function printCompany($id){
+        $company = $this->model->getCompany($id)[0];
+        $OfferModel = new OfferModel();
+        $AllOffers = $OfferModel->getAllOffers();
+        $offers = [];
+        $count = 0;
+        foreach ($AllOffers as $offer){
+            if ($offer['ID_COMPANY'] == $id){
+                $offers[] = $offer;
+                $count=+1;
+            }
+        }
+        $notes = new RatingController();
+        $note = "Note de l'entreprise: ".$notes->NoteMoyenne($id);
+        echo $this->templateEngine->render('profil.twig', ['zz' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note]);
     }
 }

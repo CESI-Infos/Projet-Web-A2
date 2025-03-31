@@ -1,17 +1,15 @@
 <?php
 
-require_once 'src/Models/ApplicationModel.php';
-require_once 'src/Controllers/ApplicationController.php';
+require_once '../src/Models/Database.php';
+require_once '../src/Models/ApplicationModel.php';
+require_once '../src/Controllers/ApplicationController.php';
 
+use App\Models\Database;
 use App\Models\ApplicationModel;
-use App\Controllers\ApplicationController;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=thegoodplan", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $controller = new ApplicationController();
-    $model = new ApplicationModel($pdo);
+    $database = new Database(); 
+    $model = new ApplicationModel($database);
 
     echo "=== TEST AJOUT DE CANDIDATURE ===\n";
     $userId = 1;     

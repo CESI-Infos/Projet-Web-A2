@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-require_once 'src/Models/Model.php';
-require_once 'src/Models/Database.php';
+require_once 'Model.php';
+require_once 'Database.php';
 
 use PDO;
 
@@ -31,9 +31,9 @@ class ApplicationModel extends Model
     {
         $record = [
             'CV' => $cv,
-            'COVER_LETTER' => $coverLetter,
-            'STUDENT_ID' => $userId,
-            'OFFER_ID' => $offerId,
+            'LETTER' => $coverLetter,
+            'ID_USER' => $userId,
+            'ID_OFFER' => $offerId,
         ];
         return $this->connection->insertRecord("Applications", $record);
     }
@@ -42,7 +42,7 @@ class ApplicationModel extends Model
     {
         $record = [
             'CV' => $cv,
-            'COVER_LETTER' => $coverLetter,
+            'LETTER' => $coverLetter,
         ];
 
         $condition = "ID = :id";

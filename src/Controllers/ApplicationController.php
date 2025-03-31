@@ -1,16 +1,14 @@
 <?php
 namespace App\Controllers;
 
-require_once 'src/Controllers/Controller.php';
-require_once 'src/Models/ApplicationModel.php';
+require_once 'Controller.php';
+require_once '../src/Models/ApplicationModel.php';
 
 use App\Controllers\Controller;
 use App\Models\ApplicationModel;
 
 class ApplicationController extends Controller
 {
-    protected ApplicationModel $model;
-
     public function __construct($templateEngine = null)
     {
         $this->model = new ApplicationModel();
@@ -26,9 +24,9 @@ class ApplicationController extends Controller
     {
         session_start();
         $cv = $_POST['CV'] ?? '';
-        $coverLetter = $_POST['COVER_LETTER'] ?? '';
-        $userId = $_SESSION['user_id'] ?? null;
-        $offerId = $_POST['OFFER_ID'] ?? null;
+        $coverLetter = $_POST['LETTER'] ?? '';
+        $userId = $_SESSION['ID_USER'] ?? null;
+        $offerId = $_POST['ID_OFFER'] ?? null;
 
         if (!$userId || !$offerId) {
             header('Location: /offers?error=missing');
@@ -44,7 +42,7 @@ class ApplicationController extends Controller
     {
         $id = (int)$_POST['ID'];
         $cv = $_POST['CV'] ?? '';
-        $coverLetter = $_POST['COVER_LETTER'] ?? '';
+        $coverLetter = $_POST['LETTER'] ?? '';
 
         $this->model->updateApplication($id, $cv, $coverLetter);
         header('Location: /applications');

@@ -12,7 +12,7 @@
             <h2>Offres en vedette</h2>
         <section class="offres">
             {% for offer in offers %}
-                <a href="?uri=/details-offre&id={{ offer.ID }}">
+                <a href="?uri=/details-offer&id={{ offer.ID }}">
                     <div class="offre {% if loop.index % 3 == 1 %}
                                 rouge
                             {% elseif loop.index % 3 == 2 %}

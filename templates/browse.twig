@@ -28,7 +28,7 @@
         </div>
         <section class="offres">
             {% for offer in offers %}
-                <a href="?uri=/details-offre&id={{ offer.ID }}">
+                <a href="?uri=/details-offer&id={{ offer.ID }}">
                     <div class="offre {% if loop.index % 3 == 1 %}
                                 rouge
                             {% elseif loop.index % 3 == 2 %}
@@ -54,13 +54,13 @@
             {% endfor %}
             <div class="pagination">
                 {% if page > 1 %}
-                    <a href="?uri=/parcourir&page={{ page - 1 }}">Précédent</a>
+                    <a href="?uri=/browse&page={{ page - 1 }}">Précédent</a>
                 {% endif %}
             
                 <span> | </span>
             
                 {% if page < totalPages %}
-                    <a href="?uri=/parcourir&page={{ page + 1 }}">Suivant</a>
+                    <a href="?uri=/browse&page={{ page + 1 }}">Suivant</a>
                 {% endif %}
                 <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
             </div>

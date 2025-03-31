@@ -1,30 +1,32 @@
 <?php
 
-require_once 'src/Models/WishListModel.php';
-require_once 'src/Controllers/WishListController.php';
+require_once __DIR__ . '/../src/Models/Database.php';
+require_once __DIR__ . '/../src/Models/WishlistModel.php';
+require_once __DIR__ . '/../src/Controllers/WishlistController.php';
 
-try {
-    $file = __DIR__ . '/storage/wishlist.json'; 
-    $wishModel = new WishListModel($file);
+use App\Controllers\WishlistController;
 
-    $wishController = new WishListController($wishModel);
+// On nettoie $_POST
+$_POST = [];
 
-    echo "=== TEST ADD OFFER TO WISHLIST ===\n";
-    $wishController->addOfferToWishlist(4, 101);
-    $wishController->addOfferToWishlist(4, 102);
-    $wishController->addOfferToWishlist(5, 200);
-    echo "-> Ajout effectué\n";
+// On simule ton templateEngine par null
+$controller = new WishlistController(null);
 
-    echo "\n=== TEST GET WISHLIST FOR USER 4 ===\n";
-    $wishlist4 = $wishController->getWishlist(4);
-    print_r($wishlist4);
+echo "=== Ajout de 2 offres pour user #42 ===\n";
+$_POST['ID_USER'] = 42;
+$_POST['ID_OFFER'] = 101;
+$controller->addOfferToWishlist();
 
-    echo "\n=== TEST REMOVE OFFER (101) FOR USER 4 ===\n";
-    $wishController->removeOfferFromWishlist(4, 101);
+$_POST['ID_OFFER'] = 102;
+$controller->addOfferToWishlist();
 
-    $wishlist4 = $wishController->getWishlist(4);
-    print_r($wishlist4);
+echo "=== Lecture de la wishlist #42 ===\n";
+print_r($controller->getWishlist(42));
 
-} catch (Exception $ex) {
-    echo "Erreur générale : " . $ex->getMessage();
-}
+echo "\n=== Suppression d'une offre (102) ===\n";
+$_POST['ID_USER'] = 42;
+$_POST['ID_OFFER'] = 102;
+$controller->removeOfferFromWishlist();
+
+echo "=== Lecture finale #42 ===\n";
+print_r($controller->getWishlist(42));

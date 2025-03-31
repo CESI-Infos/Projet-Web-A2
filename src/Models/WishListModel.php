@@ -1,70 +1,51 @@
 <?php
+namespace App\Models;
 
-class WishListModel
+require_once __DIR__ . '/Model.php';
+require_once __DIR__ . '/Database.php';
+
+use App\Models\Database;
+
+
+class WishlistModel extends Model
 {
-    private $file;
-
-    public function __construct(string $file)
+    public function __construct($connection = null)
     {
-        $this->file = $file;
-    }
-
-    private function loadData(): array
-    {
-        if (!file_exists($this->file)) {
-            return [];
-        }
-
-        $json = file_get_contents($this->file);
-        $data = json_decode($json, true);
-        if (!is_array($data)) {
-            return []; 
-        }
-        return $data;
-    }
-
-    private function saveData(array $data): bool
-    {
-        try {
-            $json = json_encode($data, JSON_PRETTY_PRINT);
-            file_put_contents($this->file, $json);
-            return true;
-        } catch (Exception $e) {
-            return false;
+        if (is_null($connection)) {
+            $this->connection = new Database();
+        } else {
+            $this->connection = $connection;
         }
     }
 
-    public function addOfferToWishlist(int $userId, int $offerId): bool
+    public function addOfferToWishlist(int $userId, int $offerId): int
     {
-        $data = $this->loadData();
+        $record = [
+            'ID_USER'  => $userId,
+            'ID_OFFER' => $offerId
+        ];
 
-        if (!isset($data[$userId])) {
-            $data[$userId] = [];
-        }
-
-        if (!in_array($offerId, $data[$userId])) {
-            $data[$userId][] = $offerId;
-        }
-
-        return $this->saveData($data);
+        return $this->connection->insertRecord("Wishlists", $record);
     }
 
-    public function removeOfferFromWishlist(int $userId, int $offerId): bool
+    public function removeOfferFromWishlist(int $userId, int $offerId): int
     {
-        $data = $this->loadData();
-
-        if (isset($data[$userId])) {
-            $data[$userId] = array_filter($data[$userId], function($id) use ($offerId) {
-                return $id !== $offerId;
-            });
-        }
-
-        return $this->saveData($data);
+        $pdo = $this->connection->getPdo();
+        $sql = "DELETE FROM Wishlists WHERE ID_USER = :u AND ID_OFFER = :o";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':u' => $userId,
+            ':o' => $offerId
+        ]);
+        return $stmt->rowCount();
     }
-    
+
     public function getWishlist(int $userId): array
     {
-        $data = $this->loadData();
-        return $data[$userId] ?? [];
+        $pdo = $this->connection->getPdo();
+        $sql = "SELECT * FROM Wishlists WHERE ID_USER = :u";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':u' => $userId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

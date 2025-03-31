@@ -1,33 +1,64 @@
 <?php
+namespace App\Controllers;
 
-class ApplicationController
+require_once 'src/Controllers/Controller.php';
+require_once 'src/Models/ApplicationModel.php';
+
+use App\Controllers\Controller;
+use App\Models\ApplicationModel;
+
+class ApplicationController extends Controller
 {
-    private $applicationModel;
+    protected ApplicationModel $model;
 
-    public function __construct(PDO $db)
+    public function __construct($templateEngine = null)
     {
-        $this->applicationModel = new ApplicationModel($db);
+        $this->model = new ApplicationModel();
+        $this->templateEngine = $templateEngine;
     }
-    public function listApplications(): array
+
+    public function getApplication(int $id): ?array
     {
-        $applications = $this->applicationModel->getAllApplications();
-        return $applications;
+        return $this->model->getApplication($id);
     }
-    public function showApplication(int $id): ?array
+
+    public function addApplication()
     {
-        return $this->applicationModel->getApplicationById($id);
+        session_start();
+        $cv = $_POST['CV'] ?? '';
+        $coverLetter = $_POST['COVER_LETTER'] ?? '';
+        $userId = $_SESSION['user_id'] ?? null;
+        $offerId = $_POST['OFFER_ID'] ?? null;
+
+        if (!$userId || !$offerId) {
+            header('Location: /offers?error=missing');
+            exit;
+        }
+
+        $this->model->addApplication($cv, $coverLetter, $userId, $offerId);
+        header('Location: /offers?success=1');
+        exit;
     }
-    public function storeApplication(int $userId, int $offerId, string $cvPath, string $coverLetter)
+
+    public function updateApplication()
     {
-        $newId = $this->applicationModel->createApplication($userId, $offerId, $cvPath, $coverLetter);
-        return $newId;
+        $id = (int)$_POST['ID'];
+        $cv = $_POST['CV'] ?? '';
+        $coverLetter = $_POST['COVER_LETTER'] ?? '';
+
+        $this->model->updateApplication($id, $cv, $coverLetter);
+        header('Location: /applications');
+        exit;
     }
-    public function updateApplication(int $id, int $userId, int $offerId, string $cvPath, string $coverLetter): bool
+
+    public function deleteApplication()
     {
-        return $this->applicationModel->updateApplication($id, $userId, $offerId, $cvPath, $coverLetter);
+        $id = (int)$_POST['ID'];
+        $this->model->deleteApplication($id);
+
+        header('Location: /applications');
+        exit;
     }
-    public function destroyApplication(int $id): bool
-    {
-        return $this->applicationModel->deleteApplication($id);
-    }
+
+    public function __destruct() {}
 }

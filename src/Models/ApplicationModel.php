@@ -1,90 +1,60 @@
 <?php
+namespace App\Models;
 
-class ApplicationModel
+require_once 'src/Models/Model.php';
+require_once 'src/Models/Database.php';
+
+use PDO;
+
+class ApplicationModel extends Model
 {
-    private $db;
-
-    public function __construct(PDO $db)
+    public function __construct($connection = null)
     {
-        $this->db = $db;
+        if (is_null($connection)) {
+            $this->connection = new Database();
+        } else {
+            $this->connection = $connection;
+        }
     }
+
     public function getAllApplications(): array
     {
-        try {
-            $sql = "SELECT * FROM applications";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
+        return $this->connection->getAllRecords("Applications");
+    }
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return [];
-        }
-    }
-    public function getApplicationById(int $id): ?array
+    public function getApplication(int $id): ?array
     {
-        try {
-            $sql = "SELECT * FROM applications WHERE ID = :ID";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':ID', $id, PDO::PARAM_INT);
-            $stmt->execute();
+        return $this->connection->getRecord("Applications", $id);
+    }
 
-            $application = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $application ?: null;
-        } catch (PDOException $e) {
-            return null;
-        }
-    }
-    public function createApplication(int $userId, int $offerId, string $cvPath, string $coverLetter)
+    public function addApplication(string $cv, string $coverLetter, int $userId, int $offerId): int
     {
-        try {
-            $sql = "INSERT INTO applications (ID_USER, ID_OFFER, CV, LETTER)
-                    VALUES (:ID_USER, :ID_OFFER, :CV, :LETTER)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':ID_USER', $userId, PDO::PARAM_INT);
-            $stmt->bindValue(':ID_OFFER', $offerId, PDO::PARAM_INT);
-            $stmt->bindValue(':CV', $cvPath, PDO::PARAM_STR);
-            $stmt->bindValue(':LETTER', $coverLetter, PDO::PARAM_STR);
+        $record = [
+            'CV' => $cv,
+            'COVER_LETTER' => $coverLetter,
+            'STUDENT_ID' => $userId,
+            'OFFER_ID' => $offerId,
+        ];
+        return $this->connection->insertRecord("Applications", $record);
+    }
 
-            $stmt->execute();
-            return $this->db->lastInsertId();
-        } catch (PDOException $e) {
-            echo " Erreur PDO : " . $e->getMessage();
-            return false;
-        }
-    }
-    public function updateApplication(int $id, int $userId, int $offerId, string $cvPath, string $coverLetter): bool
+    public function updateApplication(int $id, string $cv, string $coverLetter): int
     {
-        try {
-            $sql = "UPDATE applications
-                    SET ID_USER = :ID_USER,
-                        ID_OFFER = :ID_OFFER,
-                        CV = :CV,
-                        LETTER = :LETTER,
-                        RELEASE_DATE = CURDATE()
-                    WHERE ID = :ID";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':ID_USER', $userId, PDO::PARAM_INT);
-            $stmt->bindValue(':ID_OFFER', $offerId, PDO::PARAM_INT);
-            $stmt->bindValue(':CV', $cvPath, PDO::PARAM_STR);
-            $stmt->bindValue(':LETTER', $coverLetter, PDO::PARAM_STR);
-            $stmt->bindValue(':ID', $id, PDO::PARAM_INT);
-    
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            echo "Erreur PDO UPDATE : " . $e->getMessage();
-            return false;
-        }
-    }
-    public function deleteApplication(int $id): bool
-    {
-        try {
-            $sql = "DELETE FROM applications WHERE ID = :ID";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':ID', $id, PDO::PARAM_INT);
+        $record = [
+            'CV' => $cv,
+            'COVER_LETTER' => $coverLetter,
+        ];
 
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
-        }
+        $condition = "ID = :id";
+        $params = [':id' => $id];
+
+        return $this->connection->updateRecord("Applications", $record, $condition, $params);
     }
+
+    public function deleteApplication(int $id): int
+    {
+        return $this->connection->deleteRecord("Applications", $id);
+    }
+
+    public function __destruct() {}
 }

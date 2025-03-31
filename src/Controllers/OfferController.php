@@ -85,13 +85,13 @@ class OfferController extends Controller {
     }
 
     public function printSpecificOffer($id) {
-        $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
+        $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
         $offer = $this->model->getOffer($id, $champs);
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        echo $this->templateEngine->render('details-offre.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' =>$id_role]);
+        echo $this->templateEngine->render('details-offer.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' =>$id_role]);
     }
 }

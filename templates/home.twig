@@ -1,34 +1,18 @@
-{% extends "base.twig" %}
+{% extends 'base.twig' %}
 
-{% block title %}Parcourir{% endblock %}
+{% block title %}TheGoodPlan - Trouvez votre stage{% endblock %}
 
 {% block content %}
-    <main class="explore">
-        <aside id="panneau">
-            <h3 class="inter-bold">Trier par</h3>
-            <select>
-                <option value="popularite">Popularité</option>
-                <option value="date">Date</option>
-            </select>
-            <br>
-            <br>
-            <div id="filtrage">
-                <h3 class="inter-bold">Filtrer</h3>
-                <form>
-                    <input type="text" placeholder="Rechercher des mots clés" name="keywords">
-                    <label for="duree">Durée:</label>
-                    <input type="range" id="duree" name="duree" min="0" max="10">
-                    <label for="experience">Expérience:</label>
-                    <input type="range" id="experience" name="experience" min="0" max="20">
-                    <label><input type="checkbox" checked> Sur Place</label>
-                    <label><input type="checkbox"> A Distance</label>
-                    <label><input type="checkbox"> Hybride</label>
-                </form>
-        </aside>
+    <main class="accueil">
+        <h1>Trouvez votre stage facilement !</h1>
+        <div class="barre-recherche">
+            <input type="text" placeholder="Rechercher">
         </div>
+        <section class="en-vedette">
+            <h2>Offres en vedette</h2>
         <section class="offres">
             {% for offer in offers %}
-                <a href="?uri=/details-offre&id={{ offer.ID }}">
+                <a href="?uri=/details-offer&id={{ offer.ID }}">
                     <div class="offre {% if loop.index % 3 == 1 %}
                                 rouge
                             {% elseif loop.index % 3 == 2 %}
@@ -43,7 +27,7 @@
                                 <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
                                 <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
                             </div>
-                            <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
+                            <a href="?uri=/details-entreprise&id={{offer.ID_COMPANY}}"><h5 class="inter-bold italic">{{ offer.NAME }}</h5></a>
                             <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
                             {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
                             {% else %}../static/spotifyIcon.webp
@@ -52,18 +36,7 @@
                     </div>
                 </a>
             {% endfor %}
-            <div class="pagination">
-                {% if page > 1 %}
-                    <a href="?uri=/parcourir&page={{ page - 1 }}">Précédent</a>
-                {% endif %}
-            
-                <span> | </span>
-            
-                {% if page < totalPages %}
-                    <a href="?uri=/parcourir&page={{ page + 1 }}">Suivant</a>
-                {% endif %}
-                <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
-            </div>
+        </section>
         </section>
     </main>
 {% endblock %}

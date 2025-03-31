@@ -6,7 +6,9 @@
     <main class="accueil">
         <h1>Trouvez votre stage facilement !</h1>
         <div class="barre-recherche">
-            <input type="text" placeholder="Rechercher">
+            <form method="post" action="index.php?action=filteroffers">
+            <input type="text" name="keywords" placeholder="Rechercher">
+            </form>
         </div>
         <section class="en-vedette">
             <h2>Offres en vedette</h2>

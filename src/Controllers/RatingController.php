@@ -20,17 +20,21 @@ class RatingController extends Controller
     }
 
     public function NoteMoyenne($idCompany){
-        $notes = $this->model->getCompanyNotes($idCompany);
+        $notes = $this->model->getAllNotes($idCompany);
         $sum = 0;
+        $count = 0;
         foreach($notes as $note){
-            $sum+=$note['GRADE'];
+            if ($note['ID_COMPANY'] == $idCompany){
+                $sum+=$note['GRADE'];
+                $count+=1;
+            }
         }
-        return $sum/count($notes);
+        return $sum/$count;
     }
 
     public function addNote(int $idCompany, int $idUser, int $note): void
     {
-        $this->model->addNote($idCompany, $idUser, $note);
+        $this->model->createNote($idCompany, $idUser, $note);
     }
 
     public function deleteNote(int $idCompany, int $idUser): void

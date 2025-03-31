@@ -11,10 +11,8 @@
             <div class="infos-offre">
                 <img src="/static/airbusIcon.png" alt="Logo Airbus">
                 <div>
-                    <a href="?uri=/details-entreprise&id={{ offer.ID_COMPANY }}">
-                        <h3><b>{{ offer.NAME }}</b></h3>
-                    </a>
-                    <p>{{ offer.COMPANY_DESCRIPTION }}</p>
+                    <h3><b>{{ offer.NAME }}</b></h3>
+                    <p>{{ offer.COMPANY_DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
                 </div>
             </div>
             <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h4>
@@ -31,20 +29,37 @@
         <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
     </article>
 
-    {# Formulaire de postulation #}
+    {# Affichage d'un message d'erreur, s'il y en a #}
+    {% if app.request.get('error') %}
+        <p class="message-error">⚠️ Une erreur est survenue lors de l'envoi de votre candidature. Veuillez réessayer.</p>
+    {% endif %}
+
+    {# Affichage du message de succès #}
+    {% if app.request.get('success') %}
+        <p class="message-succes">✅ Votre candidature a bien été envoyée !</p>
+    {% endif %}
+
     <section class="postuler">
         <h2>Postuler à cette offre</h2>
-        <form action="/postuler" method="POST">
+        <form action="?uri=/details-offer&id={{ offer.ID }}" method="POST">
             <input type="hidden" name="ID_USER" value="{{ user.ID }}">
             <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
 
-            <label for="CV">CV :</label>
-            <input type="text" name="CV" placeholder="cv_nom.pdf" required>
+            <div class="form-ligne">
+                <div class="bloc">
+                    <label for="cv">CV :</label>
+                    <input type="text" id="cv" name="CV" placeholder="cv_nom.pdf" required>
+                </div>
 
-            <label for="COVER_LETTER">Lettre de motivation :</label>
-            <textarea name="COVER_LETTER" rows="6" placeholder="Je suis très motivé à rejoindre..."></textarea>
+                <div class="bloc">
+                    <label for="coverLetter">Lettre de motivation :</label>
+                    <textarea id="coverLetter" name="COVER_LETTER" placeholder="Je suis très motivé à rejoindre..." required></textarea>
+                </div>
 
-            <button type="submit" class="bouton">Envoyer la candidature</button>
+                <div class="form-submit">
+                    <button type="submit" class="bouton">Envoyer la candidature</button>
+                </div>
+            </div>
         </form>
     </section>
 </main>

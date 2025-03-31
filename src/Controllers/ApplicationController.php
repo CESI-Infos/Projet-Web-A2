@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-require_once 'Controller.php';
-require_once '../src/Models/ApplicationModel.php';
+require_once __DIR__.'/Controller.php';
+require_once __DIR__.'/../Models/ApplicationModel.php';
 
 use App\Controllers\Controller;
 use App\Models\ApplicationModel;
@@ -24,17 +24,20 @@ class ApplicationController extends Controller
     {
         session_start();
         $cv = $_POST['CV'] ?? '';
-        $coverLetter = $_POST['LETTER'] ?? '';
+        $coverLetter = $_POST['COVER_LETTER'] ?? '';
         $userId = $_SESSION['ID_USER'] ?? null;
         $offerId = $_POST['ID_OFFER'] ?? null;
 
-        if (!$userId || !$offerId) {
-            header('Location: /offers?error=missing');
+        if (!$userId || !$offerId || empty($cv) || empty($coverLetter)) {
+            // Redirection avec erreur si un champ est manquant
+            header("Location: ?uri=/details-offer&id=$offerId&error=1");
             exit;
         }
 
         $this->model->addApplication($cv, $coverLetter, $userId, $offerId);
-        header('Location: /offers?success=1');
+
+        // Redirection avec succès vers la même page
+        header("Location: ?uri=/details-offer&id=$offerId&success=1");
         exit;
     }
 
@@ -42,7 +45,7 @@ class ApplicationController extends Controller
     {
         $id = (int)$_POST['ID'];
         $cv = $_POST['CV'] ?? '';
-        $coverLetter = $_POST['LETTER'] ?? '';
+        $coverLetter = $_POST['COVER_LETTER'] ?? '';
 
         $this->model->updateApplication($id, $cv, $coverLetter);
         header('Location: /applications');
@@ -53,7 +56,6 @@ class ApplicationController extends Controller
     {
         $id = (int)$_POST['ID'];
         $this->model->deleteApplication($id);
-
         header('Location: /applications');
         exit;
     }
@@ -61,16 +63,20 @@ class ApplicationController extends Controller
     public function __destruct() {}
 
     public function postuler()
-{
-    $userId = (int) $_POST['ID_USER'];
-    $offerId = (int) $_POST['ID_OFFER'];
-    $cv = $_POST['CV'];
-    $coverLetter = $_POST['LETTER'];
+    {
+        session_start();
+        $userId = (int) ($_POST['ID_USER'] ?? 0);
+        $offerId = (int) ($_POST['ID_OFFER'] ?? 0);
+        $cv = $_POST['CV'] ?? '';
+        $coverLetter = $_POST['COVER_LETTER'] ?? '';
 
-    $this->model->addApplication($cv, $coverLetter, $userId, $offerId);
+        if (!$userId || !$offerId || empty($cv) || empty($coverLetter)) {
+            header("Location: ?uri=/details-offre&id=$offerId&error=1");
+            exit;
+        }
 
-    header('Location: /merci');
-    exit;
-}
-
+        $this->model->addApplication($cv, $coverLetter, $userId, $offerId);
+        header("Location: ?uri=/details-offre&id=$offerId&success=1");
+        exit;
+    }
 }

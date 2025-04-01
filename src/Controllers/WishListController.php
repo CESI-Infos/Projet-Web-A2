@@ -22,7 +22,7 @@ class WishlistController extends Controller
 
         $existingOffer = $this->model->getOfferInWishlist($userId, $offerId);
         if ($existingOffer) {
-            header("Location: ?uri=/connection&error=Cette offre est déjà dans votre wishlist.");
+            header("Location: /?success=Offre ajoutée à votre wishlist !");
             exit;
         }
 

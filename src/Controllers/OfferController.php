@@ -3,7 +3,9 @@ namespace App\Controllers;
 
 require_once "src/Models/OfferModel.php";
 require_once "src/Controllers/Controller.php";
+require_once "src/Controllers/ApplicationController.php";
 
+use App\Controllers\ApplicationController;
 use App\Controllers\Controller;
 use App\Models\OfferModel;
 
@@ -95,13 +97,10 @@ class OfferController extends Controller {
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
         $userId = $_SESSION['idUser'] ?? null;
-    
-        echo $this->templateEngine->render('details-offer.twig', [
-            'offer' => $offer,
-            'firstname' => $firstname,
-            'id_role' => $id_role,
-            'user' => ['ID' => $userId]
-        ]);
+        $ApplicationController = new ApplicationController();
+        $applies = $ApplicationController->getAllOfferApply($id);
+        $applyCount = count($applies);
+        echo $this->templateEngine->render('details-offer.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' => $id_role, 'applyCount' => $applyCount, 'user' => ['ID' => $userId]]);
     }
     
 }

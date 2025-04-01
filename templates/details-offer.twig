@@ -38,6 +38,7 @@
     <article class="details">
         <p>{{ offer.OFFER_DESCRIPTION }}</p>
         <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
+        <h5 class="inter-light sub">Nombre de candidatures: {{ applyCount }}</h5>
     </article>
 
     {% if app.request.get('error') %}

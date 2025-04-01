@@ -58,8 +58,15 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         $uri='/browse';
     }
     if($_GET['action']=='rateCompany'){
-        $RatingController->addNote(intval($_POST['idCompany']), intval($idUser), intval($_POST['rate']));
-        header("Location: ?uri=/details-company&id=".$_POST['idCompany']);
+        $idCompany = $_POST['idCompany'];
+        $rate = $_POST['rate'];
+        $note = $RatingController->getNote($idCompany, $idUser);
+        if ($note['ID_COMPANY'] == $idCompany && $note['ID_USER'] == $idUser){
+            $RatingController->updateNote($idCompany, $idUser, $rate);
+        }else{
+            $RatingController->addNote($idCompany, $idUser, $rate);
+        }
+        header("Location: ?uri=/details-company&id=".$idCompany);
     }
 }
 

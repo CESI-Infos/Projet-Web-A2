@@ -78,6 +78,12 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         header("Location: ?uri=/connection");
         exit;
     }
+    if ($_GET['action']=='filterstudents'){
+        $keywords = $_POST['keywords'] ?? null;
+
+        $uri='/dashboard';
+    
+    }
 }
 
 elseif (isset($_GET['uri'])) {
@@ -106,7 +112,7 @@ switch ($uri) {
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-    case '/connection':
+case '/connection':
         if (isset($firstname)) {
             $wishlist = $WishlistController->getWishlist($idUser);
     
@@ -134,6 +140,11 @@ switch ($uri) {
         $companyId = $_GET['id'];
         $CompanyController->printCompany($companyId, $firstname, $id_role);
         break;
+
+    case '/dashboard':
+        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        break;
+
     default:
         echo 'Page not found';
         break;

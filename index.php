@@ -1,4 +1,7 @@
 <?php
+//index.php
+
+/* Ajoute de tout les fichiers des classes et initialisation de celles-ci */
 require "vendor/autoload.php";
 require_once "src/Controllers/CompanyController.php";
 require_once "src/Controllers/RatingController.php";
@@ -25,7 +28,9 @@ $UserController = new UserController($twig);
 $RatingController = new RatingController();
 $ApplicationController = new ApplicationController($twig);
 $WishlistController = new WishlistController($twig);
+/**/
 
+/* Gestion de la session lorsqu'on arrive sur la page index ainsi que dans la méthode authenticate de UserController */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -33,10 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $id_role = $_SESSION['id_role'] ?? null;
 $firstname = $_SESSION['firstname'] ?? null;
 $idUser = $_SESSION['idUser'] ?? null;
-
-$id_role = $_SESSION['id_role'] ?? null;
-$firstname = $_SESSION['firstname'] ?? null;
-$idUser = $_SESSION['idUser'] ?? null;
+/**/
 
 $uri = '/';
 
@@ -44,7 +46,7 @@ $keywords = null;
 $duration = null;
 $experience = null;
 
-
+/* Action réalisé lors de la validation d'un form */
 if (isset($_GET['action']) && $_GET['action'] !== '') {
     if ($_GET['action'] === 'authenticate') {
         $mail = $_POST["mail"];
@@ -89,7 +91,9 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
     
     }
 }
+/**/
 
+/* Gestion de l'URL */
 elseif (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
 }
@@ -149,3 +153,4 @@ switch ($uri) {
         echo 'Page not found';
         break;
 }
+/**/

@@ -97,4 +97,12 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
+    public function deleteRecordCondition(string $table, string $condition, array $params = []): int
+{
+    $sql = "DELETE FROM $table WHERE $condition";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->rowCount();
+}
+
 }

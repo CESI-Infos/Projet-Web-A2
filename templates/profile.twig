@@ -52,15 +52,26 @@
                                 <div class="offre-head-apercu">
                                     <h4>{{ offer.TITLE }}</h4>
                                     <div class="tags">
-                                        <span class="localisation fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/locIcon.png" width="24px">{{ offer.CITY }}</span>
-                                        <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
-                                        <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+                                        <span class="localisation fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
+                                            <img src="../static/locIcon.png" width="24px">{{ offer.CITY }}
+                                        </span>
+                                        <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
+                                            <img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}
+                                        </span>
+                                        <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
+                                            <img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}
+                                        </span>
                                     </div>
-                                    <a href="?uri=/details-company&id={{offer.ID_COMPANY}}"><h5 class="inter-bold italic">{{ offer.NAME }}</h5></a>
-                                    <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
-                                    {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
-                                    {% else %}../static/spotifyIcon.webp
-                                    {% endif %}" width="48" alt="Logo" width="48">
+                                    <a href="?uri=/details-company&id={{offer.ID_COMPANY}}">
+                                        <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
+                                    </a>
+                                    <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"
+                                         src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
+                                              {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
+                                              {% else %}../static/spotifyIcon.webp
+                                              {% endif %}"
+                                         width="48"
+                                         alt="Logo">
                                 </div>
                             </div>
                         </a>
@@ -68,6 +79,35 @@
                 </section>
             </div>
         </div>
+
+        <div class="wishlist_profil">
+            <h2>Ma Wishlist</h2>
+            <section class="wishlist">
+                {% for wish in wishlist %}
+                    <div class="offre">
+                        <div class="offre-head-apercu">
+                            <h4>{{ wish.TITLE }}</h4>
+                            <div class="tags">
+                                <span class="localisation"><img src="../static/locIcon.png" width="24px">{{ wish.CITY }}</span>
+                                <span class="duree"><img src="../static/timeIcon.png" width="24px">{{ wish.DURATION }}</span>
+                                <span class="exp"><img src="../static/educationIcon.png" width="24px">{{ wish.GRADE }}</span>
+                            </div>
+                            <a href="?uri=/details-company&id={{ wish.ID_COMPANY }}">
+                                <h5 class="inter-bold italic">{{ wish.NAME }}</h5>
+                            </a>
+                        </div>
+                        <form action="?action=removeFromWishlist" method="POST">
+                            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+                            <input type="hidden" name="ID_OFFER" value="{{ wish.ID_OFFER }}">
+                            <button type="submit" class="bouton wishlist-button">Retirer de la wishlist</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <p>Votre wishlist est vide.</p>
+                {% endfor %}
+            </section>
+        </div>
+
         {% if isUser %}
             <form action="index.php?action=disconnect" method="post">
                 <button type="submit">Se déconnecter</button>

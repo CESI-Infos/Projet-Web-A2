@@ -73,7 +73,7 @@
     </section>
 
     <section class="wishlist">
-        <form action="?uri=/add-to-wishlist" method="POST">
+        <form action="?action=addToWishlist" method="POST">
             <input type="hidden" name="ID_USER" value="{{ user.ID }}">
             <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
             <button type="submit" class="bouton wishlist-button">Ajouter à la wishlist</button>

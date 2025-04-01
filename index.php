@@ -5,12 +5,14 @@ require_once "src/Controllers/RatingController.php";
 require_once "src/Controllers/OfferController.php";
 require_once "src/Controllers/UserController.php";
 require_once "src/Controllers/ApplicationController.php";
+require_once "src/Controllers/WishListController.php";
 
 use App\Controllers\CompanyController;
 use App\Controllers\RatingController;
 use App\Controllers\OfferController;
 use App\Controllers\UserController;
 use App\Controllers\ApplicationController;
+use App\Controllers\WishlistController;
 
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment($loader, [
@@ -22,6 +24,7 @@ $OfferController = new OfferController($twig);
 $UserController = new UserController($twig);
 $RatingController = new RatingController();
 $ApplicationController = new ApplicationController($twig);
+$WishlistController = new WishlistController($twig);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -64,6 +67,23 @@ elseif (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
 }
 
+if (isset($_GET['action']) && $_GET['action'] === 'addToWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $WishlistController->addOfferToWishlist($idUser);
+    header("Location: ?uri=/connection");
+    exit;
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'removeFromWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $WishlistController->removeOfferFromWishlist();
+    header("Location: ?uri=/connection");
+    exit;
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'viewWishlist') {
+    $wishlist = $WishlistController->getWishlist($idUser);
+    echo $twig->render('wishlist.twig', ['wishlist' => $wishlist, 'firstname' => $firstname, 'id_role' => $id_role]);
+}
+
 switch ($uri) {
     case '/':
         $OfferController->printOffers('home.twig', 3, []);
@@ -74,13 +94,10 @@ switch ($uri) {
     case '/details-offer':
         $offerId = $_GET['id'] ?? null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Traitement de l'envoi de la candidature
             $ApplicationController->addApplication();
-            // Redirection vers la même offre avec un message de succès
             header("Location: ?uri=/details-offer&id=$offerId&success=Votre candidature a bien été envoyée !");
             exit;
         }
-        // Affichage de l'offre spécifique
         $OfferController->printSpecificOffer($offerId);
         break;
     case '/create-offer':
@@ -89,14 +106,26 @@ switch ($uri) {
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-    case '/connection':
-        if(isset($firstname)){
-            echo $twig->render('profile.twig',['firstname' => $firstname,'id_role' =>$id_role, 'isUser' => true]);
-        }
-        else{
-            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
-        }
-        break;
+        case '/connection':
+            if (isset($firstname)) {
+                $wishlist = $WishlistController->getWishlist($idUser);
+        
+                echo $twig->render('profile.twig', [
+                    'firstname' => $firstname,
+                    'id_role'   => $id_role,
+                    'isUser'    => true,
+                    'wishlist'  => $wishlist,
+                    'user'      => ['ID' => $idUser]
+                ]);
+            } else {
+                echo $twig->render('connection.twig', [
+                    'firstname' => $firstname,
+                    'id_role'   => $id_role
+                ]);
+            }
+            break;
+        
+            break;        
     case '/connectionwrong':
         echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role, 'connected' => "false"]);
         break;
@@ -110,4 +139,14 @@ switch ($uri) {
     default:
         echo 'Page not found';
         break;
+    case '/viewWishlist':
+    $wishlist = $WishlistController->getWishlist($idUser);
+    echo $twig->render('wishlist.twig', [
+        'wishlist'  => $wishlist,
+        'firstname' => $firstname,
+        'id_role'   => $id_role
+    ]);
+    break;
+
 }
+

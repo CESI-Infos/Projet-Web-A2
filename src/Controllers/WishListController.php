@@ -21,9 +21,6 @@ class WishlistController extends Controller
         $offerId = (int)$_POST['ID_OFFER'];
 
         $this->model->addOfferToWishlist($userId, $offerId);
-
-        header('Location: /');
-        exit;
     }
 
     public function removeOfferFromWishlist()

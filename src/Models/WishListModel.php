@@ -29,23 +29,31 @@ class WishlistModel extends Model
     }
 
     public function removeOfferFromWishlist(int $userId, int $offerId): int
-    {
-        $pdo = $this->connection->getPdo();
-        $sql = "DELETE FROM love WHERE ID_USER = :u AND ID_OFFER = :o";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':u' => $userId,
-            ':o' => $offerId
-        ]);
-        return $stmt->rowCount();
-    }
+{
+    $condition = "ID_USER = :u AND ID_OFFER = :o";
+    $params = [
+        ':u' => $userId,
+        ':o' => $offerId
+    ];
 
-    public function getWishlist(int $userId): array
-    {
-        $pdo = $this->connection->getPdo();
-        $sql = "SELECT * FROM love WHERE ID_USER = :u";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':u' => $userId]);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+    return $this->connection->deleteRecordCondition("love", $condition, $params);
+}
+
+
+public function getWishlist(int $userId): array
+{
+    return $this->connection->getRecordsWhen(
+        "love",
+        "ID_USER = :u",
+        "JOIN Offers ON love.ID_OFFER = Offers.ID",
+        [':u' => $userId],
+        "love.ID_OFFER,
+         Offers.TITLE,
+         Offers.CITY,
+         Offers.DURATION,
+         Offers.GRADE,
+         Offers.ID_COMPANY"
+    );
+}
+
 }

@@ -74,12 +74,12 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
     }
     if ($_GET['action'] === 'addToWishlist') {
         $WishlistController->addOfferToWishlist($idUser);
-        header("Location: ?uri=/connection");
+        header("Location: ?uri=/profile");
         exit;
     }
     if ($_GET['action'] === 'removeFromWishlist') {
         $WishlistController->removeOfferFromWishlist();
-        header("Location: ?uri=/connection");
+        header("Location: ?uri=/profile");
         exit;
     }
     if ($_GET['action']=='filterstudents'){

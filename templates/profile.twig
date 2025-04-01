@@ -97,7 +97,7 @@
                             </a>
                         </div>
                         <form action="?action=removeFromWishlist" method="POST">
-                            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+                            <input type="hidden" name="ID_USER" value="{{ entity.ID }}">
                             <input type="hidden" name="ID_OFFER" value="{{ wish.ID_OFFER }}">
                             <button type="submit" class="bouton wishlist-button">Retirer de la wishlist</button>
                         </form>

@@ -9,15 +9,26 @@ use App\Models\ApplicationModel;
 
 class ApplicationController extends Controller
 {
-    public function __construct($templateEngine = null)
+    public function __construct(/*$templateEngine = null*/)
     {
         $this->model = new ApplicationModel();
-        $this->templateEngine = $templateEngine;
+        //$this->templateEngine = $templateEngine;
     }
 
     public function getApplication(int $id): ?array
     {
         return $this->model->getApplication($id);
+    }
+
+    public function getAllOfferApply($idOffer){
+        $applies = $this->model->getAllApplications();
+        $compApply = [];
+        foreach ($applies as $apply){
+            if ($apply['ID_OFFER'] == $idOffer){
+                $compApply[] = $idOffer;
+            }
+        }
+        return $compApply;
     }
 
     public function addApplication()

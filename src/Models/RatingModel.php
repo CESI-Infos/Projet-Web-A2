@@ -38,7 +38,7 @@ class RatingModel extends Model
             'GRADE' => $note,
         ];
 
-        return $this->connection->updateRecord("Note", $record);
+        return $this->connection->updateRecord("Note", $record, "ID_COMPANY = '$idCompany' AND ID_USER = '$idUser'");
     }
 
     public function deleteNote(int $idCompany, int $idUser): bool

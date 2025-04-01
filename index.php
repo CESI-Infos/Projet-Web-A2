@@ -148,4 +148,4 @@ switch ($uri) {
     default:
         echo 'Page not found';
         break;
-}
+}a

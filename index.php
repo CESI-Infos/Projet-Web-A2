@@ -1,4 +1,7 @@
 <?php
+//index.php
+
+/* Ajoute de tout les fichiers des classes et initialisation de celles-ci */
 require "vendor/autoload.php";
 require_once "src/Controllers/CompanyController.php";
 require_once "src/Controllers/RatingController.php";
@@ -25,7 +28,9 @@ $UserController = new UserController($twig);
 $RatingController = new RatingController();
 $ApplicationController = new ApplicationController($twig);
 $WishlistController = new WishlistController($twig);
+/**/
 
+/* Gestion de la session lorsqu'on arrive sur la page index ainsi que dans la méthode authenticate de UserController */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -33,6 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $id_role = $_SESSION['id_role'] ?? null;
 $firstname = $_SESSION['firstname'] ?? null;
 $idUser = $_SESSION['idUser'] ?? null;
+/**/
 
 $uri = '/';
 
@@ -40,7 +46,7 @@ $keywords = null;
 $duration = null;
 $experience = null;
 
-
+/* Action réalisé lors de la validation d'un form */
 if (isset($_GET['action']) && $_GET['action'] !== '') {
     if ($_GET['action'] === 'authenticate') {
         $mail = $_POST["mail"];
@@ -50,14 +56,14 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
     if ($_GET['action'] == 'disconnect') {
         $UserController->disconnect();
     }
-    if ($_GET['action']=='filteroffers'){
+    if ($_GET['action'] == 'filteroffers'){
         $keywords = $_POST['keywords'] ?? null;
         $duration = $_POST['duration'] ?? null;
         $experience = $_POST['experience'] ?? null;
 
         $uri='/browse';
     }
-    if($_GET['action']=='rateCompany'){
+    if($_GET['action'] == 'rateCompany'){
         $idCompany = $_POST['idCompany'];
         $rate = $_POST['rate'];
         $note = $RatingController->getNote($idCompany, $idUser);
@@ -68,25 +74,28 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         }
         header("Location: ?uri=/details-company&id=".$idCompany);
     }
-}
+    if ($_GET['action'] === 'addToWishlist') {
+        $WishlistController->addOfferToWishlist($idUser);
+        header("Location: ?uri=/profile");
+        exit;
+    }
+    if ($_GET['action'] === 'removeFromWishlist') {
+        $WishlistController->removeOfferFromWishlist();
+        header("Location: ?uri=/profile");
+        exit;
+    }
+    if ($_GET['action']=='filterstudents'){
+        $keywords = $_POST['keywords'] ?? null;
 
+        $uri='/dashboard';
+    
+    }
+}
+/**/
+
+/* Gestion de l'URL */
 elseif (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'addToWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $WishlistController->addOfferToWishlist($idUser);
-    exit;
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'removeFromWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $WishlistController->removeOfferFromWishlist();
-    exit;
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'viewWishlist') {
-    $wishlist = $WishlistController->getWishlist($idUser);
-    echo $twig->render('wishlist.twig', ['wishlist' => $wishlist, 'firstname' => $firstname, 'id_role' => $id_role]);
 }
 
 switch ($uri) {
@@ -111,26 +120,22 @@ switch ($uri) {
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-        case '/connection':
-            if (isset($firstname)) {
-                $wishlist = $WishlistController->getWishlist($idUser);
-        
-                echo $twig->render('profile.twig', [
-                    'firstname' => $firstname,
-                    'id_role'   => $id_role,
-                    'isUser'    => true,
-                    'wishlist'  => $wishlist,
-                    'user'      => ['ID' => $idUser]
-                ]);
-            } else {
-                echo $twig->render('connection.twig', [
-                    'firstname' => $firstname,
-                    'id_role'   => $id_role
-                ]);
-            }
-            break;
-        
-            break;        
+
+    case '/profile':
+        if(isset($_GET['idUser'])){
+            $wishlist = $WishlistController->getWishlist($_GET['idUser']);
+            $UserController->showUserProfile($_GET['idUser'],$wishlist);
+        }
+
+        else if(isset($firstname)){
+            $wishlist = $WishlistController->getWishlist($idUser);
+            $UserController->showUserProfile($idUser,$wishlist);
+            
+        }
+        else{
+            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+        }
+        break;        
     case '/connectionwrong':
         echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role, 'connected' => "false"]);
         break;
@@ -141,17 +146,11 @@ switch ($uri) {
         $companyId = $_GET['id'];
         $CompanyController->printCompany($companyId, $firstname, $id_role);
         break;
+    case '/dashboard':
+        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        break;
     default:
         echo 'Page not found';
         break;
-    case '/viewWishlist':
-    $wishlist = $WishlistController->getWishlist($idUser);
-    echo $twig->render('wishlist.twig', [
-        'wishlist'  => $wishlist,
-        'firstname' => $firstname,
-        'id_role'   => $id_role
-    ]);
-    break;
-
 }
-
+/**/

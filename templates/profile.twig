@@ -9,12 +9,12 @@
                 <section id="profil">
                     <img src="../static/accountIcon.png" alt="profil">
                     <div id="infos">
-                        <h2>{{ zz.NAME }}</h2>
-                        <h2>{{ zz.LASTNAME }} {{ zz.FIRSTNAME }}</h2>
-                        <p>{{ zz.CITY }}</p>
-                        <p>{{ zz.MAIL }}</p>
-                        <p>{{ zz.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
-                        <p>{{ zz.DESCRIPTION }}</p>
+                        <h2>{{ entity.NAME }}</h2>
+                        <h2>{{ entity.LASTNAME }} {{ entity.FIRSTNAME }}</h2>
+                        <p>{{ entity.CITY }}</p>
+                        <p>{{ entity.MAIL }}</p>
+                        <p>{{ entity.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
+                        <p>{{ entity.DESCRIPTION }}</p>
                     </div>
                 </section>
                 <section>
@@ -23,7 +23,7 @@
                     {% if not isUser %}
                         <p>{{ note }}</p>
                         <form action="index.php?action=rateCompany" method="post" id="rating">
-                            <input type="hidden" name="idCompany" value="{{ zz.ID }}">
+                            <input type="hidden" name="idCompany" value="{{ entity.ID }}">
                             <section id="note">
                                 <input type="radio" name="rate" id="0" value="0"><label for="0">0</label>
                                 <input type="radio" name="rate" id="1" value="1"><label for="1">1</label>
@@ -97,7 +97,7 @@
                             </a>
                         </div>
                         <form action="?action=removeFromWishlist" method="POST">
-                            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+                            <input type="hidden" name="ID_USER" value="{{ entity.ID }}">
                             <input type="hidden" name="ID_OFFER" value="{{ wish.ID_OFFER }}">
                             <button type="submit" class="bouton wishlist-button">Retirer de la wishlist</button>
                         </form>

@@ -36,7 +36,6 @@ class WishlistController extends Controller
     {
         $userId = (int)$_POST['ID_USER'];
         $offerId = (int)$_POST['ID_OFFER'];
-
         $this->model->removeOfferFromWishlist($userId, $offerId);
 
         header('Location: /');

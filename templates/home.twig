@@ -26,7 +26,7 @@
                             <h4>{{ offer.TITLE }}</h4>
                             <div class="tags">
                                 <span class="localisation fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/locIcon.png" width="24px">{{ offer.CITY }}</span>
-                                <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
+                                <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }} mois</span>
                                 <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
                             </div>
                             <a href="?uri=/details-entreprise&id={{offer.ID_COMPANY}}"><h5 class="inter-bold italic">{{ offer.NAME }}</h5></a>

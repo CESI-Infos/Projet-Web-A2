@@ -24,6 +24,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$id_role = $_SESSION['id_role'] ?? null;
+$firstname = $_SESSION['firstname'] ?? null;
+$idUser = $_SESSION['idUser'] ?? null;
+
 $uri = '/';
 
 $keywords = null;
@@ -45,6 +49,12 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         $experience = $_POST['experience'] ?? null;
 
         $uri='/browse';
+    
+    }
+    if ($_GET['action']=='filterstudents'){
+        $keywords = $_POST['keywords'] ?? null;
+
+        $uri='/dashboard';
     
     }
 }
@@ -86,11 +96,16 @@ switch ($uri) {
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
 
-    case '/connection':
-        if (isset($firstname)) {
-            echo $twig->render('profile.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
-        } else {
-            echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+    case '/profile':
+        if(isset($_GET['idUser'])){
+            $UserController->showUserProfile($_GET['idUser']);
+        }
+
+        else if(isset($firstname)){
+            $UserController->showUserProfile();
+        }
+        else{
+            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         }
         break;
 
@@ -105,6 +120,10 @@ switch ($uri) {
     case '/details-entreprise':
         $companyId = $_GET['id'];
         $CompanyController->printCompany($companyId, $OfferController);
+        break;
+
+    case '/dashboard':
+        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
         break;
 
     default:

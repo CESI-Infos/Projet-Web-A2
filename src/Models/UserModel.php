@@ -19,4 +19,26 @@ class UserModel extends Model{
         ];
         return $this->connection->getRecordsWhen('Users', 'mail = :mail AND password = :password', '', $params);
     }
+
+    public function getAllUsersFromPilote($id_pilote, $keywords) {
+        $params = [
+            ':id_pilote' => $id_pilote
+        ];
+        $condition = 'id_pilote = :id_pilote';
+
+        if (!empty($keywords)) {
+            $condition .= ' AND (firstname LIKE :keywords OR lastname LIKE :keywords OR mail LIKE :keywords)';
+            $params[':keywords'] = '%' . $keywords . '%';
+        }
+
+        return $this->connection->getRecordsWhen('Users', $condition, '', $params);
+    }
+    public function getUserById($userId) {
+        $params = [
+            ':id' => $userId
+        ];
+        $condition = 'id = :id';
+
+        return $this->connection->getRecordsWhen('Users', $condition, '', $params)[0];
+    }
 }

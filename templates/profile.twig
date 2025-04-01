@@ -1,6 +1,6 @@
 {% extends 'base.twig' %}
 
-{% block title %}Profil{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block content %}
     <main>
@@ -9,25 +9,39 @@
                 <section id="profil">
                     <img src="../static/accountIcon.png" alt="profil">
                     <div id="infos">
-                        <h2>{{ zz.NAME }}</h2>
-                        <h2>{{ zz.LASTNAME }} {{ zz.FIRSTNAME }}</h2>
-                        <p>{{ zz.CITY }}</p>
-                        <p>{{ zz.MAIL }}</p>
-                        <p>{{ zz.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
-                        <p>{{ zz.DESCRIPTION }}</p>
+                        <h2>{{ entity.NAME }}</h2>
+                        <h2>{{ entity.LASTNAME }} {{ entity.FIRSTNAME }}</h2>
+                        <p>{{ entity.CITY }}</p>
+                        <p>{{ entity.MAIL }}</p>
+                        <p>{{ entity.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
+                        <p>{{ entity.DESCRIPTION }}</p>
                     </div>
                 </section>
                 <section>
                     <label for="editors">Statistiques</label>
                     <p>Nombre d'offres postulés/postés: {{ count }}</p>
-                    <p>{{ note }}</p>
+                    {% if not isUser %}
+                        <p>{{ note }}</p>
+                        <form action="index.php?action=rateCompany" method="post" id="rating">
+                            <input type="hidden" name="idCompany" value="{{ entity.ID }}">
+                            <section id="note">
+                                <input type="radio" name="rate" id="0" value="0"><label for="0">0</label>
+                                <input type="radio" name="rate" id="1" value="1"><label for="1">1</label>
+                                <input type="radio" name="rate" id="2" value="2"><label for="2">2</label>
+                                <input type="radio" name="rate" id="3" value="3"><label for="3">3</label>
+                                <input type="radio" name="rate" id="4" value="4"><label for="4">4</label>
+                                <input type="radio" name="rate" id="5" value="5"><label for="5">5</label>
+                            </section>
+                            <button type="submit">Ajouter une Note</button>
+                        </form>
+                    {% endif %}
                 </section>
             </div>
             <div class="offres_profil">
                 <h2>Offres postulés/postés</h2>
                 <section class="offres">
                     {% for offer in offers %}
-                        <a href="?uri=/details-offre&id={{ offer.ID }}">
+                        <a href="?uri=/details-offer&id={{ offer.ID }}">
                             <div class="offre {% if loop.index % 3 == 1 %}
                                         rouge
                                     {% elseif loop.index % 3 == 2 %}
@@ -42,7 +56,7 @@
                                         <span class="duree fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
                                         <span class="exp fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}"><img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
                                     </div>
-                                    <a href="?uri=/details-entreprise&id={{offer.ID_COMPANY}}"><h5 class="inter-bold italic">{{ offer.NAME }}</h5></a>
+                                    <a href="?uri=/details-company&id={{offer.ID_COMPANY}}"><h5 class="inter-bold italic">{{ offer.NAME }}</h5></a>
                                     <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
                                     {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
                                     {% else %}../static/spotifyIcon.webp
@@ -54,8 +68,10 @@
                 </section>
             </div>
         </div>
-        <form action="index.php?action=disconnect" method="post">
-            <button type="submit">Se déconnecter</button>
-        </form>
+        {% if isUser %}
+            <form action="index.php?action=disconnect" method="post">
+                <button type="submit">Se déconnecter</button>
+            </form>
+        {% endif %}
     </main>
 {% endblock %}

@@ -1,9 +1,12 @@
 <header>
   <h1 class="inter-black titre">TheGoodPlan</h1>
   <nav>
-      <a class="inter-black navlink" href="/">Accueil</a>
+      <a class="inter-medium navlink" href="/">Accueil</a>
       <a class="inter-medium navlink" href="?uri=/browse">Nos Offres</a>
       <a class="inter-medium navlink" href="?uri=/create-offer">Créer une offre</a>
+      {%if id_role == 2 or id_role == 3 %}
+      <a class="inter-medium navlink" href="?uri=/dashboard">Dashboard</a>
+      {% endif %}
   </nav>
   
     <div class="session-info" style="display: flex; align-items: center; gap: 10px; color: white;">
@@ -17,7 +20,7 @@
           <h3 class="inter-medium">Administrateur</h3>
         {% endif %}
       {% endif %}
-      <a href="?uri=/connection">
+      <a href="?uri=/profile">
       <img class="accountIcon" src="/static/accountIcon.png" width="48" />
       </a>
     </div>

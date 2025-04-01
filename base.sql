@@ -41,8 +41,10 @@ CREATE TABLE USERS(
    PASSWORD VARCHAR(255) NOT NULL,
    MAIL VARCHAR(255) NOT NULL,
    ID_ROLE INT NOT NULL,
+   ID_PILOTE INT NULL,
    PRIMARY KEY(ID),
-   FOREIGN KEY(ID_ROLE) REFERENCES ROLES(ID)
+   FOREIGN KEY(ID_ROLE) REFERENCES ROLES(ID),
+   FOREIGN KEY(ID_PILOTE) REFERENCES USERS(ID)
 );
 
 CREATE TABLE APPLICATIONS(
@@ -119,10 +121,16 @@ INSERT INTO OFFERS (TITLE, RELEASE_DATE, CITY, GRADE, BEGIN_DATE, DURATION, RENU
 ('Chercheur en Biotechnologie', '2025-07-20', 'Genève', 'Doctorat', '2025-10-01', 24, 6000.00, 'Recherche et innovation en biotechnologie.', 7);
 
 -- Insertion de données dans USERS
-INSERT INTO USERS (LASTNAME, FIRSTNAME, PASSWORD, MAIL, ID_ROLE) VALUES
-('Dupont', 'Jean', 'hashed_password1', 'jean.dupont@example.com', 1),
-('Martin', 'Sophie', 'hashed_password2', 'sophie.martin@example.com', 2),
-('Bernard', 'Paul', 'hashed_password3', 'paul.bernard@example.com', 3);
+INSERT INTO USERS (LASTNAME, FIRSTNAME, PASSWORD, MAIL, ID_ROLE, ID_PILOTE) VALUES
+('Dupont', 'Jean', 'hashed_password1', 'jean.dupont@example.com', 1, 7),
+('Martin', 'Sophie', 'hashed_password2', 'sophie.martin@example.com', 1, 7),
+('Bernard', 'Paul', 'hashed_password3', 'paul.bernard@example.com', 1, 7),
+('Durand', 'Claire', 'hashed_password4', 'claire.durand@example.com', 1, 8),
+('Lemoine', 'Camille', 'hashed_password5', 'camille.lemoine@example.com', 1, 8),
+('Rousseau', 'Thomas', 'hashed_password6', 'thomas.rousseau@example.com', 1, 8),
+('Morel', 'Alice', 'hashed_password7', 'alice.morel@example.com', 2, NULL),
+('Petit', 'Luc', 'hashed_password8', 'luc.petit@example.com', 2, NULL),
+('Noir', 'Emma', 'hashed_password9', 'emma.noir@example.com', 3, NULL);
 
 -- Insertion de données dans APPLICATIONS
 INSERT INTO APPLICATIONS (RELEASE_DATE, CV, LETTER, ID_OFFER, ID_USER) VALUES

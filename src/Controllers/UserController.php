@@ -28,6 +28,7 @@ class UserController extends Controller{
             $_SESSION['id_role'] = $user["ID_ROLE"];
             $_SESSION['mail'] = $user["MAIL"];
             $_SESSION['firstname']=$user["FIRSTNAME"];
+            $_SESSION['idUser'] = $user["ID"];
             header("Location: ");
         }else{
             header("Location: ?uri=/connexionwrong");
@@ -39,7 +40,30 @@ class UserController extends Controller{
             session_start();
         }
         session_unset();
-        header("Location: ?uri=/connection");
+        header("Location: ?uri=/profile");
+    }
+
+    public function PrintAllUsersFromPilote($id_pilote,$keywords){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        $students = $this->model->getAllUsersFromPilote($id_pilote,$keywords);
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
+    }
+
+    public function showUserProfile($idUser=null){
+        if ($idUser==null){
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $idUser=$_SESSION['idUser'];
+        }
+        $user=$this->model->getUserById($idUser);
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        echo $this->templateEngine->render('profile.twig',['entity'=>$user,'firstname' => $firstname,'id_role' =>$id_role, 'isUser' => true]);
     }
 
 }

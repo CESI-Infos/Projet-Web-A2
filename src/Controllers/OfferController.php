@@ -88,6 +88,7 @@ class OfferController extends Controller {
 
     public function printSpecificOffer($id) {
         $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
+        
         $offer = $this->model->getOffer($id, $champs);
     
         if (session_status() === PHP_SESSION_NONE) {
@@ -97,10 +98,24 @@ class OfferController extends Controller {
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
         $userId = $_SESSION['idUser'] ?? null;
+    
         $ApplicationController = new ApplicationController();
         $applies = $ApplicationController->getAllOfferApply($id);
         $applyCount = count($applies);
-        echo $this->templateEngine->render('details-offer.twig', ['offer' => $offer,'firstname' => $firstname,'id_role' => $id_role, 'applyCount' => $applyCount, 'user' => ['ID' => $userId]]);
+
+        $success = isset($_GET['success']) ? true : false;
+        $error = isset($_GET['error']) ? true : false;
+    
+        echo $this->templateEngine->render('details-offer.twig', [
+            'offer' => $offer,
+            'firstname' => $firstname,
+            'id_role' => $id_role,
+            'applyCount' => $applyCount,
+            'user' => ['ID' => $userId],
+            'success' => $success,
+            'error' => $error
+        ]);
     }
+    
     
 }

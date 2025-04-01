@@ -57,4 +57,23 @@ class ApplicationModel extends Model
     }
 
     public function __destruct() {}
+
+public function getOffersAppliedByUser(int $userId): array
+{
+    $sql = "
+        SELECT Offers.*,
+               Companies.NAME
+          FROM Applications
+          JOIN Offers ON Applications.ID_OFFER = Offers.ID
+          JOIN Companies ON Offers.ID_COMPANY = Companies.ID
+         WHERE Applications.ID_USER = :userId
+    ";
+
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+}
+
 }

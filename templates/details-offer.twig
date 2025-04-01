@@ -51,26 +51,28 @@
 
     <section class="postuler">
         <h2>Postuler à cette offre</h2>
-        <form action="?uri=/details-offer&id={{ offer.ID }}" method="POST">
-            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
-            <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
+        <form action="?uri=/details-offer&id={{ offer.ID }}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+    <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
 
-            <div class="form-ligne">
-                <div class="bloc">
-                    <label for="cv">CV :</label>
-                    <input type="text" id="cv" name="CV" placeholder="cv_nom.pdf" required>
-                </div>
+    <div class="form-ligne">
+        <div class="bloc">
+            <label for="cv">CV :</label>
+            <!-- On rend ce champ de type file -->
+            <input type="file" id="cv" name="CV" accept=".pdf,.doc,.docx" required>
+        </div>
 
-                <div class="bloc">
-                    <label for="coverLetter">Lettre de motivation :</label>
-                    <textarea id="coverLetter" name="LETTER" placeholder="Je suis très motivé à rejoindre..." required></textarea>
-                </div>
+        <div class="bloc">
+            <label for="coverLetter">Lettre de motivation :</label>
+            <textarea id="coverLetter" name="LETTER" placeholder="Je suis très motivé à rejoindre..." required></textarea>
+        </div>
 
-                <div class="form-submit">
-                    <button type="submit" class="bouton">Envoyer la candidature</button>
-                </div>
-            </div>
-        </form>
+        <div class="form-submit">
+            <button type="submit" class="bouton">Envoyer la candidature</button>
+        </div>
+    </div>
+</form>
+
     </section>
 
     <section class="wishlist">

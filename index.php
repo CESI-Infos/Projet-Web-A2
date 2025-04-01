@@ -109,8 +109,6 @@ switch ($uri) {
         $offerId = $_GET['id'] ?? null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ApplicationController->addApplication();
-            header("Location: ?uri=/details-offer&id=$offerId&success=Votre candidature a bien été envoyée !");
-            exit;
         }
         $OfferController->printSpecificOffer($offerId);
         break;

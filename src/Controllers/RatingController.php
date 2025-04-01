@@ -14,9 +14,15 @@ class RatingController extends Controller
         $this->model = new RatingModel();
     }
 
-    public function getNote(int $idCompany, int $idUser): int
+    public function getNote(int $idCompany, int $idUser)
     {
-        return $this->model->getNote($idCompany, $idUser);
+        $notes = $this->model->getAllNotes();
+        foreach ($notes as $note){
+            if ($note['ID_COMPANY'] == $idCompany && $note['ID_USER'] == $idUser){
+                return $note;
+            }
+        }
+        return -1;
     }
 
     public function NoteMoyenne($idCompany){
@@ -35,6 +41,10 @@ class RatingController extends Controller
     public function addNote(int $idCompany, int $idUser, int $note): void
     {
         $this->model->createNote($idCompany, $idUser, $note);
+    }
+
+    public function updateNote(int $idCompany, int $idUser, int $note){
+        $this->model->updateNote($idCompany, $idUser, $note);
     }
 
     public function deleteNote(int $idCompany, int $idUser): void

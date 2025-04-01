@@ -119,7 +119,8 @@ switch ($uri) {
 
     case '/profile':
         if(isset($_GET['idUser'])){
-            $UserController->showUserProfile($_GET['idUser']);
+            $wishlist = $WishlistController->getWishlist($_GET['idUser']);
+            $UserController->showUserProfile($_GET['idUser'],$wishlist);
         }
 
         else if(isset($firstname)){
@@ -141,7 +142,9 @@ switch ($uri) {
         $companyId = $_GET['id'];
         $CompanyController->printCompany($companyId, $firstname, $id_role);
         break;
-
+    case '/dashboard':
+        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        break;
     default:
         echo 'Page not found';
         break;

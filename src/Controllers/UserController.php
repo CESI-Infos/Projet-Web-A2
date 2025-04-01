@@ -53,7 +53,7 @@ class UserController extends Controller{
         echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
     }
 
-    public function showUserProfile($idUser=null){
+    public function showUserProfile($idUser=null,$wishlist=null){
         if ($idUser==null){
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
@@ -63,7 +63,7 @@ class UserController extends Controller{
         $user=$this->model->getUserById($idUser);
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        echo $this->templateEngine->render('profile.twig',['entity'=>$user,'firstname' => $firstname,'id_role' =>$id_role, 'isUser' => true]);
+        echo $this->templateEngine->render('profile.twig',['entity'=>$user,'firstname' => $firstname,'id_role' =>$id_role, 'isUser' => true,'wishlist'=>$wishlist]);
     }
 
 }

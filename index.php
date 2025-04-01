@@ -50,14 +50,14 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
     if ($_GET['action'] == 'disconnect') {
         $UserController->disconnect();
     }
-    if ($_GET['action']=='filteroffers'){
+    if ($_GET['action'] == 'filteroffers'){
         $keywords = $_POST['keywords'] ?? null;
         $duration = $_POST['duration'] ?? null;
         $experience = $_POST['experience'] ?? null;
 
         $uri='/browse';
     }
-    if($_GET['action']=='rateCompany'){
+    if($_GET['action'] == 'rateCompany'){
         $idCompany = $_POST['idCompany'];
         $rate = $_POST['rate'];
         $note = $RatingController->getNote($idCompany, $idUser);
@@ -68,27 +68,20 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         }
         header("Location: ?uri=/details-company&id=".$idCompany);
     }
+    if ($_GET['action'] === 'addToWishlist') {
+        $WishlistController->addOfferToWishlist($idUser);
+        header("Location: ?uri=/connection");
+        exit;
+    }
+    if ($_GET['action'] === 'removeFromWishlist') {
+        $WishlistController->removeOfferFromWishlist();
+        header("Location: ?uri=/connection");
+        exit;
+    }
 }
 
 elseif (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'addToWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $WishlistController->addOfferToWishlist($idUser);
-    header("Location: ?uri=/connection");
-    exit;
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'removeFromWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $WishlistController->removeOfferFromWishlist();
-    header("Location: ?uri=/connection");
-    exit;
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'viewWishlist') {
-    $wishlist = $WishlistController->getWishlist($idUser);
-    echo $twig->render('wishlist.twig', ['wishlist' => $wishlist, 'firstname' => $firstname, 'id_role' => $id_role]);
 }
 
 switch ($uri) {
@@ -113,26 +106,24 @@ switch ($uri) {
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-        case '/connection':
-            if (isset($firstname)) {
-                $wishlist = $WishlistController->getWishlist($idUser);
-        
-                echo $twig->render('profile.twig', [
-                    'firstname' => $firstname,
-                    'id_role'   => $id_role,
-                    'isUser'    => true,
-                    'wishlist'  => $wishlist,
-                    'user'      => ['ID' => $idUser]
-                ]);
-            } else {
-                echo $twig->render('connection.twig', [
-                    'firstname' => $firstname,
-                    'id_role'   => $id_role
-                ]);
-            }
-            break;
-        
-            break;        
+    case '/connection':
+        if (isset($firstname)) {
+            $wishlist = $WishlistController->getWishlist($idUser);
+    
+            echo $twig->render('profile.twig', [
+                'firstname' => $firstname,
+                'id_role'   => $id_role,
+                'isUser'    => true,
+                'wishlist'  => $wishlist,
+                'user'      => ['ID' => $idUser]
+            ]);
+        } else {
+            echo $twig->render('connection.twig', [
+                'firstname' => $firstname,
+                'id_role'   => $id_role
+            ]);
+        }
+        break;        
     case '/connectionwrong':
         echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role, 'connected' => "false"]);
         break;
@@ -146,14 +137,4 @@ switch ($uri) {
     default:
         echo 'Page not found';
         break;
-    case '/viewWishlist':
-    $wishlist = $WishlistController->getWishlist($idUser);
-    echo $twig->render('wishlist.twig', [
-        'wishlist'  => $wishlist,
-        'firstname' => $firstname,
-        'id_role'   => $id_role
-    ]);
-    break;
-
 }
-

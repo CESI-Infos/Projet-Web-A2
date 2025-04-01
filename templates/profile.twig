@@ -84,27 +84,33 @@
             <h2>Ma Wishlist</h2>
             <section class="wishlist">
                 {% for wish in wishlist %}
-                    <div class="offre">
-                        <div class="offre-head-apercu">
-                            <h4>{{ wish.TITLE }}</h4>
-                            <div class="tags">
-                                <span class="localisation"><img src="../static/locIcon.png" width="24px">{{ wish.CITY }}</span>
-                                <span class="duree"><img src="../static/timeIcon.png" width="24px">{{ wish.DURATION }}</span>
-                                <span class="exp"><img src="../static/educationIcon.png" width="24px">{{ wish.GRADE }}</span>
-                            </div>
-                            <a href="?uri=/details-company&id={{ wish.ID_COMPANY }}">
-                                <h5 class="inter-bold italic">{{ wish.NAME }}</h5>
-                            </a>
-                        </div>
-                        <form action="?action=removeFromWishlist" method="POST">
-                            <input type="hidden" name="ID_USER" value="{{ entity.ID }}">
-                            <input type="hidden" name="ID_OFFER" value="{{ wish.ID_OFFER }}">
-                            <button type="submit" class="bouton wishlist-button">Retirer de la wishlist</button>
-                        </form>
-                    </div>
-                {% else %}
-                    <p>Votre wishlist est vide.</p>
-                {% endfor %}
+    <div class="offre">
+        <a href="?uri=/details-offer&id={{ wish.ID_OFFER }}" class="wishlist-link">
+            <div class="offre-head-apercu">
+                <h4>{{ wish.TITLE }}</h4>
+                <div class="tags">
+                    <span class="localisation">
+                        <img src="../static/locIcon.png" width="24px">{{ wish.CITY }}
+                    </span>
+                    <span class="duree">
+                        <img src="../static/timeIcon.png" width="24px">{{ wish.DURATION }}
+                    </span>
+                    <span class="exp">
+                        <img src="../static/educationIcon.png" width="24px">{{ wish.GRADE }}
+                    </span>
+                </div>
+                <h5 class="inter-bold italic">{{ wish.NAME }}</h5>
+            </div>
+        </a>
+        <form action="?action=removeFromWishlist" method="POST">
+            <input type="hidden" name="ID_USER" value="{{ entity.ID }}">
+            <input type="hidden" name="ID_OFFER" value="{{ wish.ID_OFFER }}">
+            <button type="submit" class="bouton wishlist-button">Retirer de la wishlist</button>
+        </form>
+    </div>
+{% else %}
+    <p>Votre wishlist est vide.</p>
+{% endfor %}
             </section>
         </div>
 

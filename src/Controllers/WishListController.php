@@ -22,13 +22,13 @@ class WishlistController extends Controller
 
         $existingOffer = $this->model->getOfferInWishlist($userId, $offerId);
         if ($existingOffer) {
-            header("Location: /?success=Offre ajoutée à votre wishlist !");
+            header('Location:/');
             exit;
         }
 
         $this->model->addOfferToWishlist($userId, $offerId);
 
-        header("Location: ?uri=/connection&success=Offre ajoutée avec succès !");
+        header("Location: /?success=Offre ajoutée à votre wishlist !");
         exit;
     }
 

@@ -34,6 +34,10 @@ $id_role = $_SESSION['id_role'] ?? null;
 $firstname = $_SESSION['firstname'] ?? null;
 $idUser = $_SESSION['idUser'] ?? null;
 
+$id_role = $_SESSION['id_role'] ?? null;
+$firstname = $_SESSION['firstname'] ?? null;
+$idUser = $_SESSION['idUser'] ?? null;
+
 $uri = '/';
 
 $keywords = null;
@@ -78,6 +82,12 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         header("Location: ?uri=/connection");
         exit;
     }
+    if ($_GET['action']=='filterstudents'){
+        $keywords = $_POST['keywords'] ?? null;
+
+        $uri='/dashboard';
+    
+    }
 }
 
 elseif (isset($_GET['uri'])) {
@@ -106,22 +116,19 @@ switch ($uri) {
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-    case '/connection':
-        if (isset($firstname)) {
+
+    case '/profile':
+        if(isset($_GET['idUser'])){
+            $UserController->showUserProfile($_GET['idUser']);
+        }
+
+        else if(isset($firstname)){
             $wishlist = $WishlistController->getWishlist($idUser);
-    
-            echo $twig->render('profile.twig', [
-                'firstname' => $firstname,
-                'id_role'   => $id_role,
-                'isUser'    => true,
-                'wishlist'  => $wishlist,
-                'user'      => ['ID' => $idUser]
-            ]);
-        } else {
-            echo $twig->render('connection.twig', [
-                'firstname' => $firstname,
-                'id_role'   => $id_role
-            ]);
+            $UserController->showUserProfile($idUser,$wishlist);
+            
+        }
+        else{
+            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
         }
         break;        
     case '/connectionwrong':
@@ -134,6 +141,7 @@ switch ($uri) {
         $companyId = $_GET['id'];
         $CompanyController->printCompany($companyId, $firstname, $id_role);
         break;
+
     default:
         echo 'Page not found';
         break;

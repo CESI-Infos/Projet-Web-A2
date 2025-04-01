@@ -9,12 +9,12 @@
                 <section id="profil">
                     <img src="../static/accountIcon.png" alt="profil">
                     <div id="infos">
-                        <h2>{{ zz.NAME }}</h2>
-                        <h2>{{ zz.LASTNAME }} {{ zz.FIRSTNAME }}</h2>
-                        <p>{{ zz.CITY }}</p>
-                        <p>{{ zz.MAIL }}</p>
-                        <p>{{ zz.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
-                        <p>{{ zz.DESCRIPTION }}</p>
+                        <h2>{{ entity.NAME }}</h2>
+                        <h2>{{ entity.LASTNAME }} {{ entity.FIRSTNAME }}</h2>
+                        <p>{{ entity.CITY }}</p>
+                        <p>{{ entity.MAIL }}</p>
+                        <p>{{ entity.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
+                        <p>{{ entity.DESCRIPTION }}</p>
                     </div>
                 </section>
                 <section>

@@ -1,7 +1,11 @@
 <?php
 namespace App\Models;
-require_once 'src/Models/Model.php';
 
+require_once 'src/Models/Model.php';
+require_once "src/Models/Database.php";
+
+use App\Models\Model;
+use App\Models\Database;
 
 class UserModel extends Model{
     public function __construct($connection = null) {
@@ -40,5 +44,8 @@ class UserModel extends Model{
         $condition = 'id = :id';
 
         return $this->connection->getRecordsWhen('Users', $condition, '', $params)[0];
+
+    public function getAllUsers(){
+        return $this->connection->getAllRecords('Users');
     }
 }

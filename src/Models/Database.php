@@ -46,7 +46,7 @@ class Database
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
     }
 
@@ -97,4 +97,12 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
+    public function deleteRecordCondition(string $table, string $condition, array $params = []): int
+{
+    $sql = "DELETE FROM $table WHERE $condition";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->rowCount();
+}
+
 }

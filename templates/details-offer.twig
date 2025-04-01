@@ -11,32 +11,42 @@
             <div class="infos-offre">
                 <img src="/static/airbusIcon.png" alt="Logo Airbus">
                 <div>
-                    <h3><b>{{ offer.NAME }}</b></h3>
-                    <p>{{ offer.COMPANY_DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
+                    <a href="?uri=/details-company&id={{offer.ID_COMPANY}}">
+                        <h3><b>{{ offer.NAME }}</b></h3>
+                    </a>
+                    <p>{{ offer.COMPANY_DESCRIPTION }}</p>
                 </div>
+                <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h4>
             </div>
-            <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h4>
-        </div>
-        <div class="tags horizontal">
-            <span class="localisation fond-bleu"><img src="/static/locIcon.png" width="24px">{{ offer.CITY }}</span>
-            <span class="duree fond-bleu"><img src="/static/timeIcon.png" width="24px">{{ offer.DURATION }}</span>
-            <span class="exp fond-bleu"><img src="/static/educationIcon.png" width="24px">{{ offer.GRADE }}</span>
+            <div class="tags horizontal">
+                <span class="localisation fond-bleu">
+                    <img src="/static/locIcon.png" width="24px">
+                    {{ offer.CITY }}
+                </span>
+                <span class="duree fond-bleu">
+                    <img src="/static/timeIcon.png" width="24px">
+                    {{ offer.DURATION }}
+                </span>
+                <span class="exp fond-bleu">
+                    <img src="/static/educationIcon.png" width="24px">
+                    {{ offer.GRADE }}
+                </span>
+            </div>
         </div>
     </section>
 
     <article class="details">
         <p>{{ offer.OFFER_DESCRIPTION }}</p>
         <h5 class="inter-light sub">Publiée le {{ offer.RELEASE_DATE }}</h5>
+        <h5 class="inter-light sub">Nombre de candidatures: {{ applyCount }}</h5>
     </article>
 
-    {# Affichage d'un message d'erreur, s'il y en a #}
     {% if app.request.get('error') %}
-        <p class="message-error">⚠️ Une erreur est survenue lors de l'envoi de votre candidature. Veuillez réessayer.</p>
+        <p class="message-error">Une erreur est survenue lors de l'envoi de votre candidature. Veuillez réessayer.</p>
     {% endif %}
 
-    {# Affichage du message de succès #}
     {% if app.request.get('success') %}
-        <p class="message-succes">✅ Votre candidature a bien été envoyée !</p>
+        <p class="message-succes">Votre candidature a bien été envoyée !</p>
     {% endif %}
 
     <section class="postuler">
@@ -53,13 +63,21 @@
 
                 <div class="bloc">
                     <label for="coverLetter">Lettre de motivation :</label>
-                    <textarea id="coverLetter" name="COVER_LETTER" placeholder="Je suis très motivé à rejoindre..." required></textarea>
+                    <textarea id="coverLetter" name="LETTER" placeholder="Je suis très motivé à rejoindre..." required></textarea>
                 </div>
 
                 <div class="form-submit">
                     <button type="submit" class="bouton">Envoyer la candidature</button>
                 </div>
             </div>
+        </form>
+    </section>
+
+    <section class="wishlist">
+        <form action="?action=addToWishlist" method="POST">
+            <input type="hidden" name="ID_USER" value="{{ user.ID }}">
+            <input type="hidden" name="ID_OFFER" value="{{ offer.ID }}">
+            <button type="submit" class="bouton wishlist-button">Ajouter à la wishlist</button>
         </form>
     </section>
 </main>

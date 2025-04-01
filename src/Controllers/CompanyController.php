@@ -55,8 +55,8 @@ class CompanyController extends Controller{
         exit;
     }
 
-    public function printCompany($id){
-        $company = $this->model->getCompany($id)[0];
+    public function printCompany($id, $firstname, $id_role){
+        $company = $this->model->getCompany($id);
         $OfferModel = new OfferModel();
         $AllOffers = $OfferModel->getAllOffers();
         $offers = [];

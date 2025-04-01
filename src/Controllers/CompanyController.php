@@ -69,6 +69,6 @@ class CompanyController extends Controller{
         }
         $notes = new RatingController();
         $note = "Note de l'entreprise: ".$notes->NoteMoyenne($id);
-        echo $this->templateEngine->render('profile.twig', ['entity' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note]);
+        echo $this->templateEngine->render('profile.twig', ['zz' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note, 'isUser' => false, 'firstname' => $firstname,'id_role' =>$id_role]);
     }
 }

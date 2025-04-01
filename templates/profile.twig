@@ -9,12 +9,12 @@
                 <section id="profil">
                     <img src="../static/accountIcon.png" alt="profil">
                     <div id="infos">
-                        <h2>{{ entity.NAME }}</h2>
-                        <h2>{{ entity.LASTNAME }} {{ entity.FIRSTNAME }}</h2>
-                        <p>{{ entity.CITY }}</p>
-                        <p>{{ entity.MAIL }}</p>
-                        <p>{{ entity.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
-                        <p>{{ entity.DESCRIPTION }}</p>
+                        <h2>{{ zz.NAME }}</h2>
+                        <h2>{{ zz.LASTNAME }} {{ zz.FIRSTNAME }}</h2>
+                        <p>{{ zz.CITY }}</p>
+                        <p>{{ zz.MAIL }}</p>
+                        <p>{{ zz.PHONE|split('')|batch(2)|map(v => v|join) | join(' ') }}</p>
+                        <p>{{ zz.DESCRIPTION }}</p>
                     </div>
                 </section>
                 <section>
@@ -23,7 +23,7 @@
                     {% if not isUser %}
                         <p>{{ note }}</p>
                         <form action="index.php?action=rateCompany" method="post" id="rating">
-                            <input type="hidden" name="idCompany" value="{{ entity.ID }}">
+                            <input type="hidden" name="idCompany" value="{{ zz.ID }}">
                             <section id="note">
                                 <input type="radio" name="rate" id="0" value="0"><label for="0">0</label>
                                 <input type="radio" name="rate" id="1" value="1"><label for="1">1</label>
@@ -62,7 +62,6 @@
                                             <img src="../static/educationIcon.png" width="24px">{{ offer.GRADE }}
                                         </span>
                                     </div>
-
                                     <a href="?uri=/details-company&id={{offer.ID_COMPANY}}">
                                         <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
                                     </a>
@@ -80,6 +79,7 @@
                 </section>
             </div>
         </div>
+
         <div class="wishlist_profil">
             <h2>Ma Wishlist</h2>
             <section class="wishlist">
@@ -107,6 +107,7 @@
                 {% endfor %}
             </section>
         </div>
+
         {% if isUser %}
             <form action="index.php?action=disconnect" method="post">
                 <button type="submit">Se déconnecter</button>

@@ -143,7 +143,12 @@ switch ($uri) {
         $CompanyController->printCompany($companyId, $firstname, $id_role);
         break;
     case '/dashboard':
-        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        if($id_role==2){
+            $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        }
+        else if($id_role==3){
+            $UserController->PrintAllUsers($keywords);
+        }
         break;
     default:
         echo 'Page not found';

@@ -53,6 +53,16 @@ class UserController extends Controller{
         echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
     }
 
+    public function PrintAllUsers($keywords){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        $students = $this->model->getAllUsers($keywords);
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
+    }
+
     public function showUserProfile($idUser=null,$wishlist=null){
         if ($idUser==null){
             if (session_status() === PHP_SESSION_NONE) {

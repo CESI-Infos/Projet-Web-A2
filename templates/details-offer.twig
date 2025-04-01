@@ -6,14 +6,13 @@
 <main class="details-offre">
     <section class="contenu">
         <div>
-            <h2>Détails de l’offre</h2>
-            <h1>{{ offer.TITLE }}</h1>
-            <div class="infos-offre">
-                <img src="/static/airbusIcon.png" alt="Logo Airbus">
-                <div>
-                    <h3><b>{{ offer.NAME }}</b></h3>
-                    <p>{{ offer.COMPANY_DESCRIPTION }} • 134 k employés • Aéronautique / Spatial</p>
-                </div>
+        <h2>Détails de l’offre</h2>
+        <h1>{{ offer.TITLE }}</h1>
+        <div class="infos-offre">
+            <img src="/static/airbusIcon.png" alt="Logo Airbus">
+            <div>
+                <a href="?uri=/details-company&id={{offer.ID_COMPANY}}"><h3><b>{{ offer.NAME }}</b></h3></a>
+                <p>{{ offer.COMPANY_DESCRIPTION }}</p>
             </div>
             <h4 class="inter-medium">Date de début : {{ offer.BEGIN_DATE }}</h4>
         </div>

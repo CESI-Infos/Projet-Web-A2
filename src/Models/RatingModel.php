@@ -18,15 +18,7 @@ class RatingModel extends Model
     public function getAllNotes(){
         return $this->connection->getAllRecords("Note");
     }
-
-    public function getCompanyNotes($idCompany){
-        return $this->connection->getRecord("Note", $idCompany, '', "*", "ID_COMPANY");
-    }
-
-    public function getUserNotes($idUser){
-        return $this->connection->getRecord("Note", $idUser);
-    }
-
+    
     public function createNote(int $idCompany, int $idUser, int $note): bool
     {
         $record = [

@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-use PDO; // Import the global PDO class
-use PDOException; // Import the global PDOException class
+use PDO;
+use PDOException;
 
 class Database
 {
@@ -17,11 +17,15 @@ class Database
 
         try {
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-            
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo "Erreur de connexion : " . $e->getMessage();
         }
+    }
+
+    public function prepare(string $sql)
+    {
+        return $this->pdo->prepare($sql);
     }
 
     public function getAllRecords(string $table, $jointure = '', string $champs = "*"): array
@@ -89,6 +93,7 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
+
     public function deleteRecord(string $table, $id, string $colonneId = "id"): int
     {
         $sql = "DELETE FROM $table WHERE $colonneId = :id";
@@ -97,12 +102,12 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
-    public function deleteRecordCondition(string $table, string $condition, array $params = []): int
-{
-    $sql = "DELETE FROM $table WHERE $condition";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute($params);
-    return $stmt->rowCount();
-}
 
+    public function deleteRecordCondition(string $table, string $condition, array $params = []): int
+    {
+        $sql = "DELETE FROM $table WHERE $condition";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->rowCount();
+    }
 }

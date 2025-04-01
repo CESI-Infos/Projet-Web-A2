@@ -76,13 +76,11 @@ elseif (isset($_GET['uri'])) {
 
 if (isset($_GET['action']) && $_GET['action'] === 'addToWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $WishlistController->addOfferToWishlist($idUser);
-    header("Location: ?uri=/connection");
     exit;
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'removeFromWishlist' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $WishlistController->removeOfferFromWishlist();
-    header("Location: ?uri=/connection");
     exit;
 }
 

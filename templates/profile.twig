@@ -79,7 +79,7 @@
                 </section>
             </div>
         </div>
-
+        {% if  isUser %}
         <div class="wishlist_profil">
             <h2>Ma Wishlist</h2>
             <section class="wishlist">
@@ -113,8 +113,6 @@
 {% endfor %}
             </section>
         </div>
-
-        {% if isUser %}
             <form action="index.php?action=disconnect" method="post">
                 <button type="submit">Se déconnecter</button>
             </form>

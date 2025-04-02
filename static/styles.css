@@ -300,15 +300,17 @@ a {
   display: flex;
   gap: 2%;
 }
+
 /**/
 
 /* Évaluation */
 #rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2%;
 }
+
 /**/
 
 /* Colors for job cards */
@@ -547,6 +549,7 @@ button:hover {
 .details div:not(:last-child) {
   border-right: 1px solid gray;
 }
+
 section.postuler {
   background-color: white;
   border-radius: 20px;

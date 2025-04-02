@@ -1,0 +1,41 @@
+{% extends 'base.twig' %}
+
+{% block title %}Modifier l'offre - TheGoodPlan{% endblock %}
+
+{% block content %}
+    <main class="cadre">
+        <h1>Modification de l’offre</h1>
+        <form method="POST" action="?uri=/edit-offer&id={{ offer.ID }}">
+            <input type="hidden" name="ID" value="{{ offer.ID }}">
+
+            <label for="title">Titre de l'offre</label>
+            <input type="text" id="title" name="TITLE" value="{{ offer.TITLE }}" required>
+
+            <label for="release_date">Date de publication</label>
+            <input type="date" id="release_date" name="RELEASE_DATE" value="{{ offer.RELEASE_DATE }}" required>
+
+            <label for="city">Ville</label>
+            <input type="text" id="city" name="CITY" value="{{ offer.CITY }}" required>
+
+            <label for="grade">Diplôme requis</label>
+            <input type="text" id="grade" name="GRADE" value="{{ offer.GRADE }}" required>
+
+            <label for="begin_date">Date de début</label>
+            <input type="date" id="begin_date" name="BEGIN_DATE" value="{{ offer.BEGIN_DATE }}" required>
+
+            <label for="duree">Durée du stage</label>
+            <input type="number" id="duree" name="DURATION" value="{{ offer.DURATION }}" required>
+
+            <label for="renumber">Rémunération (€)</label>
+            <input type="number" id="renumber" name="RENUMBER" value="{{ offer.RENUMBER }}">
+
+            <label for="description">Description</label>
+            <textarea id="description" name="DESCRIPTION" rows="3" required>{{ offer.DESCRIPTION }}</textarea>
+
+            <!-- Champ caché pour l'ID de l'entreprise -->
+            <input type="hidden" name="ID_COMPANY" value="{{ offer.ID_COMPANY }}">
+
+            <button type="submit">Modifier l’offre</button>
+        </form>
+    </main>
+{% endblock %}

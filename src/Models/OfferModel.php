@@ -8,6 +8,7 @@ use App\Models\Model;
 use App\Models\Database;
 
 class OfferModel extends Model {
+    
     public function __construct($connection = null) {
         if (is_null($connection)) {
             $this->connection = new Database();
@@ -17,9 +18,12 @@ class OfferModel extends Model {
     }
 
     public function getAllOffers() {
-    return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.id_company = Companies.id");
+        return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.ID_COMPANY = Companies.ID");
+        return $offers;
     }
-    // Allows retrieving offers based on multiple criteria
+
+
+
     public function getOffersWhen($filters) {
         $conditions = [];
         $params = [];
@@ -51,12 +55,19 @@ class OfferModel extends Model {
             $params
         );
     }
-  
-    public function getOffer($id, $champs='*') {
-        return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.id_company = Companies.id", $champs);
+    public function getOffer($id, $champs = '*') {
+        return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.ID_COMPANY = Companies.ID", $champs);
+    }  
+
+    public function getOffersByCompany($idCompany) {
+        return $this->connection->getAllRecords("Offers", "WHERE ID_COMPANY = :idCompany", [':idCompany' => $idCompany]);
     }
 
     public function createOffer($title, $release_date, $city, $grade, $begin_date, $duration, $renumber, $description, $id_company) {
+        if (empty($title) || empty($release_date) || empty($city) || empty($grade) || empty($begin_date) || empty($duration) || empty($renumber) || empty($description) || empty($id_company)) {
+            throw new \Exception("Tous les champs sont obligatoires.");
+        }
+
         $record = [
             'TITLE' => $title,
             'RELEASE_DATE' => $release_date,
@@ -69,10 +80,14 @@ class OfferModel extends Model {
             'ID_COMPANY' => $id_company
         ];
 
-        return $this->connection->insertRecord("Offers",$record);
+        return $this->connection->insertRecord("Offers", $record);
     }
 
     public function updateOffer($id, $title, $release_date, $city, $grade, $begin_date, $duration, $renumber, $description, $id_company) {
+        if (empty($id) || empty($title) || empty($release_date) || empty($city) || empty($grade) || empty($begin_date) || empty($duration) || empty($renumber) || empty($description) || empty($id_company)) {
+            throw new \Exception("Tous les champs sont obligatoires.");
+        }
+
         $record = [
             'TITLE' => $title,
             'RELEASE_DATE' => $release_date,
@@ -85,12 +100,17 @@ class OfferModel extends Model {
             'ID_COMPANY' => $id_company
         ];
 
-        $condition = "id = :id";
+        $condition = "ID = :id";
         $paramsCondition = [':id' => $id];
         return $this->connection->updateRecord("Offers", $record, $condition, $paramsCondition);
     }
-
+    
     public function deleteOffer($id) {
-        return $this->connection->deleteRecord("Offers",$id);
+        $offer = $this->getOffer($id);
+        if (!$offer) {
+            throw new \Exception("L'offre n'existe pas.");
+        }
+        
+        return $this->connection->deleteRecord("Offers", $id);
     }
 }

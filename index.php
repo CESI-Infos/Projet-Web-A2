@@ -121,6 +121,77 @@ switch ($uri) {
             header("Location: ?uri=/connection");
         }
         break;
+
+
+    case '/companies':
+        $CompanyController->index();
+        break;
+    case '/create-company':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $CompanyController->addCompany();
+        } else {
+            echo $twig->render('create-company.twig');
+        }
+        break;
+    
+    case '/edit-company':
+        if (isset($_GET['id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $CompanyController->updateCompany();
+            } else {
+                $company = $CompanyController->getCompany($_GET['id']);
+                echo $twig->render('edit-company.twig', ['company' => $company]);
+            }
+        } else {
+            echo "ID de l'entreprise manquant.";
+        }
+        break;
+    
+    case '/delete-company':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {
+            $CompanyController->deleteCompany();
+        } else {
+            echo "ID de l'entreprise manquant.";
+        }
+        break;
+    case '/create-offer':
+        if ($id_role === 2 || $id_role === 3) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $OfferController->addOffer();
+            } else {
+                echo $twig->render('create-offer.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+            }
+        } else {
+            echo "Accès refusé.";
+        }
+        break;
+        
+    case '/edit-offer':
+        if ($id_role === 2 || $id_role === 3) {
+            if (isset($_GET['id'])) {
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $OfferController->updateOffer();
+                } else {
+                    $offer = $OfferController->getOffer($_GET['id']);
+                    echo $twig->render('edit-offer.twig', ['offer' => $offer, 'id_role' => $id_role]);
+                }
+            } else {
+                echo "ID de l'offre manquant.";
+            }
+        } else {
+            echo "Accès refusé.";
+        }
+        break;
+        
+   case '/delete-offer':
+        if (($id_role === 2 || $id_role === 3) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {
+            $OfferController->deleteOffer();
+        } else {
+            echo "Accès refusé ou ID de l'offre manquant.";
+        }
+        break;
+        
+
     case '/browse':
         if (isset($idUser)){
             $OfferController->printOffers('browse.twig', 5, [$keywords,$duration,$experience]);
@@ -139,13 +210,7 @@ switch ($uri) {
             header("Location: ?uri=/connection");
         }
         break;
-    case '/create-offer':
-        if (isset($idUser)){
-            echo $twig->render('create-offer.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
-        }else{
-            header("Location: ?uri=/connection");
-        }
-        break;
+
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;

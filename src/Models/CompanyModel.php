@@ -3,7 +3,6 @@ namespace App\Models;
 
 require_once 'src/Models/Model.php';
 
-
 class CompanyModel extends Model {
     public function __construct($connection = null) {
         if (is_null($connection)) {
@@ -39,11 +38,20 @@ class CompanyModel extends Model {
             'MAIL' => $mail,
             'PHONE' => $phone,
         ];
-
+    
         $condition = "id = :id";
         $paramsCondition = [':id' => $id];
-        return $this->connection->updateRecord("Companies", $record, $condition, $paramsCondition);
+    
+        $result = $this->connection->updateRecord("Companies", $record, $condition, $paramsCondition);
+    
+        if ($result) {
+            echo "Modification réussie.";
+        } else {
+            echo "Erreur lors de la modification.";
+        }
+        exit;
     }
+    
 
     public function deleteCompany($id) {
         return $this->connection->deleteRecord("Companies", $id);

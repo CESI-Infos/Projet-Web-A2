@@ -1,0 +1,17 @@
+{% extends 'base.twig' %}
+
+{% block title %}Supprimer l'offre - TheGoodPlan{% endblock %}
+
+{% block content %}
+    <main class="cadre">
+        <h1>Suppression de l’offre</h1>
+        <p>Êtes-vous sûr de vouloir supprimer l'offre <b>{{ offer.TITLE }}</b> ? Cette action est irréversible.</p>
+
+        <form method="POST" action="?uri=/delete-offer">
+            <input type="hidden" name="ID" value="{{ offer.ID }}">
+            
+            <button type="submit" class="btn-danger">Oui, supprimer</button>
+            <a href="?uri=/browse" class="btn-secondary">Annuler</a>
+        </form>
+    </main>
+{% endblock %}

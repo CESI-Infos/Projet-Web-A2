@@ -11,64 +11,88 @@ use App\Models\CompanyModel;
 use App\Controllers\Controller;
 use App\Controllers\RatingController;
 
-class CompanyController extends Controller{
+class CompanyController extends Controller {
 
     public function __construct($templateEngine) {
         $this->model = new CompanyModel();
         $this->templateEngine = $templateEngine;
     }
-    // Modify company description
-    public function updateCompany(){
-        $id = $_POST['ID'];
-        $name = $_POST['NAME'];
-        $descript = $_POST['DESCRIPTION'];
-        $mail = $_POST['MAIL'];
-        $phone = $_POST['PHONE'];
 
-        $this->model->changeCompanyName($id, $name);
-        $this->model->changeCompanyDescription($id, $descript);
-        $this->model->changeCompanyMail($id, $mail);
-        $this->model->changeCompanyPhone($id, $phone);
-        header('Location: /');
-        exit;
+    public function index() {
+        $companies = $this->model->getAllCompanies();
+        echo $this->templateEngine->render('companies.twig', ['companies' => $companies]);
     }
-    // Add a company
-    public function addCompany(){
-        $name = $_POST['NAME'];
-        $descript = $_POST['DESCRIPTION'];
-        $mail = $_POST['MAIL'];
-        $phone = $_POST['PHONE'];
 
-        $this->model->createCompany($name);
-        $id = count($this->model(getAllCompanies()));
-        $this->model->changeCompanyDescription($id, $descript);
-        $this->model->changeCompanyMail($id, $mail);
-        $this->model->changeCompanyPhone($id, $phone);
-        header('Location: /');
-        exit;
+
+    public function getCompany($id) {
+        return $this->model->getCompany($id);
     }
-    // Delete a company
-    public function deleteCompany(){
-        $id = $_POST['ID'];
-        $this->model->deleteCompany($id);
-        header('Location: /');
-        exit;
-    }
-    // Display the profile of a company
-    public function printCompany($id, $firstname, $id_role){
-        $company = $this->model->getCompany($id);
-        $OfferModel = new OfferModel();
-        $AllOffers = $OfferModel->getAllOffers();
-        $offers = [];
-        $count = 0;
-        foreach ($AllOffers as $offer){
-            if ($offer['ID_COMPANY'] == $id){
-                $offers[] = $offer;
-                $count=+1;
+    
+
+    public function addCompany() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['NAME'] ?? '';
+            $descript = $_POST['DESCRIPTION'] ?? '';
+            $mail = $_POST['MAIL'] ?? '';
+            $phone = $_POST['PHONE'] ?? '';
+
+            if ($name) {
+                $id = $this->model->createCompany($name, $descript, $mail, $phone);
+                header('Location: /?uri=/companies');
+                exit;
             }
         }
+        echo $this->templateEngine->render('create-company.twig');
+    }
+    public function updateCompany() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            var_dump($_POST); // Vérifie les données POST envoyées
+            exit;
+        }
+    
+        if (isset($_GET['id'])) {
+            var_dump($_GET); 
+            $company = $this->model->getCompany($_GET['id']);
+            var_dump($company); 
+            exit;
+        } else {
+            echo "ID de l'entreprise manquant.";
+        }
+    }
+    
+    
+    
+
+    public function deleteCompany() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {
+            $this->model->deleteCompany($_POST['ID']);
+            header('Location: /?uri=/companies');
+            exit;
+        }
+        echo "ID de l'entreprise manquant.";
+    }
+
+    public function printCompany($id) {
+        $company = $this->model->getCompany($id);
+        if (!$company) {
+            echo "Entreprise introuvable.";
+            return;
+        }
+
+        $OfferModel = new OfferModel();
+        $AllOffers = $OfferModel->getAllOffers();
+        $offers = array_filter($AllOffers, function($offer) use ($id) {
+            return $offer['ID_COMPANY'] == $id;
+        });
+
         $notes = new RatingController();
-        $note = "Note de l'entreprise: ".$notes->NoteMoyenne($id);
-        echo $this->templateEngine->render('profile.twig', ['entity' => $company, 'offers' => $offers, 'count' => $count, 'note' => $note, 'firstname' => $firstname, 'id_role' => $id_role]);
+        $note = "Note de l'entreprise: " . $notes->NoteMoyenne($id);
+
+        echo $this->templateEngine->render('profile.twig', [
+            'zz' => $company,
+            'offers' => $offers,
+            'count' => count($offers),
+            'note' => $note
+        ]);
     }
 }

@@ -34,6 +34,7 @@ class ApplicationModel extends Model
             'LETTER' => $coverLetter,
             'ID_USER' => $userId,
             'ID_OFFER' => $offerId,
+            'RELEASE_DATE' => date('Y/m/d'),
         ];
         return $this->connection->insertRecord("Applications", $record);
     }

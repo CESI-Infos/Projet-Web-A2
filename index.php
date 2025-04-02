@@ -164,10 +164,11 @@ switch ($uri) {
         }
         break;
     case '/dashboard':
-        if (isset($idUser)){
+        if($id_role==2){
             $UserController->PrintAllUsersFromPilote($idUser,$keywords);
-        }else{
-            header("Location: ?uri=/connection");
+        }
+        else if($id_role==3){
+            $UserController->PrintAllUsers($keywords);
         }
         break;
     default:

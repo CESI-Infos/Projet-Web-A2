@@ -74,7 +74,7 @@ class CompanyController extends Controller {
         echo "ID de l'entreprise manquant.";
     }
 
-    public function printCompany($id) {
+    public function printCompany($id, $firstname, $id_role) {
         $company = $this->model->getCompany($id);
         if (!$company) {
             echo "Entreprise introuvable.";
@@ -91,10 +91,12 @@ class CompanyController extends Controller {
         $note = "Note de l'entreprise: " . $notes->NoteMoyenne($id);
 
         echo $this->templateEngine->render('profile.twig', [
-            'zz' => $company,
+            'entity' => $company,
             'offers' => $offers,
             'count' => count($offers),
-            'note' => $note
+            'note' => $note,
+            'firstname' => $firstname,
+            'id_role' => $id_role
         ]);
     }
 }

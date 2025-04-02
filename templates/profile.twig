@@ -19,8 +19,9 @@
                 </section>
                 <section>
                     <label for="editors">Statistiques</label>
-                    <p>Nombre d'offres postulés/postés: {{ count }}</p>
+                    {% if isUser %}<p>Nombre d'offres postulés: {{ count }}</p>{% endif %}
                     {% if not isUser %}
+                        <p>Nombre d'offres postés: {{ count }}</p>
                         <p>{{ note }}</p>
                         <form action="index.php?action=rateCompany" method="post" id="rating">
                             <input type="hidden" name="idCompany" value="{{ entity.ID }}">
@@ -38,7 +39,8 @@
                 </section>
             </div>
             <div class="offres_profil">
-                <h2>Offres postulés/postés</h2>
+                {% if isUser %}<h2>Offres postulés</h2>{% endif %}
+                {% if not isUser %}<h2>Offres postés</h2>{% endif %}
                 <section class="offres">
                     {% for offer in offers %}
                         <a href="?uri=/details-offer&id={{ offer.ID }}">

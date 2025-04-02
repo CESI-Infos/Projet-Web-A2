@@ -15,18 +15,17 @@ class WishlistController extends Controller
         $this->templateEngine = $templateEngine;
     }
     // Add an offer to the wishlist
-    public function addOfferToWishlist()
+    public function addOfferToWishlist($idUser)
     {
-        $userId = (int)$_POST['ID_USER'];
         $offerId = (int)$_POST['ID_OFFER'];
 
-        $existingOffer = $this->model->getOfferInWishlist($userId, $offerId);
+        $existingOffer = $this->model->getOfferInWishlist($idUser, $offerId);
         if ($existingOffer) {
             header('Location:/');
             exit;
         }
 
-        $this->model->addOfferToWishlist($userId, $offerId);
+        $this->model->addOfferToWishlist($idUser, $offerId);
 
         header("Location: /?success=Offre ajoutée à votre wishlist !");
         exit;

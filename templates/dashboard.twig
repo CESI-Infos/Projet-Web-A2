@@ -3,6 +3,18 @@
 {% block title %}Parcourir{% endblock %}
 
 {% block content %}
+    
+    <script>
+        function toggleEditForm(studentId) {
+            const form = document.getElementById(`edit-form-${studentId}`);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+
     <main class="explore">
         <aside id="panneau">
         <br>
@@ -18,23 +30,69 @@
         </div>
         <section class="offres">
             {% for student in students %}
-                <a href="?uri=/profile&idUser={{ student.ID }}">
-                    <div class="offre {% if loop.index % 3 == 1 %}
-                                rouge
-                            {% elseif loop.index % 3 == 2 %}
-                                jaune
-                            {% else %}
-                                vert
-                            {% endif %}">
-                        <div class="offre-head-apercu">
-                            <h4>{{ student.FIRSTNAME }} {{ student.LASTNAME }}</h4>
-                            <div class="tags">
-                                <span class="fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">{{ student.MAIL }}</span>
-                            </div>
+                <div class="offre {% if loop.index % 3 == 1 %}
+                            rouge
+                        {% elseif loop.index % 3 == 2 %}
+                            jaune
+                        {% else %}
+                            vert
+                        {% endif %}">
+                    <div class="offre-head-apercu">
+                        <h4>{{ student.FIRSTNAME }} {{ student.LASTNAME }}</h4>
+                        <p>{{ student.MAIL }}</p>
+                        <div class="tags">
+                            <span class="fond-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
+                                {% if student.ID_ROLE == 1 %}
+                                    Étudiant
+                                {% elseif student.ID_ROLE == 2 %}
+                                    Pilote
+                                {% elseif student.ID_ROLE == 3 %}
+                                    Admin
+                                {% endif %}
+                            </span>
                         </div>
+                        <button class="modify-button" onclick="toggleEditForm({{ student.ID }})">Modifier</button>
+                        <form action="index.php?action=deleteuser" method="post">
+                            <input type="hidden" name="id" value="{{ student.ID }}">
+                            <button type="submit">Supprimer</button>
+                        </form>
                     </div>
-                </a>
+                    <form id="edit-form-{{ student.ID }}" action="index.php?action=edituser" method="post" style="display: none;">
+                        <input type="hidden" name="id" value="{{ student.ID }}">
+                        <input type="text" name="firstname" placeholder="{{ student.FIRSTNAME }}">
+                        <input type="text" name="lastname" placeholder="{{student.LASTNAME}}">
+                        <input type="email" name="mail" placeholder="{{student.MAIL}}">
+                        <input type="password" name="password" placeholder="{{student.PASSWORD}}">
+                        <select name="id_role">
+                            <option value="1">Étudiant</option>
+                            {% if id_role == '3' %}
+                                <option value="2">Pilote</option>
+                                <option value="3">Admin</option>
+                            {% endif %}
+                        </select>
+                        <button type="submit">Ajouter</button>
+                        <button type="button" onclick="toggleEditForm({{ student.ID }})">Annuler</button>
+                    </form>
+                </div>
             {% endfor %}
+            <div>
+                <h3>Ajouter un utilisateur</h3>
+                <form action="index.php?action=adduser" method="post">
+                    <input type="text" name="firstname" placeholder="Prénom" required>
+                    <input type="text" name="lastname" placeholder="Nom" required>
+                    <input type="email" name="mail" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Mot de passe" required>
+                    <select name="id_role" required>
+                        <option value="1">Étudiant</option>
+                        {% if id_role == '3' %}
+                            <option value="2">Pilote</option>
+                            <option value="3">Admin</option>
+                        {% endif %}
+                    </select>
+                    <button type="submit">Ajouter</button>
+                </form>
+            </div>
+
             <div class="pagination">
                 {% if page > 1 %}
                     <a href="?uri=/browse&page={{ page - 1 }}">Précédent</a>

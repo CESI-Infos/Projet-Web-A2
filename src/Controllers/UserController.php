@@ -14,6 +14,35 @@ class UserController extends Controller{
         $this->templateEngine = $templateEngine;
     }
 
+    public function addUser(){
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $mail = $_POST['mail'];
+        $password = $_POST['password'];
+        $id_role = $_POST['id_role'];
+        $id_pilote = $_POST['id_pilote'] ?? null;
+        
+        $this->model->addUser($firstname, $lastname, $mail, $password, $id_role, $id_pilote);
+    }
+
+    public function editUser() {
+        $id = $_POST['id'];
+        $firstname = $_POST['firstname'] ?? null;
+        $lastname = $_POST['lastname'] ?? null;
+        $mail = $_POST['mail'] ?? null;
+        $password = $_POST['password'] ?? null;
+        $id_role = $_POST['id_role'] ?? null;
+        $id_pilote = $_POST['id_pilote'] ?? null;
+
+        $this->model->editUser($id, $firstname, $lastname, $mail, $password, $id_role, $id_pilote);
+    }
+
+    public function deleteUser() {
+        $id = $_POST['id'];
+
+        $this->model->deleteUser($id);
+    }
+
     public function authenticate($mail,$password){
         $mail=$_POST["mail"];
         $password=$_POST["password"];

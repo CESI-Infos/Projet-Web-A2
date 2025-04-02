@@ -14,17 +14,17 @@ class RoleController extends Controller
         $this->model = new RoleModel();
         $this->templateEngine = $templateEngine;
     }
-
+    // Retrieves all roles
     public function getAllRoles()
     {
         return $this->model->getAllRoles();
     }
-
+    // Retrieves a role by its ID
     public function getRole($id)
     {
         return $this->model->getRole($id);
     }
-
+    // Adds a role
     public function addRole()
     {
         $name = $_POST['NAME'];
@@ -33,7 +33,7 @@ class RoleController extends Controller
         header('Location: /');
         exit;
     }
-
+    // Edits a role
     public function updateRole()
     {
         $id = (int)$_POST['ID'];
@@ -44,7 +44,7 @@ class RoleController extends Controller
         header('Location: /');
         exit;
     }
-
+    // Deletes a role
     public function deleteRole()
     {
         $id = (int)$_POST['ID'];

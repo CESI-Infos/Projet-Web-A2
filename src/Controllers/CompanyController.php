@@ -17,7 +17,7 @@ class CompanyController extends Controller{
         $this->model = new CompanyModel();
         $this->templateEngine = $templateEngine;
     }
-
+    // Modify company description
     public function updateCompany(){
         $id = $_POST['ID'];
         $name = $_POST['NAME'];
@@ -32,7 +32,7 @@ class CompanyController extends Controller{
         header('Location: /');
         exit;
     }
-
+    // Add a company
     public function addCompany(){
         $name = $_POST['NAME'];
         $descript = $_POST['DESCRIPTION'];
@@ -47,14 +47,14 @@ class CompanyController extends Controller{
         header('Location: /');
         exit;
     }
-
+    // Delete a company
     public function deleteCompany(){
         $id = $_POST['ID'];
         $this->model->deleteCompany($id);
         header('Location: /');
         exit;
     }
-
+    // Display the profile of a company
     public function printCompany($id, $firstname, $id_role){
         $company = $this->model->getCompany($id);
         $OfferModel = new OfferModel();

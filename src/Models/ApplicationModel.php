@@ -50,12 +50,6 @@ class ApplicationModel extends Model
 
         return $this->connection->updateRecord("Applications", $record, $condition, $params);
     }
-
-    public function deleteApplication(int $id): int
-    {
-        return $this->connection->deleteRecord("Applications", $id);
-    }
-
     public function __destruct() {}
 
 public function getOffersAppliedByUser(int $userId): array

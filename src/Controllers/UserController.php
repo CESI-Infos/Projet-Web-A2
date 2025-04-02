@@ -15,7 +15,7 @@ class UserController extends Controller{
         $this->model = new UserModel();
         $this->templateEngine = $templateEngine;
     }
-
+    // Allows the user to authenticate
     public function authenticate($mail,$password){
         $mail=$_POST["mail"];
         $password=$_POST["password"];
@@ -37,7 +37,7 @@ class UserController extends Controller{
         }
         exit;
     }
-
+    // Allows the user to log out
     public function disconnect(){
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -45,7 +45,7 @@ class UserController extends Controller{
         session_unset();
         header("Location: ?uri=/profile");
     }
-
+    // Retrieves all users for the pilot
     public function PrintAllUsersFromPilote($id_pilote,$keywords){
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -55,7 +55,7 @@ class UserController extends Controller{
         $students = $this->model->getAllUsersFromPilote($id_pilote,$keywords);
         echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
     }
-
+    // Returns the profile of a user
     public function showUserProfile($idUser = null, $wishlist = null)
 {
     if ($idUser == null) {

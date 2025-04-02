@@ -15,7 +15,7 @@ class OfferController extends Controller {
         $this->model = new OfferModel();
         $this->templateEngine = $templateEngine;
     }
-
+    // Add an offer
     public function addOffer() {
         if (!isset($_POST["TITLE"]) || !isset($_POST["RELEASE_DATE"]) || !isset($_POST["CITY"]) ||
             !isset($_POST["GRADE"]) || !isset($_POST["BEGIN_DATE"]) || !isset($_POST["DURATION"]) || 
@@ -38,7 +38,7 @@ class OfferController extends Controller {
         header('Location: /');
         exit();
     }
-
+    // Edit an offer
     public function updateOffer() {
         if (!isset($_POST["ID"]) || !isset($_POST["TITLE"]) || !isset($_POST["RELEASE_DATE"]) || 
             !isset($_POST["CITY"]) || !isset($_POST["GRADE"]) || !isset($_POST["BEGIN_DATE"]) || 
@@ -63,13 +63,13 @@ class OfferController extends Controller {
         header('Location: /');
         exit();
     }
-
+    // Delete an offer
     public function deleteOffer($id) {
         $this->model->deleteOffer($id);
         header('Location: /');
         exit();
     }
-
+    // Display all offers
     public function printOffers($pages, $num, $filter) {
         $allOffers = $this->model->getOffersWhen($filter);
         $allnum = count($allOffers);
@@ -85,7 +85,7 @@ class OfferController extends Controller {
         $firstname = $_SESSION['firstname'] ?? null;
         echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages,'firstname' => $firstname,'id_role' =>$id_role]);
     }
-
+    // Display a specific offer
     public function printSpecificOffer($id) {
         $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
         

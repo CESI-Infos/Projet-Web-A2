@@ -14,7 +14,7 @@ class WishlistController extends Controller
         $this->model = new WishlistModel();
         $this->templateEngine = $templateEngine;
     }
-
+    // Add an offer to the wishlist
     public function addOfferToWishlist()
     {
         $userId = (int)$_POST['ID_USER'];
@@ -31,7 +31,7 @@ class WishlistController extends Controller
         header("Location: /?success=Offre ajoutée à votre wishlist !");
         exit;
     }
-
+    // Remove an offer from the wishlist
     public function removeOfferFromWishlist()
     {
         $userId = (int)$_POST['ID_USER'];
@@ -41,7 +41,7 @@ class WishlistController extends Controller
         header('Location: /');
         exit;
     }
-
+    // Retrieve all offers from a user's wishlist
     public function getWishlist($userId)
     {
         return $this->model->getWishlist((int)$userId);

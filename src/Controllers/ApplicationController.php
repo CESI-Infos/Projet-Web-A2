@@ -14,7 +14,7 @@ class ApplicationController extends Controller
         $this->model = new ApplicationModel();
         //$this->templateEngine = $templateEngine;
     }
-
+    // Retrieves an application by its ID
     public function getApplication(int $id): ?array
     {
         return $this->model->getApplication($id);
@@ -30,7 +30,7 @@ class ApplicationController extends Controller
         }
         return $compApply;
     }
-
+    // Adds an application
     public function addApplication()
 {
     if (!isset($_FILES['CV']) || $_FILES['CV']['error'] !== UPLOAD_ERR_OK) {
@@ -65,7 +65,7 @@ class ApplicationController extends Controller
     exit;
 }
 
-
+    // Updates an application
     public function updateApplication()
     {
         $id = (int)$_POST['ID'];
@@ -76,14 +76,5 @@ class ApplicationController extends Controller
         header('Location: /applications');
         exit;
     }
-
-    public function deleteApplication()
-    {
-        $id = (int)$_POST['ID'];
-        $this->model->deleteApplication($id);
-        header('Location: /applications');
-        exit;
-    }
-
     public function __destruct() {}
 }

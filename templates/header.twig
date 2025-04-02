@@ -9,7 +9,7 @@
       {% endif %}
   </nav>
   
-    <div class="session-info" style="display: flex; align-items: center; gap: 10px; color: white;">
+    <div class="session-info">
       {%if firstname is not null %}
         <h3 class="inter-medium">{{ firstname }}  |</h3>
         {% if id_role == 1 %}
@@ -20,8 +20,8 @@
           <h3 class="inter-medium">Administrateur</h3>
         {% endif %}
       {% endif %}
-      <a href="?uri=/profile">
-      <img class="accountIcon" src="/static/accountIcon.png" width="48" />
-      </a>
     </div>
+    <a href="?uri=/profile">
+      <img class="accountIcon" src="/static/accountIcon.png" width="48" />
+    </a>
 </header>

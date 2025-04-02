@@ -90,6 +90,21 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         $uri='/dashboard';
     
     }
+    if ($_GET['action']=='adduser'){
+        $UserController->addUser();
+        $uri='/dashboard';
+    }
+
+    if ($_GET['action']=='edituser'){
+        $UserController->editUser();
+        $uri='/dashboard';
+    }
+
+    if ($_GET['action']=='deleteuser'){
+        $UserController->deleteUser();
+        $uri='/dashboard';
+    }
+
 }
 /**/
 

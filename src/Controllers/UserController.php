@@ -33,8 +33,9 @@ class UserController extends Controller{
             $_SESSION['idUser']=$user["ID"];
             header("Location: ");
         }else{
-            header("Location: ?uri=/connexionwrong");
+            header("Location: ?uri=/connectionwrong");
         }
+        exit;
     }
 
     public function disconnect(){

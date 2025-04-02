@@ -100,25 +100,40 @@ elseif (isset($_GET['uri'])) {
 
 switch ($uri) {
     case '/':
-        $OfferController->printOffers('home.twig', 3, []);
+        if (isset($idUser)){
+            $OfferController->printOffers('home.twig', 3, []);
+        }else{
+            header("Location: ?uri=/connection");
+        }
         break;
     case '/browse':
-        $OfferController->printOffers('browse.twig', 5, [$keywords,$duration,$experience]);
+        if (isset($idUser)){
+            $OfferController->printOffers('browse.twig', 5, [$keywords,$duration,$experience]);
+        }else{
+            header("Location: ?uri=/connection");
+        }
         break;
     case '/details-offer':
-        $offerId = $_GET['id'] ?? null;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $ApplicationController->addApplication();
+        if (isset($idUser)){
+            $offerId = $_GET['id'] ?? null;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $ApplicationController->addApplication();
+            }
+            $OfferController->printSpecificOffer($offerId);
+        }else{
+            header("Location: ?uri=/connection");
         }
-        $OfferController->printSpecificOffer($offerId);
         break;
     case '/create-offer':
-        echo $twig->render('create-offer.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+        if (isset($idUser)){
+            echo $twig->render('create-offer.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+        }else{
+            header("Location: ?uri=/connection");
+        }
         break;
     case '/support':
         echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
-
     case '/profile':
         if(isset($_GET['idUser'])){
             $wishlist = $WishlistController->getWishlist($_GET['idUser']);
@@ -131,21 +146,29 @@ switch ($uri) {
             
         }
         else{
-            echo $twig->render('connection.twig',['firstname' => $firstname,'id_role' =>$id_role]);
+            header("Location: ?uri=/connection");
         }
-        break;        
+        break;
+    case '/connection':
+        echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+        break;
     case '/connectionwrong':
         echo $twig->render('connection.twig', ['firstname' => $firstname, 'id_role' => $id_role, 'connected' => "false"]);
         break;
-    case '/sign-up':
-        echo $twig->render('sign-up.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
-        break;
     case '/details-company':
-        $companyId = $_GET['id'];
-        $CompanyController->printCompany($companyId, $firstname, $id_role);
+        if (isset($idUser)){
+            $companyId = $_GET['id'];
+            $CompanyController->printCompany($companyId, $firstname, $id_role);
+        }else{
+            header("Location: ?uri=/connection");
+        }
         break;
     case '/dashboard':
-        $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        if (isset($idUser)){
+            $UserController->PrintAllUsersFromPilote($idUser,$keywords);
+        }else{
+            header("Location: ?uri=/connection");
+        }
         break;
     default:
         echo 'Page not found';

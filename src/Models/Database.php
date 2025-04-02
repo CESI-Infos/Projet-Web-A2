@@ -22,12 +22,12 @@ class Database
             echo "Erreur de connexion : " . $e->getMessage();
         }
     }
-
+    // Allows preparing an SQL query
     public function prepare(string $sql)
     {
         return $this->pdo->prepare($sql);
     }
-
+    // Allows retrieving all records from a table
     public function getAllRecords(string $table, $jointure = '', string $champs = "*"): array
     {
         $sql = "SELECT $champs FROM $table $jointure";
@@ -35,7 +35,7 @@ class Database
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    // Retrieves all records from a table with a specific condition
     public function getRecordsWhen(string $table, string $condition, $jointure = '', array $params = [], string $champs = "*"): array
     {
         $sql = "SELECT $champs FROM $table $jointure WHERE $table.$condition";
@@ -43,7 +43,7 @@ class Database
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    // Retrieves a specific record from a table
     public function getRecord(string $table, $id, $jointure = '', string $champs = "*", string $colonneId = "id"): ?array
     {
         $sql = "SELECT $champs FROM $table $jointure WHERE $table.$colonneId = :id";
@@ -53,7 +53,7 @@ class Database
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
     }
-
+    // Allows inserting a record into a table
     public function insertRecord(string $table, array $data): int
     {
         $champs = implode(', ', array_keys($data));
@@ -70,7 +70,7 @@ class Database
 
         return (int) $this->pdo->lastInsertId();
     }
-
+    // Allows modifying a record in a table
     public function updateRecord(string $table, array $data, string $condition, array $paramsCondition = []): int
     {
         $champs = [];
@@ -93,7 +93,7 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
-
+    // Allows deleting a record from a table
     public function deleteRecord(string $table, $id, string $colonneId = "id"): int
     {
         $sql = "DELETE FROM $table WHERE $colonneId = :id";
@@ -102,7 +102,7 @@ class Database
         $stmt->execute();
         return $stmt->rowCount();
     }
-
+    // Allows deleting a record from a table with a condition
     public function deleteRecordCondition(string $table, string $condition, array $params = []): int
     {
         $sql = "DELETE FROM $table WHERE $condition";

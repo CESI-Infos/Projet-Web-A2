@@ -51,7 +51,7 @@ class ApplicationModel extends Model
         return $this->connection->updateRecord("Applications", $record, $condition, $params);
     }
     public function __destruct() {}
-
+// Retrieves the offers a user has applied to
 public function getOffersAppliedByUser(int $userId): array
 {
     $sql = "

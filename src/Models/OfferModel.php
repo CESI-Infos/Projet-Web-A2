@@ -19,7 +19,7 @@ class OfferModel extends Model {
     public function getAllOffers() {
     return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.id_company = Companies.id");
     }
-
+    // Allows retrieving offers based on multiple criteria
     public function getOffersWhen($filters) {
         $conditions = [];
         $params = [];
@@ -51,7 +51,7 @@ class OfferModel extends Model {
             $params
         );
     }
-
+  
     public function getOffer($id, $champs='*') {
         return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.id_company = Companies.id", $champs);
     }

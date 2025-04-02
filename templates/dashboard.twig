@@ -30,7 +30,6 @@
         </div>
         <section class="offres">
             {% for student in students %}
-            <a href="?uri=/profile&idUser={{ student.ID }}">
                 <div class="offre {% if loop.index % 3 == 1 %}
                             rouge
                         {% elseif loop.index % 3 == 2 %}
@@ -85,7 +84,6 @@
                         <button type="button" onclick="toggleEditForm({{ student.ID }})">Annuler</button>
                     </form>
                 </div>
-            <a href="?uri=/profile&idUser={{ student.ID }}">
             {% endfor %}
             <div>
                 <h3>Ajouter un utilisateur</h3>

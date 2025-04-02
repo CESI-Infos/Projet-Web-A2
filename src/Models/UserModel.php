@@ -26,7 +26,7 @@ class UserModel extends Model{
         ];
 
         if (!is_null($id_pilote)) {
-            $params[':id_pilote'] = $id_pilote;
+            $params['id_pilote'] = $id_pilote;
         }
 
         return $this->connection->insertRecord('Users', $params);

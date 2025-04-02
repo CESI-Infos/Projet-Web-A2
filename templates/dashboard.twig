@@ -70,6 +70,14 @@
                                 <option value="3">Admin</option>
                             {% endif %}
                         </select>
+                        <select name="id_pilote">
+                            <option value="">Choisir un pilote</option>
+                            {% for pilote in pilotes %}
+                                <option value="{{ pilote.ID }}" {% if pilote.ID == student.ID_PILOTE %}selected{% endif %}>
+                                    {{ pilote.FIRSTNAME }} {{ pilote.LASTNAME }}
+                                </option>
+                            {% endfor %}
+                        </select>
                         <button type="submit">Ajouter</button>
                         <button type="button" onclick="toggleEditForm({{ student.ID }})">Annuler</button>
                     </form>
@@ -89,6 +97,9 @@
                             <option value="3">Admin</option>
                         {% endif %}
                     </select>
+                    {% if id_role == '2' %}
+                        <input type="hidden" name="id_pilote" value="{{idUser}}">
+                    {% endif %}
                     <button type="submit">Ajouter</button>
                 </form>
             </div>

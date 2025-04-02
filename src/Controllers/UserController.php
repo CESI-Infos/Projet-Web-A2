@@ -82,7 +82,7 @@ class UserController extends Controller{
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
         $students = $this->model->getAllUsersFromPilote($id_pilote,$keywords);
-        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role,'idUser' => $id_pilote]);
     }
 
     public function PrintAllUsers($keywords){
@@ -92,7 +92,8 @@ class UserController extends Controller{
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
         $students = $this->model->getAllUsers($keywords);
-        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role]);
+        $pilotes = $this->model->getAllPilotes();
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role,'pilotes' =>$pilotes]);
     }
     // Returns the profile of a user
     public function showUserProfile($idUser = null, $wishlist = null)

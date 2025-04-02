@@ -108,4 +108,13 @@ class UserModel extends Model{
 
         return $this->connection->getRecordsWhen('Users', $condition, '', $params)[0];
     }
+
+    public function getAllPilotes() {
+        $condition = 'id_role = :id_role';
+        $params = [
+            ':id_role' => 2
+        ];
+
+        return $this->connection->getRecordsWhen('Users', $condition, '', $params);
+    }
 }

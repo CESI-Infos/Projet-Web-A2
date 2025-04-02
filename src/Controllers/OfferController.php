@@ -113,7 +113,8 @@ class OfferController extends Controller {
             'applyCount' => $applyCount,
             'user' => ['ID' => $userId],
             'success' => $success,
-            'error' => $error
+            'error' => $error,
+            'admin' => $id_role
         ]);
     }
     

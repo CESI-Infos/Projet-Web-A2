@@ -1,7 +1,7 @@
 <?php
 //index.php
 
-/* Ajoute de tout les fichiers des classes et initialisation de celles-ci */
+/* Adding and initializing all files */
 require "vendor/autoload.php";
 require_once "src/Controllers/CompanyController.php";
 require_once "src/Controllers/RatingController.php";
@@ -30,7 +30,7 @@ $ApplicationController = new ApplicationController($twig);
 $WishlistController = new WishlistController($twig);
 /**/
 
-/* Gestion de la session lorsqu'on arrive sur la page index ainsi que dans la méthode authenticate de UserController */
+/* Management of the session when we arrive on the index page as well as in the authenticate method of UserController */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -46,7 +46,7 @@ $keywords = null;
 $duration = null;
 $experience = null;
 
-/* Action réalisé lors de la validation d'un form */
+/* Action taken when validating a form */
 if (isset($_GET['action']) && $_GET['action'] !== '') {
     if ($_GET['action'] === 'authenticate') {
         $mail = $_POST["mail"];
@@ -93,7 +93,7 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
 }
 /**/
 
-/* Gestion de l'URL */
+/* URL management */
 elseif (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
 }

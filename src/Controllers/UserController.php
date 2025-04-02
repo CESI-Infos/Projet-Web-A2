@@ -60,7 +60,7 @@ class UserController extends Controller{
             $_SESSION['mail'] = $user["MAIL"];
             $_SESSION['firstname']=$user["FIRSTNAME"];
             $_SESSION['idUser']=$user["ID"];
-            header("Location: ");
+            header("Location: ?uri=/");
         }else{
             header("Location: ?uri=/connectionwrong");
         }

@@ -45,20 +45,22 @@ class CompanyController extends Controller {
         echo $this->templateEngine->render('create-company.twig');
     }
     public function updateCompany() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            var_dump($_POST); // Vérifie les données POST envoyées
-            exit;
-        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {
+            $id = $_POST['ID'];
+            $name = $_POST['NAME'] ?? '';
+            $description = $_POST['DESCRIPTION'] ?? '';
+            $mail = $_POST['MAIL'] ?? '';
+            $phone = $_POST['PHONE'] ?? '';
     
-        if (isset($_GET['id'])) {
-            var_dump($_GET); 
-            $company = $this->model->getCompany($_GET['id']);
-            var_dump($company); 
-            exit;
-        } else {
-            echo "ID de l'entreprise manquant.";
+            if (!empty($id) && !empty($name)) {
+                $this->model->updateCompany($id, $name, $description, $mail, $phone);
+                header('Location: /?uri=/companies');
+                exit;
+            }
         }
+        echo "Erreur lors de la modification.";
     }
+    
     
     
     

@@ -71,10 +71,6 @@ class CompanyController extends Controller {
         }
         echo "Erreur lors de la modification.";
     }
-    
-    
-    
-    
 
     public function deleteCompany() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {

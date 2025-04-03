@@ -43,13 +43,6 @@ class CompanyModel extends Model {
         $paramsCondition = [':id' => $id];
     
         $result = $this->connection->updateRecord("Companies", $record, $condition, $paramsCondition);
-    
-        if ($result) {
-            echo "Modification réussie.";
-        } else {
-            echo "Erreur lors de la modification.";
-        }
-        exit;
     }
     
 

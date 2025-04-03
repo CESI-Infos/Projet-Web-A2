@@ -9,6 +9,7 @@ use App\Models\OfferModel;
 use App\Models\CompanyModel;
 
 class OfferController extends Controller {
+    private $companyModel;
     
     public function __construct($templateEngine) {
         $this->model = new OfferModel();

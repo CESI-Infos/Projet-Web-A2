@@ -19,13 +19,19 @@ class CompanyController extends Controller {
     }
 
     public function index() {
-        $companies = $this->model->getAllCompanies();
+        $allCompanies = $this->model->getAllCompanies();
+        $allnum = count($allCompanies);
+        $totalPages = ceil($allnum/5);
+
+        $page =  isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+
+        $companies = array_slice($allCompanies, 5 * ($page - 1), 5);
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        echo $this->templateEngine->render('browsecompanies.twig', ['companies' => $companies,'firstname' => $firstname,'id_role' =>$id_role]);
+        echo $this->templateEngine->render('browsecompanies.twig', ['companies' => $companies, 'page' => $page, 'totalPages' => $totalPages, 'firstname' => $firstname,'id_role' =>$id_role]);
     }
 
 

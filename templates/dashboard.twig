@@ -87,6 +87,18 @@
                     </form>
                 </div>
             {% endfor %}
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="?uri=/dashboard&page={{ page - 1 }}">Précédent</a>
+                {% endif %}
+            
+                <span> | </span>
+            
+                {% if page < totalPages %}
+                    <a href="?uri=/dashboard&page={{ page + 1 }}">Suivant</a>
+                {% endif %}
+                <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
+            </div>
             <div>
                 <h3>Ajouter un utilisateur</h3>
                 <form action="index.php?action=adduser" method="post">

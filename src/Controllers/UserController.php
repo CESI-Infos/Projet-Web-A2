@@ -76,24 +76,43 @@ class UserController extends Controller{
     }
     // Retrieves all users for the pilot
     public function PrintAllUsersFromPilote($id_pilote,$keywords){
+        $allStudents = $this->model->getAllUsersFromPilote($id_pilote, $keywords);
+        $allnum = count($allstudents);
+        $totalPages = ceil($allnum/5);
+
+        $page =  isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+
+        $students = array_slice($allStudents, 5 * ($page - 1), 5);
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        $students = $this->model->getAllUsersFromPilote($id_pilote,$keywords);
-        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role,'idUser' => $id_pilote]);
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'page' => $page, 'totalPages' => $totalPages, 'firstname' => $firstname, 'id_role' => $id_role,'idUser' => $id_pilote]);
     }
 
     public function PrintAllUsers($keywords){
+        $allStudents = $this->model->getAllUsers($keywords);
+        $allPilotes = $this->model->getAllPilotes();
+        $allUsers = [];
+        foreach ($allStudents as $students){
+            $allUsers[] = $students;
+        }
+        foreach ($allPilotes as $pilotes){
+            $allUsers[] = $pilotes;
+        }
+        $allnum = count($allUsers);
+        $totalPages = ceil($allnum/3);
+
+        $page =  isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+
+        $students = array_slice($allUsers, 3 * ($page - 1), 3);
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        $students = $this->model->getAllUsers($keywords);
-        $pilotes = $this->model->getAllPilotes();
-        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'firstname' => $firstname, 'id_role' => $id_role,'pilotes' =>$pilotes]);
+        echo $this->templateEngine->render('dashboard.twig', ['students' => $students, 'page' => $page, 'totalPages' => $totalPages, 'firstname' => $firstname, 'id_role' => $id_role,'pilotes' =>$pilotes]);
     }
     // Returns the profile of a user
     public function showUserProfile($idUser = null, $wishlist = null)

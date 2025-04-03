@@ -5,6 +5,9 @@
 {% block content %}
     <main class="explore">
         <section class="company">
+        {% if id_role == '3' or id_role == '2' %}
+                            <a href="?uri=/create-company">Ajouter une entreprise</a>
+                            {% endif %}
             {% for company in companies %}
                 <div class="offre {% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
                     <a href="?uri=/details-company&id={{ company.ID }}">

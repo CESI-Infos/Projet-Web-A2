@@ -20,7 +20,12 @@ class CompanyController extends Controller {
 
     public function index() {
         $companies = $this->model->getAllCompanies();
-        echo $this->templateEngine->render('companies.twig', ['companies' => $companies]);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $id_role = $_SESSION['id_role'] ?? null;
+        $firstname = $_SESSION['firstname'] ?? null;
+        echo $this->templateEngine->render('browsecompanies.twig', ['companies' => $companies,'firstname' => $firstname,'id_role' =>$id_role]);
     }
 
 
@@ -38,7 +43,7 @@ class CompanyController extends Controller {
 
             if ($name) {
                 $id = $this->model->createCompany($name, $descript, $mail, $phone);
-                header('Location: /?uri=/companies');
+                header('Location: /?uri=/browsecompanies');
                 exit;
             }
         }
@@ -54,7 +59,7 @@ class CompanyController extends Controller {
     
             if (!empty($id) && !empty($name)) {
                 $this->model->updateCompany($id, $name, $description, $mail, $phone);
-                header('Location: /?uri=/companies');
+                header('Location: /?uri=/browsecompanies');
                 exit;
             }
         }
@@ -68,7 +73,7 @@ class CompanyController extends Controller {
     public function deleteCompany() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ID'])) {
             $this->model->deleteCompany($_POST['ID']);
-            header('Location: /?uri=/companies');
+            header('Location: /?uri=/browsecompanies');
             exit;
         }
         echo "ID de l'entreprise manquant.";

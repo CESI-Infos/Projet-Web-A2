@@ -1,0 +1,51 @@
+{% extends "base.twig" %}
+
+{% block title %}Entreprises{% endblock %}
+
+{% block content %}
+    <main class="explore">
+        <section class="company">
+            {% for company in companies %}
+                <div class="offre {% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}">
+                    <a href="?uri=/details-company&id={{ company.ID }}">
+                        <div class="offre-head-apercu">
+                            <h4>{{ company.NAME }}</h4>
+                            <div class="tags">
+                                {{company.MAIL}}
+                            </div>
+
+                            {% if id_role == '3' or id_role == 'entreprise' %}
+                                <div class="actions">
+                                    <a href="?uri=/edit-company&id={{ company.ID }}" class="btn-admin">Modifier</a>
+                                    <form action="?uri=/delete-company" method="post" style="display:inline;">
+                                        <input type="hidden" name="ID" value="{{ company.ID }}">
+                                        <button type="submit" class="btn-delete">Supprimer</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+
+                            <img class="logo-{% if loop.index % 3 == 1 %}rouge{% elseif loop.index % 3 == 2 %}jaune{% else %}vert{% endif %}" 
+                                src="{% if loop.index % 3 == 1 %}../static/netflixIcon.png
+                                {% elseif loop.index % 3 == 2 %}../static/mcdonaldsIcon.png
+                                {% else %}../static/spotifyIcon.webp{% endif %}" 
+                                width="48" alt="Logo">
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="?uri=/browseoffers&page={{ page - 1 }}">Précédent</a>
+                {% endif %}
+            
+                <span> | </span>
+            
+                {% if page < totalPages %}
+                    <a href="?uri=/browseoffers&page={{ page + 1 }}">Suivant</a>
+                {% endif %}
+                <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
+            </div>
+        </section>
+    </main>
+{% endblock %}

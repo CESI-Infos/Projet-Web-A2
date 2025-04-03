@@ -30,7 +30,7 @@
 
             {% if id_role == '3' %}
                 <br>
-                <a href="?uri=/companies" class="btn-admin">Gérer les entreprises</a>
+                <a href="?uri=/browsecompanies" class="btn-admin">Gérer les entreprises</a>
             {% endif %}
         </aside>
 
@@ -78,13 +78,13 @@
 
             <div class="pagination">
                 {% if page > 1 %}
-                    <a href="?uri=/browse&page={{ page - 1 }}">Précédent</a>
+                    <a href="?uri=/browseoffers&page={{ page - 1 }}">Précédent</a>
                 {% endif %}
             
                 <span> | </span>
             
                 {% if page < totalPages %}
-                    <a href="?uri=/browse&page={{ page + 1 }}">Suivant</a>
+                    <a href="?uri=/browseoffers&page={{ page + 1 }}">Suivant</a>
                 {% endif %}
                 <span id="pages"> Page {{ page }} / {{ totalPages }} </span>
             </div>

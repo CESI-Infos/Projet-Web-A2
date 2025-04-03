@@ -58,7 +58,7 @@ class OfferController extends Controller {
         // Ajout de l'offre
         $this->model->createOffer($title, $releaseDate, $city, $grade, $beginDate, $duration, $renumber, $description, $idCompany);
         
-        header('Location: ?uri=/browse');
+        header('Location: ?uri=/browseoffers');
         exit();
     }
 
@@ -100,7 +100,7 @@ class OfferController extends Controller {
         // Modification de l'offre
         $this->model->updateOffer($id, $title, $releaseDate, $city, $grade, $beginDate, $duration, $renumber, $description, $idCompany);
 
-        header('Location: ?uri=/browse');
+        header('Location: ?uri=/browseoffers');
         exit();
     }
 
@@ -121,7 +121,7 @@ class OfferController extends Controller {
         $id = $_POST["ID"];
         $this->model->deleteOffer($id);
 
-        header('Location: ?uri=/browse');
+        header('Location: ?uri=/browseoffers');
         exit();
     }
     // Display all offers

@@ -61,7 +61,7 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         $duration = $_POST['duration'] ?? null;
         $experience = $_POST['experience'] ?? null;
 
-        $uri='/browse';
+        $uri='/browseoffers';
     }
     if($_GET['action'] == 'rateCompany'){
         $idCompany = $_POST['idCompany'];
@@ -129,7 +129,7 @@ switch ($uri) {
         break;
 
 
-    case '/companies':
+    case '/browsecompanies':
         $CompanyController->index();
         break;
     case '/create-company':
@@ -195,9 +195,9 @@ switch ($uri) {
         break;
         
 
-    case '/browse':
+    case '/browseoffers':
         if (isset($idUser)){
-            $OfferController->printOffers('browse.twig', 5, [$keywords,$duration,$experience]);
+            $OfferController->printOffers('browseoffers.twig', 5, [$keywords,$duration,$experience]);
         }else{
             header("Location: ?uri=/connection");
         }

@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     isFormValid = false;
                 }
 
-                if (cleaned.length < 2) {
+                if (cleaned.length < 2 && input.name != "keywords") {
                     alert(`Le champ "${input.name}" est trop court.`);
                     isFormValid = false;
                 }

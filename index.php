@@ -214,8 +214,8 @@ switch ($uri) {
         }
         break;
 
-    case '/support':
-        echo $twig->render('support.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
+     case '/RGPD':
+        echo $twig->render('RGPD.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
         break;
     case '/profile':
         if(isset($_GET['idUser'])){

@@ -51,7 +51,7 @@ class UserController extends Controller{
         $result=$this->model->authenticate($mail,$password);
 
         if (!empty($result)) {
-            $user=$result[0];
+            $user=$result;
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }

@@ -21,7 +21,7 @@ class UserModel extends Model{
             'firstname' => $firstname,
             'lastname' => $lastname,
             'mail' => $mail,
-            'password' => $password,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
             'id_role' => $id_role
         ];
 
@@ -46,7 +46,7 @@ class UserModel extends Model{
             $data['mail'] = $mail;
         }
         if (!is_null($password) && $password !== '') {
-            $data['password'] = $password;
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
         if (!is_null($id_role) && $id_role !== '') {
             $data['id_role'] = $id_role;
@@ -69,12 +69,17 @@ class UserModel extends Model{
         return $this->connection->deleteRecordCondition('Users', $condition, $params);
     }
 
-    public function authenticate($mail,$password){
+    public function authenticate($mail, $password) {
         $params = [
-            ':mail' => $mail,
-            ':password' => $password
+            ':mail' => $mail
         ];
-        return $this->connection->getRecordsWhen('Users', 'mail = :mail AND password = :password', '', $params);
+        $user = $this->connection->getRecordsWhen('Users', 'mail = :mail', '', $params);
+
+        if (!empty($user) && password_verify($password, $user[0]['PASSWORD'])) {
+            return $user[0];
+        }
+
+        return null;
     }
 
     public function getAllUsers($keywords){

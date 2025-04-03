@@ -3,7 +3,9 @@ namespace App\Controllers;
 
 require_once "src/Models/OfferModel.php";
 require_once "src/Controllers/Controller.php";
+require_once "src/Controllers/ApplicationController.php";
 
+use App\Controllers\ApplicationController;
 use App\Controllers\Controller;
 use App\Models\OfferModel;
 use App\Models\CompanyModel;
@@ -122,39 +124,54 @@ class OfferController extends Controller {
         header('Location: ?uri=/browse');
         exit();
     }
-    public function printOffers($pages, $num) {
-        $allOffers = $this->model->getAllOffers();
+    // Display all offers
+    public function printOffers($pages, $num, $filter) {
+        $allOffers = $this->model->getOffersWhen($filter);
         $allnum = count($allOffers);
         $totalPages = ceil($allnum / $num);
         
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
         
         $offers = array_slice($allOffers, $num * ($page - 1), $num);
-        
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        
-        echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages, 'firstname' => $firstname, 'id_role' => $id_role]);
+        echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages,'firstname' => $firstname,'id_role' =>$id_role]);
     }
-
+    // Display a specific offer
     public function printSpecificOffer($id) {
         $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
-        $offer = $this->model->getOffer($id, $champs);
         
+        $offer = $this->model->getOffer($id, $champs);
+    
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+    
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-     
-        echo $this->templateEngine->render('details-offer.twig', ['offer' => $offer, 'firstname' => $firstname, 'id_role' => $id_role]);
+        $userId = $_SESSION['idUser'] ?? null;
+    
+        $ApplicationController = new ApplicationController();
+        $applies = $ApplicationController->getAllOfferApply($id);
+        $applyCount = count($applies);
+
+        $success = isset($_GET['success']) ? true : false;
+        $error = isset($_GET['error']) ? true : false;
+    
+        echo $this->templateEngine->render('details-offer.twig', [
+            'offer' => $offer,
+            'firstname' => $firstname,
+            'id_role' => $id_role,
+            'applyCount' => $applyCount,
+            'user' => ['ID' => $userId],
+            'success' => $success,
+            'error' => $error,
+            'admin' => $id_role
+        ]);
     }
-    // Récupérer une offre pour l'édition
     public function getOffer($id) {
         return $this->model->getOffer($id);
     }

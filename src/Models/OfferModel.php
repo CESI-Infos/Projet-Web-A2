@@ -18,8 +18,7 @@ class OfferModel extends Model {
     }
 
     public function getAllOffers() {
-        return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.ID_COMPANY = Companies.ID");
-        return $offers;
+    return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.ID_COMPANY = Companies.ID");
     }
 
 
@@ -114,7 +113,7 @@ class OfferModel extends Model {
         $paramsCondition = [':id' => $id];
         return $this->connection->updateRecord("Offers", $record, $condition, $paramsCondition);
     }
-    
+
     public function deleteOffer($id) {
         $offer = $this->getOffer($id);
         if (!$offer) {

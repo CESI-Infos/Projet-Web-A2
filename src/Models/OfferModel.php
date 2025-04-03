@@ -59,6 +59,16 @@ class OfferModel extends Model {
         return $this->connection->getRecord("Offers", $id, "JOIN Companies ON Offers.ID_COMPANY = Companies.ID", $champs);
     }  
 
+    public function getCompanyIdByName($name) {
+        $sql = "SELECT ID FROM Companies WHERE NAME = :name";
+        $stmt = $this->connection->prepare($sql); 
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+        $result = $stmt->fetch();
+    
+        return $result ? $result['ID'] : null;
+    } 
+
     public function getOffersByCompany($idCompany) {
         return $this->connection->getAllRecords("Offers", "WHERE ID_COMPANY = :idCompany", [':idCompany' => $idCompany]);
     }

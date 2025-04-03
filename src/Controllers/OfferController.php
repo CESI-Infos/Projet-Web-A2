@@ -6,13 +6,22 @@ require_once "src/Controllers/Controller.php";
 
 use App\Controllers\Controller;
 use App\Models\OfferModel;
+use App\Models\CompanyModel;
 
 class OfferController extends Controller {
+    private $companyModel;
     
     public function __construct($templateEngine) {
         $this->model = new OfferModel();
+        $this->companyModel = new CompanyModel();
         $this->templateEngine = $templateEngine;
     }
+
+    public function showOfferForm() {
+        $companies = $this->companyModel->getAllCompanies();
+        echo $this->templateEngine->render('create-offer.twig', ['companies' => $companies]);
+    }
+
 
     public function addOffer() {
         if (session_status() === PHP_SESSION_NONE) {

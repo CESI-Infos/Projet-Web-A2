@@ -6,11 +6,13 @@ require_once "src/Controllers/Controller.php";
 
 use App\Controllers\Controller;
 use App\Models\OfferModel;
+use App\Models\CompanyModel;
 
 class OfferController extends Controller {
     
     public function __construct($templateEngine) {
         $this->model = new OfferModel();
+        $this->companyModel = new CompanyModel();
         $this->templateEngine = $templateEngine;
     }
 

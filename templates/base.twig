@@ -20,5 +20,50 @@
     </main>
 
     {% include 'footer.twig' %}
+    <script>
+function sanitize(value) {
+    value = value.replace(/<script.*?>.*?<\/script>/gi, ""); // Remove <script>
+    value = value.replace(/<[^>]*>?/gm, ""); // Remove all HTML tags
+    value = value.replace(/[<>]/g, ""); // Remove chevrons
+    return value.trim();
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const forms = document.querySelectorAll("form");
+
+    forms.forEach((form) => {
+        form.addEventListener("submit", (event) => {
+            let isFormValid = true;
+
+            const inputs = form.querySelectorAll("input[type='text'], input[type='email'], input[type='password'], textarea");
+
+            inputs.forEach((input) => {
+                let cleaned = sanitize(input.value);
+
+                input.value = cleaned;
+
+                if (input.type === "email" && !isValidEmail(cleaned)) {
+                    alert(`L'adresse email "${cleaned}" n'est pas valide.`);
+                    isFormValid = false;
+                }
+
+                if (cleaned.length < 2) {
+                    alert(`Le champ "${input.name}" est trop court.`);
+                    isFormValid = false;
+                }
+            });
+
+            if (!isFormValid) {
+                event.preventDefault();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

@@ -105,6 +105,12 @@ if (isset($_GET['action']) && $_GET['action'] !== '') {
         $uri='/dashboard';
     }
 
+      if ($_GET['action'] === 'addoffer') {
+        $OfferController->addOffer();
+        exit;
+    }
+
+
 }
 /**/
 
@@ -154,13 +160,10 @@ switch ($uri) {
             echo "ID de l'entreprise manquant.";
         }
         break;
-    case '/create-offer':
+     case '/create-offer':
         if ($id_role === 2 || $id_role === 3) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $OfferController->addOffer();
-            } else {
-                echo $twig->render('create-offer.twig', ['firstname' => $firstname, 'id_role' => $id_role]);
-            }
+            $OfferController->showOfferForm();
+            
         } else {
             echo "Accès refusé.";
         }

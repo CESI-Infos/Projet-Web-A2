@@ -14,6 +14,12 @@ class OfferController extends Controller {
         $this->templateEngine = $templateEngine;
     }
 
+    public function showOfferForm() {
+        $companies = $this->companyModel->getAllCompanies();
+        echo $this->templateEngine->render('create-offer.twig', ['companies' => $companies]);
+    }
+
+
     public function addOffer() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

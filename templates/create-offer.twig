@@ -5,7 +5,7 @@
 {% block content %}
     <main class="cadre">
         <h1>Création de l’offre</h1>
-        <form method="POST" action="?uri=/create-offer">
+        <form action="?action=addoffer" method="POST">
             <label for="title">Titre de l'offre</label>
             <input type="text" id="title" name="TITLE" required>
 
@@ -30,9 +30,12 @@
             <label for="description">Descriptif du stage</label>
             <textarea id="description" name="DESCRIPTION" rows="3" required></textarea>
 
-            <label for="id_company">ID de l'entreprise</label>
-            <input type="number" id="id_company" name="ID_COMPANY" required>
-
+            <label for="COMPANY_NAME">Nom de l'entreprise</label>
+            <select name="COMPANY_NAME">
+                {% for company in companies %}
+                    <option value="{{ company.NAME }}">{{ company.NAME }}</option>
+                {% endfor %}
+            </select>
             <button type="submit">Enregistrer l’offre</button>
         </form>
     </main>

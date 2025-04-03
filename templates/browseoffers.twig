@@ -56,7 +56,7 @@
                                 <h5 class="inter-bold italic">{{ offer.NAME }}</h5>
                             </a>
 
-                            {% if id_role == '3' or id_role == 'entreprise' %}
+                            {% if id_role == '3' or id_role == '2' %}
                                 <div class="actions">
                                     <a href="?uri=/edit-offer&id={{ offer.ID }}" class="btn-admin">Modifier</a>
                                     <form action="?uri=/delete-offer" method="post" style="display:inline;">

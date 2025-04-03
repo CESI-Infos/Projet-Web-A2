@@ -17,7 +17,7 @@
                                 {{company.MAIL}}
                             </div>
 
-                            {% if id_role == '3' or id_role == 'entreprise' %}
+                            {% if id_role == '3' or id_role == '2' %}
                                 <div class="actions">
                                     <a href="?uri=/edit-company&id={{ company.ID }}" class="btn-admin">Modifier</a>
                                     <form action="?uri=/delete-company" method="post" style="display:inline;">

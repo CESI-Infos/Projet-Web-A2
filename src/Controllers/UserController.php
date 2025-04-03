@@ -77,7 +77,7 @@ class UserController extends Controller{
     // Retrieves all users for the pilot
     public function PrintAllUsersFromPilote($id_pilote,$keywords){
         $allStudents = $this->model->getAllUsersFromPilote($id_pilote, $keywords);
-        $allnum = count($allstudents);
+        $allnum = count($allStudents);
         $totalPages = ceil($allnum/5);
 
         $page =  isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;

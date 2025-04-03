@@ -6,7 +6,7 @@
     <h1>Modifier {{ company.NAME }}</h1>
 
     {% if company.ID is defined and company.ID is not empty %}
-        <form action="?uri=/edit-company" method="POST">
+        <form action="?uri=/edit-company&id={{ company.ID }}" method="POST">
             <!-- Ajout de 'required' pour s'assurer que l'ID est bien envoyé -->
             <input type="hidden" name="ID" value="{{ company.ID }}">
 

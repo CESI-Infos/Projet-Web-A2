@@ -122,15 +122,15 @@ INSERT INTO OFFERS (TITLE, RELEASE_DATE, CITY, GRADE, BEGIN_DATE, DURATION, RENU
 
 -- Insertion de données dans USERS
 INSERT INTO USERS (LASTNAME, FIRSTNAME, PASSWORD, MAIL, ID_ROLE, ID_PILOTE) VALUES
-('Dupont', 'Jean', 'hashed_password1', 'jean.dupont@example.com', 1, 7),
-('Martin', 'Sophie', 'hashed_password2', 'sophie.martin@example.com', 1, 7),
-('Bernard', 'Paul', 'hashed_password3', 'paul.bernard@example.com', 1, 7),
-('Durand', 'Claire', 'hashed_password4', 'claire.durand@example.com', 1, 8),
-('Lemoine', 'Camille', 'hashed_password5', 'camille.lemoine@example.com', 1, 8),
-('Rousseau', 'Thomas', 'hashed_password6', 'thomas.rousseau@example.com', 1, 8),
-('Morel', 'Alice', 'hashed_password7', 'alice.morel@example.com', 2, NULL),
-('Petit', 'Luc', 'hashed_password8', 'luc.petit@example.com', 2, NULL),
-('Noir', 'Emma', 'hashed_password9', 'emma.noir@example.com', 3, NULL);
+('Dupont', 'Jean', '$2y$10$f6PpZDnLhbKDvViEJDDateHgkRdPyONAZPcbQMP5cxaE7ouYgeLf6', 'jean.dupont@example.com', 1, 7),
+('Martin', 'Sophie', '$2y$10$M4fV8ncUB1uusxBP9eR1XeW/H7J3ipHDEGbXjo4ufpBfd.0ta/HMO', 'sophie.martin@example.com', 1, 7),
+('Bernard', 'Paul', '$2y$10$nDN/oRg8Kt05YAoxMsLMY.A.9kDptzLZDntDbnPUr/XDdrfkWgCtO', 'paul.bernard@example.com', 1, 7),
+('Durand', 'Claire', '$2y$10$i4e6DSVKVZtDNENYHvv1Y.0K1.BzxuFnJ61bnbfwGzXsOL2hLULKS', 'claire.durand@example.com', 1, 8),
+('Lemoine', 'Camille', '$2y$10$ifj0RjGp584ybFjjJw2MOuEHNEeaucC3lASl71CyvNdASvbVU3pjy', 'camille.lemoine@example.com', 1, 8),
+('Rousseau', 'Thomas', '$2y$10$cFbMg5XVKsaE0XHtXQbeCOwtYgrWtO23XY43uVA32Qbfk1OAsgQ1.', 'thomas.rousseau@example.com', 1, 8),
+('Morel', 'Alice', '$2y$10$uLSM6yIrdEu3XXh4ToAqV.aiqBuBl0NEbnSncLMA6c2.DmCK8FRHa', 'alice.morel@example.com', 2, NULL),
+('Petit', 'Luc', '$2y$10$kIyAdTL5vDnnB05lj22Np.0P1OkPPSLs0.96yeM4IA3FRNcimp60K', 'luc.petit@example.com', 2, NULL),
+('Noir', 'Emma', '$2y$10$nXT1nL7Jp/f3CW6fL2TEVOZmLMaGQ16Qoo8LjkvwsJB/NiFYlQc6K', 'emma.noir@example.com', 3, NULL);
 
 -- Insertion de données dans APPLICATIONS
 INSERT INTO APPLICATIONS (RELEASE_DATE, CV, LETTER, ID_OFFER, ID_USER) VALUES

@@ -36,13 +36,17 @@ class OfferController extends Controller {
         }
 
         // Vérification des champs obligatoires
-        $requiredFields = ["TITLE", "RELEASE_DATE", "CITY", "GRADE", "BEGIN_DATE", "DURATION", "RENUMBER", "DESCRIPTION", "ID_COMPANY"];
+        $requiredFields = ["TITLE", "RELEASE_DATE", "CITY", "GRADE", "BEGIN_DATE", "DURATION", "RENUMBER", "DESCRIPTION", "COMPANY_NAME"];
         foreach ($requiredFields as $field) {
             if (!isset($_POST[$field]) || empty($_POST[$field])) {
                 echo "Le champ $field est obligatoire.";
                 exit();
             }
         }
+
+        $companyName = $_POST["COMPANY_NAME"];
+
+        $idCompany = $this->model->getCompanyIdByName($companyName);
 
         // Récupération des valeurs
         $title = $_POST["TITLE"];
@@ -53,7 +57,6 @@ class OfferController extends Controller {
         $duration = $_POST["DURATION"];
         $renumber = $_POST["RENUMBER"];
         $description = $_POST["DESCRIPTION"];
-        $idCompany = $_POST["ID_COMPANY"];
 
         // Ajout de l'offre
         $this->model->createOffer($title, $releaseDate, $city, $grade, $beginDate, $duration, $renumber, $description, $idCompany);

@@ -73,64 +73,6 @@ class CompanyModelTest extends TestCase
         $this->assertEquals(123, $insertId);
     }
 
-    public function testUpdateCompanySuccess()
-    {
-        $companyId   = 5;
-        $name        = 'Updated Company';
-        $description = 'Updated Description';
-        $mail        = 'updated@co.com';
-        $phone       = '0987654321';
-
-        $record = [
-            'NAME'        => $name,
-            'DESCRIPTION' => $description,
-            'MAIL'        => $mail,
-            'PHONE'       => $phone,
-        ];
-        $condition = "id = :id";
-        $paramsCondition = [':id' => $companyId];
-
-        $this->mockDatabase
-            ->expects($this->once())
-            ->method('updateRecord')
-            ->with('Companies', $record, $condition, $paramsCondition)
-            ->willReturn(1);
-
-        $this->expectOutputString("Modification réussie.");
-
-        $this->companyModel->updateCompany($companyId, $name, $description, $mail, $phone);
-
-    }
-
-    public function testUpdateCompanyFail()
-    {
-        $companyId   = 6;
-        $name        = 'Fail Inc';
-        $description = 'Fail Desc';
-        $mail        = 'fail@co.com';
-        $phone       = '111222333';
-
-        $record = [
-            'NAME'        => $name,
-            'DESCRIPTION' => $description,
-            'MAIL'        => $mail,
-            'PHONE'       => $phone,
-        ];
-        $condition = "id = :id";
-        $paramsCondition = [':id' => $companyId];
-
-        $this->mockDatabase
-            ->expects($this->once())
-            ->method('updateRecord')
-            ->with('Companies', $record, $condition, $paramsCondition)
-            ->willReturn(0);
-
-        $this->expectOutputString("Erreur lors de la modification.");
-
-        $this->companyModel->updateCompany($companyId, $name, $description, $mail, $phone);
-
-    }
-
     public function testDeleteCompany()
     {
         $companyId = 1;

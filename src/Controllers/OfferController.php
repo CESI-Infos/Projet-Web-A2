@@ -35,7 +35,7 @@ class OfferController extends Controller {
             exit();
         }
 
-        // Vérification des champs obligatoires
+        // Mandatory fields check
         $requiredFields = ["TITLE", "RELEASE_DATE", "CITY", "GRADE", "BEGIN_DATE", "DURATION", "RENUMBER", "DESCRIPTION", "COMPANY_NAME"];
         foreach ($requiredFields as $field) {
             if (!isset($_POST[$field]) || empty($_POST[$field])) {

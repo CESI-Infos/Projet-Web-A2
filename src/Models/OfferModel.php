@@ -50,7 +50,8 @@ class OfferModel extends Model {
             "Offers",
             $conditionString,
             "JOIN Companies ON Offers.id_company = Companies.id",
-            $params
+            $params,
+            $champs
         );
     }
     public function getOffer($id, $champs = '*') {

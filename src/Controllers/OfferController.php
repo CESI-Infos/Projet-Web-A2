@@ -48,7 +48,7 @@ class OfferController extends Controller {
 
         $idCompany = $this->model->getCompanyIdByName($companyName);
 
-        // Récupération des valeurs
+        // Retrieve values
         $title = $_POST["TITLE"];
         $releaseDate = $_POST["RELEASE_DATE"];
         $city = $_POST["CITY"];
@@ -58,7 +58,7 @@ class OfferController extends Controller {
         $renumber = $_POST["RENUMBER"];
         $description = $_POST["DESCRIPTION"];
 
-        // Ajout de l'offre
+        // Adding the offer
         $this->model->createOffer($title, $releaseDate, $city, $grade, $beginDate, $duration, $renumber, $description, $idCompany);
         
         header('Location: ?uri=/browseoffers');
@@ -79,7 +79,7 @@ class OfferController extends Controller {
             exit();
         }
 
-        // Vérification des champs obligatoires
+        // Mandatory fields check
         $requiredFields = ["ID", "TITLE", "RELEASE_DATE", "CITY", "GRADE", "BEGIN_DATE", "DURATION", "RENUMBER", "DESCRIPTION", "ID_COMPANY"];
         foreach ($requiredFields as $field) {
             if (!isset($_POST[$field]) || empty($_POST[$field])) {
@@ -88,7 +88,7 @@ class OfferController extends Controller {
             }
         }
 
-        // Récupération des valeurs
+        // Retrieve values
         $id = $_POST["ID"];
         $title = $_POST["TITLE"];
         $releaseDate = $_POST["RELEASE_DATE"];
@@ -100,7 +100,7 @@ class OfferController extends Controller {
         $description = $_POST["DESCRIPTION"];
         $idCompany = $_POST["ID_COMPANY"];
 
-        // Modification de l'offre
+        // Updating the offer
         $this->model->updateOffer($id, $title, $releaseDate, $city, $grade, $beginDate, $duration, $renumber, $description, $idCompany);
 
         header('Location: ?uri=/browseoffers');
@@ -141,6 +141,8 @@ class OfferController extends Controller {
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
+        var_dump($offers);
+        die;
         echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages,'firstname' => $firstname,'id_role' =>$id_role]);
     }
     // Display a specific offer

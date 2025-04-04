@@ -129,7 +129,8 @@ class OfferController extends Controller {
     }
     // Display all offers
     public function printOffers($pages, $num, $filter) {
-        $allOffers = $this->model->getOffersWhen($filter);
+        $champs = "Offers.ID AS OFFER_ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.ID AS COMPANY_ID, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
+        $allOffers = $this->model->getOffersWhen($filter, $champs);
         $allnum = count($allOffers);
         $totalPages = ceil($allnum / $num);
         
@@ -176,6 +177,7 @@ class OfferController extends Controller {
         ]);
     }
     public function getOffer($id) {
-        return $this->model->getOffer($id);
+        $champs = "Offers.ID, Offers.TITLE, Offers.RELEASE_DATE, Offers.CITY, Offers.GRADE, Offers.BEGIN_DATE, Offers.DURATION, Offers.RENUMBER, Offers.DESCRIPTION AS OFFER_DESCRIPTION, Offers.ID_COMPANY, Companies.NAME, Companies.DESCRIPTION AS COMPANY_DESCRIPTION";
+        return $this->model->getOffer($id, $champs);
     }
 }

@@ -17,13 +17,13 @@ class OfferModel extends Model {
         }
     }
 
-    public function getAllOffers() {
-    return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.ID_COMPANY = Companies.ID");
+    public function getAllOffers(string $champs = "*") {
+    return $this->connection->getAllRecords("Offers", "JOIN Companies ON Offers.ID_COMPANY = Companies.ID", $champs);
     }
 
 
 
-    public function getOffersWhen($filters) {
+    public function getOffersWhen($filters, string $champs = "*") {
         $conditions = [];
         $params = [];
 
@@ -43,9 +43,8 @@ class OfferModel extends Model {
         }
 
         $conditionString = implode(' AND ', $conditions);
-
         if (empty($conditionString)) {
-            return $this->getAllOffers();
+            return $this->getAllOffers($champs);
         }
         return $this->connection->getRecordsWhen(
             "Offers",

@@ -43,7 +43,7 @@
                 {% if not isUser %}<h2>Offres postés</h2>{% endif %}
                 <section class="offres">
                     {% for offer in offers %}
-                        <a href="?uri=/details-offer&id={{ offer.ID }}">
+                        <a href="?uri=/details-offer&id={{ offer.OFFER_ID }}">
                             <div class="offre {% if loop.index % 3 == 1 %}
                                         rouge
                                     {% elseif loop.index % 3 == 2 %}

@@ -142,8 +142,6 @@ class OfferController extends Controller {
         }
         $id_role = $_SESSION['id_role'] ?? null;
         $firstname = $_SESSION['firstname'] ?? null;
-        var_dump($offers);
-        die;
         echo $this->templateEngine->render($pages, ['offers' => $offers, 'page' => $page, 'totalPages' => $totalPages,'firstname' => $firstname,'id_role' =>$id_role]);
     }
     // Display a specific offer

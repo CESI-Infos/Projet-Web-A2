@@ -261,6 +261,12 @@ a {
   background-color: #0056b8;
 }
 
+header .profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 header .session-info {
   display: flex;
   align-items:
